@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.climblogger.R
@@ -40,9 +41,12 @@ class RoutesFragment : Fragment() {
         val viewModel = ViewModelProviders.of(this, factory)
             .get(RoutesViewModel::class.java)
 
+        // Setting the recyclerview
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        val linearLayoutManager = LinearLayoutManager(this.context)
+        recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = RoutesAdapter()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
         viewModel.getRoutes().observe(this, Observer { routes ->
             setRecyclerViewProperties(recyclerView, routes)
         })
@@ -101,7 +105,8 @@ class RoutesFragment : Fragment() {
         class RouteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             fun bind(route: Route) {
-                itemView.routeText.text = route.toString()
+                itemView.routeText.text = route.name
+                itemView.gradeText.text = route.grade
             }
         }
     }
