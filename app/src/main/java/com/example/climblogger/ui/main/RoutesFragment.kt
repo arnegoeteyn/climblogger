@@ -2,6 +2,7 @@ package com.example.climblogger.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Observer
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.climblogger.R
 import com.example.climblogger.data.Route
-import com.example.climblogger.utils.InjectorUtils
 import kotlinx.android.synthetic.main.fragment_routes.*
 import kotlinx.android.synthetic.main.route_list_item.view.*
 
@@ -22,8 +22,21 @@ import kotlinx.android.synthetic.main.route_list_item.view.*
 class RoutesFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
+    private lateinit var routeViewModel: RoutesViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // communication with the routeViewModel
+        routeViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
+
+        Log.i("Hallo", "SKJALKJFSD")
+
+        routeViewModel.allRoutes.observe(this, Observer {
+            Log.i("DKJSADJ", "SKJALKJFSD")
+            setRecyclerViewProperties(recyclerView, it)
+        })
+
     }
 
     override fun onCreateView(
@@ -37,9 +50,6 @@ class RoutesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = InjectorUtils.provideRoutesViewModelFactory()
-        val viewModel = ViewModelProviders.of(this, factory)
-            .get(RoutesViewModel::class.java)
 
         // Setting the recyclerview
         recyclerView.setHasFixedSize(true)
@@ -47,9 +57,6 @@ class RoutesFragment : Fragment() {
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = RoutesAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
-        viewModel.getRoutes().observe(this, Observer { routes ->
-            setRecyclerViewProperties(recyclerView, routes)
-        })
     }
 
 

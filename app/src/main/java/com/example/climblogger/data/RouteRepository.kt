@@ -1,20 +1,9 @@
 package com.example.climblogger.data
 
-class RouteRepository private constructor(private val routeDao: FakeRouteDao) {
+import androidx.lifecycle.LiveData
 
-    fun addRoute(route: Route) {
-        routeDao.addRoute(route)
-    }
+class RouteRepository(private val routeDao: RouteDao) {
 
-    fun getRoutes() = routeDao.getRoutes()
+    val allRoutes: LiveData<List<Route>> = routeDao.getAllRoutes()
 
-    companion object {
-        @Volatile
-        private var instance: RouteRepository? = null
-
-        fun getInstance(routeDao: FakeRouteDao) =
-            instance ?: synchronized(this) {
-                instance ?: RouteRepository(routeDao).also { instance = it }
-            }
-    }
 }
