@@ -3,6 +3,7 @@ package com.example.climblogger.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "routes")
 data class Route(
@@ -13,7 +14,7 @@ data class Route(
     @ColumnInfo(name = "comment") val comment: String?,
     @ColumnInfo(name = "link") val link: String?,
     @ColumnInfo(name = "sector_id") val sector_id: Int
-) {
+) : Serializable {
     override fun toString(): String {
         return "$name - $grade"
     }

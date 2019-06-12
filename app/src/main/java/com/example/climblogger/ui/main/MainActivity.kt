@@ -7,10 +7,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
+import com.example.climblogger.data.Route
+import com.example.climblogger.ui.route.RouteActivity
 
 class MainActivity : AppCompatActivity(),
     NoFileLoadedFragment.OnFragmentInteractionListener,
-    RoutesFragment.OnFragmentInteractionListener{
+    RoutesFragment.OnFragmentInteractionListener {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +53,23 @@ class MainActivity : AppCompatActivity(),
             .setType("*/*")
             .setAction(Intent.ACTION_GET_CONTENT)
 
-        startActivityForResult(Intent.createChooser(intent, "Select a file"),
+        startActivityForResult(
+            Intent.createChooser(intent, "Select a file"),
             REQUESTCODE_FILEPICKER
         )
     }
 
+    /**
+     * Handle what happens when a route gets selected
+     */
+    override fun onRouteClicked(route: Route) {
+        val intent: Intent = Intent(this, RouteActivity::class.java)
+        intent.putExtra(EXTRA_ROUTE, route)
+        startActivity(intent)
+    }
+
     companion object {
+        public const val EXTRA_ROUTE = "EXTRA_ROUTE"
         private val TAG = MainActivity::class.qualifiedName
         private const val REQUESTCODE_FILEPICKER = 111
 

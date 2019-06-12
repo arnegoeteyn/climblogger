@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Observer
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -30,10 +31,7 @@ class RoutesFragment : Fragment() {
         // communication with the routeViewModel
         routeViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
 
-        Log.i("Hallo", "SKJALKJFSD")
-
         routeViewModel.allRoutes.observe(this, Observer {
-            Log.i("DKJSADJ", "SKJALKJFSD")
             setRecyclerViewProperties(recyclerView, it)
         })
 
@@ -50,13 +48,20 @@ class RoutesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         // Setting the recyclerview
-        recyclerView.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this.context)
+        recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = RoutesAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+
+        // add an onclicklistener for the recyclerview
+        recyclerView.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // some null safety checking
+                routeViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it) }
+            }
+        })
     }
 
 
@@ -74,7 +79,9 @@ class RoutesFragment : Fragment() {
         listener = null
     }
 
-    interface OnFragmentInteractionListener {}
+    interface OnFragmentInteractionListener {
+        fun onRouteClicked(route: Route)
+    }
 
     companion object {
         @JvmStatic
@@ -86,6 +93,25 @@ class RoutesFragment : Fragment() {
         if (recyclerView.adapter is RoutesAdapter) {
             (recyclerView.adapter as RoutesAdapter).setData(items)
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClicked(position: Int, view: View)
+    }
+
+    fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
+        this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
+            override fun onChildViewDetachedFromWindow(view: View) {
+                view.setOnClickListener(null)
+            }
+
+            override fun onChildViewAttachedToWindow(view: View) {
+                view.setOnClickListener {
+                    val holder = getChildViewHolder(view)
+                    onClickListener.onItemClicked(holder.adapterPosition, view)
+                }
+            }
+        })
     }
 
     class RoutesAdapter : RecyclerView.Adapter<RoutesAdapter.RouteHolder>() {
@@ -107,7 +133,6 @@ class RoutesFragment : Fragment() {
         override fun onBindViewHolder(holder: RouteHolder, position: Int) {
             holder.bind(routes[position])
         }
-
 
         class RouteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
