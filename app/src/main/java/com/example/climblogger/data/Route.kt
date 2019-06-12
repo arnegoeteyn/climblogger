@@ -10,8 +10,8 @@ data class Route(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "grade") val grade: String,
     @ColumnInfo(name = "kind") val kind: String,
-    @ColumnInfo(name = "comment") val comment: String,
-    @ColumnInfo(name = "link") val link: String,
+    @ColumnInfo(name = "comment") val comment: String?,
+    @ColumnInfo(name = "link") val link: String?,
     @ColumnInfo(name = "sector_id") val sector_id: Int
 ) {
     override fun toString(): String {

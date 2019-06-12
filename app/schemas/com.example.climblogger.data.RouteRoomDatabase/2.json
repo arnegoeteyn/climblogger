@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "dd1d38b6b1a00c86cef7882ef231b438",
+    "identityHash": "e45e300d12f72872cea3bafd9d5c793f",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, PRIMARY KEY(`route_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT NOT NULL, `link` TEXT NOT NULL, `sector_id` INTEGER NOT NULL, PRIMARY KEY(`route_id`))",
         "fields": [
           {
             "fieldPath": "route_id",
@@ -25,6 +25,30 @@
             "columnName": "grade",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comment",
+            "columnName": "comment",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "link",
+            "columnName": "link",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sector_id",
+            "columnName": "sector_id",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -40,7 +64,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"dd1d38b6b1a00c86cef7882ef231b438\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e45e300d12f72872cea3bafd9d5c793f\")"
     ]
   }
 }
