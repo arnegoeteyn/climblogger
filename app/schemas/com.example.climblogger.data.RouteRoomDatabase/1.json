@@ -2,15 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8bb5254cfaa09b68d0bc4a1a36de0594",
+    "identityHash": "0d919930e67066c218b6b1f27984060b",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `sector_id` INTEGER NOT NULL, PRIMARY KEY(`route_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER NOT NULL, `sector_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER NOT NULL, `multipitch_id` INTEGER NOT NULL, PRIMARY KEY(`route_id`))",
         "fields": [
           {
             "fieldPath": "route_id",
             "columnName": "route_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sector_id",
+            "columnName": "sector_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -45,8 +51,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "sector_id",
-            "columnName": "sector_id",
+            "fieldPath": "pitch",
+            "columnName": "pitch",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "multipitch_id",
+            "columnName": "multipitch_id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -59,12 +71,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "ascents",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `route_id` INTEGER NOT NULL, `date` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "ascent_id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "route_id",
+            "columnName": "route_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8bb5254cfaa09b68d0bc4a1a36de0594\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0d919930e67066c218b6b1f27984060b\")"
     ]
   }
 }

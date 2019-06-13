@@ -2,12 +2,10 @@ package com.example.climblogger.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Observer
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -23,15 +21,15 @@ import kotlinx.android.synthetic.main.route_list_item.view.*
 class RoutesFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var routeViewModel: RoutesViewModel
+    private lateinit var routesViewModel: RoutesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // communication with the routeViewModel
-        routeViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
+        // communication with the routesViewModel
+        routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
 
-        routeViewModel.allRoutes.observe(this, Observer {
+        routesViewModel.allRoutes.observe(this, Observer {
             setRecyclerViewProperties(recyclerView, it)
         })
 
@@ -59,7 +57,7 @@ class RoutesFragment : Fragment() {
         recyclerView.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                routeViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it) }
+                routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it) }
             }
         })
     }
