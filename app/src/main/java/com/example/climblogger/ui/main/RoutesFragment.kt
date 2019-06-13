@@ -57,7 +57,7 @@ class RoutesFragment : Fragment() {
         recyclerView.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it) }
+                routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it.route_id) }
             }
         })
     }
@@ -78,7 +78,7 @@ class RoutesFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onRouteClicked(route: Route)
+        fun onRouteClicked(route_id: Int)
     }
 
     companion object {

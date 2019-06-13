@@ -17,9 +17,6 @@ import kotlinx.android.synthetic.main.activity_route.view.*
 
 class RouteActivity : AppCompatActivity() {
 
-    private lateinit var route: Route
-    private lateinit var ascents: List<Ascent>
-
     private lateinit var routeViewModel: RouteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,21 +24,24 @@ class RouteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_route)
 
         // get route from intent
-        route = intent.extras?.get(EXTRA_ROUTE) as Route
+        val route_id = intent.extras?.get(EXTRA_ROUTE) as Int
 
-        routeViewModel = ViewModelProviders.of(this).get(RouteViewModel::class.java)
+        routeViewModel = ViewModelProviders.of(this, RouteViewModelFactory(this.application, route_id))
+            .get(RouteViewModel::class.java)
 
-        routeViewModel.loadAscentsFromRoute(route.route_id).observe(this, Observer {
+        routeViewModel.route.observe(this, Observer { setRouteViews(it) })
+        routeViewModel.routeAscents.observe(this, Observer {
             Log.i("AKJDKJSA", it.toString())
         })
 
 
+    }
+
+    private fun setRouteViews(route: Route) {
         name.text = route.name
         grade.text = route.grade
         comment.text = route.comment
         kind.text = route.kind
-
-
     }
 
 }
