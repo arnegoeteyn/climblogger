@@ -10,11 +10,12 @@ import com.example.climblogger.data.RouteRoomDatabase
 class RouteViewModel(application: Application) : AndroidViewModel(application) {
     private val ascentRepository: AscentRepository
 
-    val ascentsFromRoute: LiveData<List<Ascent>>
-
     init {
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
         ascentRepository = AscentRepository(ascentDao)
-        ascentsFromRoute = ascentRepository.ascentsFromRoute(8)
+    }
+
+    public fun loadAscentsFromRoute(route_id: Int): LiveData<List<Ascent>> {
+        return ascentRepository.loadAscentsFromRoute(route_id)
     }
 }

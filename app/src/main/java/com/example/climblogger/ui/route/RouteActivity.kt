@@ -26,14 +26,15 @@ class RouteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_route)
 
+        // get route from intent
+        route = intent.extras?.get(EXTRA_ROUTE) as Route
+
         routeViewModel = ViewModelProviders.of(this).get(RouteViewModel::class.java)
 
-        routeViewModel.ascentsFromRoute.observe(this, Observer {
+        routeViewModel.loadAscentsFromRoute(route.route_id).observe(this, Observer {
             Log.i("AKJDKJSA", it.toString())
         })
 
-        // get route from intent
-        route = intent.extras?.get(EXTRA_ROUTE) as Route
 
         name.text = route.name
         grade.text = route.grade
