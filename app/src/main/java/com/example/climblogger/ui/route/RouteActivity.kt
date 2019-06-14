@@ -1,6 +1,7 @@
 package com.example.climblogger.ui.route
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.climblogger.R
 import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
+import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.main.MainActivity.Companion.EXTRA_ROUTE
 import kotlinx.android.synthetic.main.activity_route.*
 import kotlinx.android.synthetic.main.activity_route.view.*
@@ -54,7 +56,15 @@ class RouteActivity : AppCompatActivity() {
             setRecyclerViewProperties(ascentsRecyclerView, it)
         })
 
+        addAscentButton.setOnClickListener { addAscent(route_id) }
 
+
+    }
+
+    private fun addAscent(route_id: Int) {
+        intent = Intent(this, AddAscentActivity::class.java)
+        intent.putExtra(EXTRA_ROUTE_ID, route_id)
+        startActivity(intent)
     }
 
     private fun setRouteViews(route: Route) {
@@ -97,4 +107,7 @@ class RouteActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        const val EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID"
+    }
 }
