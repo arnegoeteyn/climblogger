@@ -81,10 +81,6 @@ class RoutesFragment : Fragment() {
         fun onRouteClicked(route_id: Int)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = RoutesFragment()
-    }
 
     @BindingAdapter("data")
     fun setRecyclerViewProperties(recyclerView: RecyclerView, items: List<Route>) {
@@ -139,5 +135,12 @@ class RoutesFragment : Fragment() {
                 itemView.gradeText.text = route.grade
             }
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = RoutesFragment()
+
+        public val TAG = RoutesFragment::class.qualifiedName
     }
 }

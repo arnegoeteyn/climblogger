@@ -5,15 +5,23 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.MainActivity" android:id="@+id/coordinatorLayout">
+        tools:context=".ui.main.MainActivity" android:id="@+id/constraintLayout">
 
-    <fragment
-            android:layout_width="0dp"
+    <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:name="com.example.climblogger.ui.main.RoutesFragment"
-            android:id="@+id/fragment"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:id="@+id/fragmentPlace">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottomNavigationView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
