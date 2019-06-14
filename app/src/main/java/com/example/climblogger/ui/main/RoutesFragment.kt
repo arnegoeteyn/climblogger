@@ -26,12 +26,6 @@ class RoutesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // communication with the routesViewModel
-        routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
-
-        routesViewModel.allRoutes.observe(this, Observer {
-            setRecyclerViewProperties(recyclerView, it)
-        })
 
     }
 
@@ -45,6 +39,13 @@ class RoutesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // communication with the routesViewModel
+        routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
+
+        routesViewModel.allRoutes.observe(this, Observer {
+            setRecyclerViewProperties(recyclerView, it)
+        })
 
         // Setting the recyclerview
         val linearLayoutManager = LinearLayoutManager(this.context)

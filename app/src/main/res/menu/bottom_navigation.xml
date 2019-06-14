@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+            android:id="@+id/action_routes"
+            android:enabled="true"
+            android:icon="@drawable/baseline_android_24"
+            android:title="@string/text_menu_routes"
+            app:showAsAction="ifRoom"/>
+
+<item
+            android:id="@+id/action_ascents"
+            android:enabled="true"
+            android:icon="@drawable/baseline_android_24"
+            android:title="@string/text_menu_ascents"
+            app:showAsAction="ifRoom"/>
+</menu>
