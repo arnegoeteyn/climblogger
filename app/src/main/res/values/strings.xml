@@ -7,4 +7,7 @@
     <string name="text_menu_routes">Routes</string>
     <string name="text_menu_ascents">Ascents</string>
     <string name="add_ascent">Add Ascent</string>
+    <string name="add_ascent_comment_text">comment</string>
+    <string name="date">Date</string>
+    <string name="date_view">%1$d/%2$d/%3$d</string>
 </resources>

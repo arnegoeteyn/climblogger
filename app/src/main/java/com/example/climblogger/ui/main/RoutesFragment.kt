@@ -142,6 +142,6 @@ class RoutesFragment : Fragment() {
         @JvmStatic
         fun newInstance() = RoutesFragment()
 
-        public val TAG = RoutesFragment::class.qualifiedName
+        val TAG = RoutesFragment::class.qualifiedName
     }
 }

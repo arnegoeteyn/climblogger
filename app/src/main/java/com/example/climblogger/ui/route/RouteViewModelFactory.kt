@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class RouteViewModelFactory(application: Application, route_id: Int) : ViewModelProvider.Factory {
-
-    private val application: Application = application
-    private val route_id: Int = route_id
+class RouteViewModelFactory(private val application: Application, private val route_id: Int) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
