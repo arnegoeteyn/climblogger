@@ -2,7 +2,7 @@ package com.example.climblogger.ui.ascent
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,7 +11,6 @@ import com.example.climblogger.data.Route
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE_ID
 import kotlinx.android.synthetic.main.activity_add_ascent.*
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 
 class AddAscentActivity : AppCompatActivity() {
 
@@ -30,15 +29,27 @@ class AddAscentActivity : AppCompatActivity() {
             updateRouteUiParts(it)
         })
 
-        dateButton.setOnClickListener { openDatePicker().toString() }
+        dateButton.setOnClickListener { selectDate().toString() }
 
+        initKindSpinner()
+
+    }
+
+    /**
+     * Initialize the spinner too choose the type of ascent
+     */
+    private fun initKindSpinner() {
+        val arrayAdapter =
+            ArrayAdapter.createFromResource(this, R.array.ascent_kind, android.R.layout.simple_spinner_item)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = arrayAdapter
     }
 
     private fun updateRouteUiParts(route: Route) {
         routeName.text = route.name
     }
 
-    private fun openDatePicker(){
+    private fun selectDate() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
