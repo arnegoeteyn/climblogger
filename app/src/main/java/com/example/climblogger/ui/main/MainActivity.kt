@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(),
             replace(
                 R.id.fragmentPlace,
                 supportFragmentManager.findFragmentByTag(AscentsFragment.TAG) ?: AscentsFragment.newInstance(),
-                RoutesFragment.TAG
+                AscentsFragment.TAG
             )
                 .addToBackStack(RoutesFragment.TAG)
         }
