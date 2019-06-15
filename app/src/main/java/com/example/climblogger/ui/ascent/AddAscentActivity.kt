@@ -42,6 +42,7 @@ class AddAscentActivity : AppCompatActivity() {
 
     private fun addAscent() {
         addAscentViewModel.insertAscent(Ascent( route_id, date.text.toString()))
+        finish()
     }
 
     /**
