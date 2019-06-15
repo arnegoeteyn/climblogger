@@ -55,7 +55,12 @@ class MainActivity : AppCompatActivity(),
 
     private fun switchToAscents() {
         supportFragmentManager.inTransaction {
-            replace(R.id.fragmentPlace, AscentsFragment.newInstance(), AscentsFragment.TAG)
+            replace(
+                R.id.fragmentPlace,
+                supportFragmentManager.findFragmentByTag(AscentsFragment.TAG) ?: AscentsFragment.newInstance(),
+                RoutesFragment.TAG
+            )
+                .addToBackStack(RoutesFragment.TAG)
         }
     }
 

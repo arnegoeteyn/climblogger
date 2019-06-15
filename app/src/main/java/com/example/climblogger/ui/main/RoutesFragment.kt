@@ -16,7 +16,7 @@ import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RecyclerViewOnItemClickListener
 import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.setRecyclerViewProperties
-import kotlinx.android.synthetic.main.fragment_routes.*
+import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 import kotlinx.android.synthetic.main.route_list_item.view.*
 
 
@@ -36,7 +36,7 @@ class RoutesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_routes, container, false)
+        return inflater.inflate(R.layout.fragment_main_recyclerview, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,9 +94,9 @@ class RoutesFragment : Fragment() {
 
         class RouteHolder(itemView: View) : LiveDataViewHolder<Route>(itemView) {
 
-            override fun bind(route: Route) {
-                itemView.routeText.text = route.name
-                itemView.gradeText.text = route.grade
+            override fun bind(item: Route) {
+                itemView.routeText.text = item.name
+                itemView.gradeText.text = item.grade
             }
         }
     }

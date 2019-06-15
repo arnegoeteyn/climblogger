@@ -35,13 +35,6 @@ fun <T> RecyclerView.setRecyclerViewProperties(items: List<T>) {
 abstract class LiveDataAdapter<T> : RecyclerView.Adapter<LiveDataAdapter.LiveDataViewHolder<T>>() {
     var items = emptyList<T>()
 
-//    @BindingAdapter("data")
-//    fun setRecyclerViewProperties(items: List<Route>) {
-//        if (recyclerView.adapter is Live) {
-//            (recyclerView.adapter as RoutesAdapter).setData(items)
-//        }
-//    }
-
     fun setData(items: List<T>) {
         this.items = items
         notifyDataSetChanged()
@@ -54,7 +47,7 @@ abstract class LiveDataAdapter<T> : RecyclerView.Adapter<LiveDataAdapter.LiveDat
     }
 
     abstract class LiveDataViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        abstract fun bind(route: T)
+        abstract fun bind(item: T)
     }
 }
 
