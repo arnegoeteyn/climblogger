@@ -4,16 +4,18 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.Observer
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.climblogger.R
 import com.example.climblogger.data.Route
+import com.example.climblogger.util.LiveDataAdapter
+import com.example.climblogger.util.RecyclerViewOnItemClickListener
+import com.example.climblogger.util.addOnItemClickListener
+import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_routes.*
 import kotlinx.android.synthetic.main.route_list_item.view.*
 
@@ -44,7 +46,7 @@ class RoutesFragment : Fragment() {
         routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
 
         routesViewModel.allRoutes.observe(this, Observer {
-            setRecyclerViewProperties(recyclerView, it)
+            recyclerView.setRecyclerViewProperties(it)
         })
 
         // Setting the recyclerview
@@ -55,7 +57,7 @@ class RoutesFragment : Fragment() {
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
         // add an onclicklistener for the recyclerview
-        recyclerView.addOnItemClickListener(object : OnItemClickListener {
+        recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
                 routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it.route_id) }
@@ -83,55 +85,16 @@ class RoutesFragment : Fragment() {
     }
 
 
-    @BindingAdapter("data")
-    fun setRecyclerViewProperties(recyclerView: RecyclerView, items: List<Route>) {
-        if (recyclerView.adapter is RoutesAdapter) {
-            (recyclerView.adapter as RoutesAdapter).setData(items)
-        }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClicked(position: Int, view: View)
-    }
-
-    fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
-        this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
-            override fun onChildViewDetachedFromWindow(view: View) {
-                view.setOnClickListener(null)
-            }
-
-            override fun onChildViewAttachedToWindow(view: View) {
-                view.setOnClickListener {
-                    val holder = getChildViewHolder(view)
-                    onClickListener.onItemClicked(holder.adapterPosition, view)
-                }
-            }
-        })
-    }
-
-    class RoutesAdapter : RecyclerView.Adapter<RoutesAdapter.RouteHolder>() {
-
-        var routes = emptyList<Route>()
-
-        fun setData(items: List<Route>) {
-            routes = items
-            notifyDataSetChanged()
-        }
+    class RoutesAdapter : LiveDataAdapter<Route>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteHolder {
             val inflater = LayoutInflater.from(parent.context)
             return RouteHolder(inflater.inflate(R.layout.route_list_item, parent, false))
         }
 
-        override fun getItemCount(): Int = routes.size
+        class RouteHolder(itemView: View) : LiveDataViewHolder<Route>(itemView) {
 
-        override fun onBindViewHolder(holder: RouteHolder, position: Int) {
-            holder.bind(routes[position])
-        }
-
-        class RouteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-            fun bind(route: Route) {
+            override fun bind(route: Route) {
                 itemView.routeText.text = route.name
                 itemView.gradeText.text = route.grade
             }
