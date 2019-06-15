@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
+import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE_ID
 import kotlinx.android.synthetic.main.activity_add_ascent.*
@@ -16,11 +17,13 @@ class AddAscentActivity : AppCompatActivity() {
 
     private lateinit var addAscentViewModel: AddAscentViewModel
 
+    private var route_id: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_ascent)
 
-        val route_id = intent.extras?.get(EXTRA_ROUTE_ID) as Int
+        route_id = intent.extras?.get(EXTRA_ROUTE_ID) as Int
 
         addAscentViewModel = ViewModelProviders.of(this, AddAscentViewModelFactory(this.application, route_id))
             .get(AddAscentViewModel::class.java)
@@ -30,9 +33,15 @@ class AddAscentActivity : AppCompatActivity() {
         })
 
         dateButton.setOnClickListener { selectDate().toString() }
+        date.text = getStringDate()
 
         initKindSpinner()
 
+        addAscentButton.setOnClickListener { addAscent() }
+    }
+
+    private fun addAscent() {
+        addAscentViewModel.insertAscent(Ascent( route_id, date.text.toString()))
     }
 
     /**
@@ -58,9 +67,26 @@ class AddAscentActivity : AppCompatActivity() {
 
         val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             // Display Selected date in textbox
-            date.text = getString(R.string.date_view, dayOfMonth, monthOfYear, year)
+            date.text = getString(R.string.date_view, year, monthOfYear, dayOfMonth)
         }, year, month, day)
 
         dpd.show()
     }
+
+    /**
+     * Pass nothing to get todays date
+     */
+    private fun getStringDate(day: Int = -1, month: Int = -1, year: Int = -1): String {
+        var newYear = year
+        var newMonth = month
+        var newDay = day
+        if (day == -1) {
+            val c = Calendar.getInstance()
+            newYear = c.get(Calendar.YEAR)
+            newMonth = c.get(Calendar.MONTH)
+            newDay = c.get(Calendar.DAY_OF_MONTH)
+        }
+        return getString(R.string.date_view, newYear, newMonth, newDay)
+    }
+
 }

@@ -4,12 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.climblogger.data.AscentRepository
-import com.example.climblogger.data.Route
-import com.example.climblogger.data.RouteRepository
-import com.example.climblogger.data.RouteRoomDatabase
+import androidx.lifecycle.viewModelScope
+import com.example.climblogger.data.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AddAscentViewModel(application: Application, route_id: Int) : AndroidViewModel(application) {
+
     private val ascentRepository: AscentRepository
     private val routeRepository: RouteRepository
 
@@ -22,6 +23,11 @@ class AddAscentViewModel(application: Application, route_id: Int) : AndroidViewM
         ascentRepository = AscentRepository(ascentDao)
         routeRepository = RouteRepository(routeDao)
         route = routeRepository.getRoute(route_id)
+    }
+
+    // wrapper function so it gets called on another thread
+    fun insertAscent(ascent: Ascent) = viewModelScope.launch(Dispatchers.IO){
+        ascentRepository.insertAscent(ascent)
     }
 }
 
