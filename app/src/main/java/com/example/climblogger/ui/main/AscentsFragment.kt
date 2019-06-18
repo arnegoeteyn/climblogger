@@ -17,10 +17,15 @@ import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
-class AscentsFragment : Fragment() {
+class AscentsFragment() : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var ascentViewModel: AscentsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,20 +37,22 @@ class AscentsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initRecyclerView()
         ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
         ascentViewModel.allAscents.observe(this, Observer {
             recyclerView.setRecyclerViewProperties(it)
         })
+    }
 
-
+    private fun initRecyclerView() {
         // Setting the recyclerview
         val linearLayoutManager = LinearLayoutManager(this.context)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = AscentsAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+
     }
 
 
@@ -63,7 +70,7 @@ class AscentsFragment : Fragment() {
         listener = null
     }
 
-    interface OnFragmentInteractionListener {}
+    interface OnFragmentInteractionListener
 
 
     class AscentsAdapter : LiveDataAdapter<Ascent>() {
@@ -81,10 +88,12 @@ class AscentsFragment : Fragment() {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = AscentsFragment()
+    companion object : MainActivityTabFragment {
 
-        val TAG = AscentsFragment::class.qualifiedName
+        @JvmStatic
+        override fun newInstance() = AscentsFragment()
+
+        override val TAG = AscentsFragment::class.qualifiedName!!
     }
+
 }

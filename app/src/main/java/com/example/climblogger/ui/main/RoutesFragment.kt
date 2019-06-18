@@ -1,7 +1,9 @@
 package com.example.climblogger.ui.main
 
 import android.content.Context
+import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +27,6 @@ class RoutesFragment : Fragment() {
 
     private lateinit var routesViewModel: RoutesViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,14 +41,19 @@ class RoutesFragment : Fragment() {
         // communication with the routesViewModel
         routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
 
-        routesViewModel.allRoutes.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
-        })
+        initRecyclerView()
+    }
 
+
+    private fun initRecyclerView() {
+        Log.i(TAG, "initRecc")
         // Setting the recyclerview
         val linearLayoutManager = LinearLayoutManager(this.context)
+
         recyclerView.setHasFixedSize(true)
+
         recyclerView.layoutManager = linearLayoutManager
+
         recyclerView.adapter = RoutesAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
@@ -63,6 +64,13 @@ class RoutesFragment : Fragment() {
                 routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it.route_id) }
             }
         })
+
+        // listen for changes in the data
+        routesViewModel.allRoutes.observe(this, Observer {
+            recyclerView.setRecyclerViewProperties(it)
+        })
+
+
     }
 
 
@@ -101,10 +109,10 @@ class RoutesFragment : Fragment() {
         }
     }
 
-    companion object {
+    companion object: MainActivityTabFragment {
         @JvmStatic
-        fun newInstance() = RoutesFragment()
+        override fun newInstance() = RoutesFragment()
 
-        val TAG = RoutesFragment::class.qualifiedName
+        override val TAG = RoutesFragment::class.qualifiedName!!
     }
 }

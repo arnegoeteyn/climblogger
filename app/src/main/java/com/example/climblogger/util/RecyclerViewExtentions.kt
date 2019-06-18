@@ -1,6 +1,7 @@
 package com.example.climblogger.util
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ fun RecyclerView.addOnItemClickListener(onClickListener: RecyclerViewOnItemClick
 
 @BindingAdapter("data")
 fun <T> RecyclerView.setRecyclerViewProperties(items: List<T>) {
+    Log.i("HIERZO", "setRecycler + ${items.size}")
     if (adapter is LiveDataAdapter<*>) {
         (adapter as LiveDataAdapter<T>).setData(items)
     }

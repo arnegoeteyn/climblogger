@@ -12,13 +12,15 @@ class MainActivity : AppCompatActivity(),
     RoutesFragment.OnFragmentInteractionListener,
     AscentsFragment.OnFragmentInteractionListener {
 
+    private var currentFragmentTag: String = RoutesFragment.TAG!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initBottomNavigation()
 
-        switchToRoutes()
+        switchToAscents()
     }
 
     /**
@@ -38,30 +40,38 @@ class MainActivity : AppCompatActivity(),
                 R.id.action_ascents -> switchToAscents()
                 else -> switchToRoutes()
             }
+            supportFragmentManager.executePendingTransactions()
             true
         }
     }
 
-    private fun switchToRoutes() {
+
+    private fun switchTo(tabFragment: MainActivityTabFragment) {
+        val currentFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
+        val newFragment = supportFragmentManager.findFragmentByTag(tabFragment.TAG)
+        val fragment = newFragment ?: tabFragment.newInstance()
         supportFragmentManager.inTransaction {
-            replace(
-                R.id.fragmentPlace,
-                supportFragmentManager.findFragmentByTag(RoutesFragment.TAG) ?: RoutesFragment.newInstance(),
-                RoutesFragment.TAG
-            )
-                .addToBackStack(RoutesFragment.TAG)
+            if (currentFragment != null) {
+                detach(currentFragment)
+                if (newFragment != null) {
+                    attach(fragment)
+                } else {
+                    replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
+                }
+            } else {
+                // no fragment has been added yet
+                replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
+            }
         }
+        currentFragmentTag = tabFragment.TAG
+    }
+
+    private fun switchToRoutes() {
+        switchTo(RoutesFragment.Companion)
     }
 
     private fun switchToAscents() {
-        supportFragmentManager.inTransaction {
-            replace(
-                R.id.fragmentPlace,
-                supportFragmentManager.findFragmentByTag(AscentsFragment.TAG) ?: AscentsFragment.newInstance(),
-                AscentsFragment.TAG
-            )
-                .addToBackStack(RoutesFragment.TAG)
-        }
+        switchTo(AscentsFragment.Companion)
     }
 
     companion object {
