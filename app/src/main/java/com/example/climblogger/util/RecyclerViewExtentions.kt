@@ -28,7 +28,6 @@ fun RecyclerView.addOnItemClickListener(onClickListener: RecyclerViewOnItemClick
 
 @BindingAdapter("data")
 fun <T> RecyclerView.setRecyclerViewProperties(items: List<T>) {
-    Log.i("HIERZO", "setRecycler + ${items.size}")
     if (adapter is LiveDataAdapter<*>) {
         (adapter as LiveDataAdapter<T>).setData(items)
     }

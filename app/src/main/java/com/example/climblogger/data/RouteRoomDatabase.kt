@@ -12,6 +12,7 @@ import androidx.room.migration.Migration
 public abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun routeDao(): RouteDao
     abstract fun ascentDao(): AscentDao
+    abstract fun ascentWithRouteDao(): AscentWithRouteDao
 
 
     companion object {

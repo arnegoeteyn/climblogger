@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity(),
     RoutesFragment.OnFragmentInteractionListener,
     AscentsFragment.OnFragmentInteractionListener {
 
-    private var currentFragmentTag: String = RoutesFragment.TAG!!
+    private var currentFragmentTag: String = RoutesFragment.TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(),
 
         initBottomNavigation()
 
-        switchToAscents()
+        switchToRoutes()
     }
 
     /**

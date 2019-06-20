@@ -2,6 +2,7 @@ package com.example.climblogger.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
 import com.example.climblogger.data.Ascent
+import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
@@ -21,11 +23,6 @@ class AscentsFragment() : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var ascentViewModel: AscentsViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +37,10 @@ class AscentsFragment() : Fragment() {
         initRecyclerView()
         ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
-        ascentViewModel.allAscents.observe(this, Observer {
+//        ascentViewModel.allAscents.observe(this, Observer {
+//            recyclerView.setRecyclerViewProperties(it)
+//        })
+        ascentViewModel.allAscentsWithRoute.observe(this, Observer {
             recyclerView.setRecyclerViewProperties(it)
         })
     }
@@ -73,17 +73,18 @@ class AscentsFragment() : Fragment() {
     interface OnFragmentInteractionListener
 
 
-    class AscentsAdapter : LiveDataAdapter<Ascent>() {
+    class AscentsAdapter : LiveDataAdapter<AscentWithRoute>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AscentHolder {
             val inflater = LayoutInflater.from(parent.context)
             return AscentHolder(inflater.inflate(R.layout.ascent_list_item, parent, false))
         }
 
-        class AscentHolder(itemView: View) : LiveDataViewHolder<Ascent>(itemView) {
+        class AscentHolder(itemView: View) : LiveDataViewHolder<AscentWithRoute>(itemView) {
 
-            override fun bind(item: Ascent) {
-                itemView.findViewById<TextView>(R.id.date).text = item.date
+            override fun bind(item: AscentWithRoute) {
+                itemView.findViewById<TextView>(R.id.date).text = item.ascent.date
+                itemView.findViewById<TextView>(R.id.route).text = item.route.toString()
             }
         }
     }

@@ -20,13 +20,14 @@ class AddAscentViewModel(application: Application, route_id: Int) : AndroidViewM
 
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
         val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
-        ascentRepository = AscentRepository(ascentDao)
+        val ascentWithRouteDao = RouteRoomDatabase.getDatabase(application).ascentWithRouteDao()
+        ascentRepository = AscentRepository(ascentDao, ascentWithRouteDao)
         routeRepository = RouteRepository(routeDao)
         route = routeRepository.getRoute(route_id)
     }
 
     // wrapper function so it gets called on another thread
-    fun insertAscent(ascent: Ascent) = viewModelScope.launch(Dispatchers.IO){
+    fun insertAscent(ascent: Ascent) = viewModelScope.launch(Dispatchers.IO) {
         ascentRepository.insertAscent(ascent)
     }
 }
