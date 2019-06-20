@@ -11,6 +11,8 @@
     <string name="date">Date</string>
     <string name="date_view">%1$04d-%2$02d-%3$02d</string>
     <string name="delete">Delete</string>
+    <string name="add_route">Add Route</string>
+    <string name="name">Name</string>
 
 
     <string-array name="ascent_kind">

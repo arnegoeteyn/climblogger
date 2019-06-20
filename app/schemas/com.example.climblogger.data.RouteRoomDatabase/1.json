@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cefce255b069ddcabc750f9a1025d18a",
+    "identityHash": "b4466198bb0db78acb3e3ac65bd146e8",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER NOT NULL, `sector_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER NOT NULL, `multipitch_id` INTEGER NOT NULL, PRIMARY KEY(`route_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sector_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER)",
         "fields": [
           {
             "fieldPath": "route_id",
@@ -54,27 +54,27 @@
             "fieldPath": "pitch",
             "columnName": "pitch",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "multipitch_id",
             "columnName": "multipitch_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
             "route_id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "ascents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `route_id` INTEGER NOT NULL, `date` TEXT NOT NULL, FOREIGN KEY(`id`) REFERENCES `routes`(`route_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `route_id` INTEGER NOT NULL, `date` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "ascent_id",
@@ -102,25 +102,13 @@
           "autoGenerate": true
         },
         "indices": [],
-        "foreignKeys": [
-          {
-            "table": "routes",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "id"
-            ],
-            "referencedColumns": [
-              "route_id"
-            ]
-          }
-        ]
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"cefce255b069ddcabc750f9a1025d18a\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b4466198bb0db78acb3e3ac65bd146e8\")"
     ]
   }
 }

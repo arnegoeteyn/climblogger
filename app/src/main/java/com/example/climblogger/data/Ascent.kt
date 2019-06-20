@@ -7,13 +7,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(
-    tableName = "ascents",
-    foreignKeys = [ForeignKey(
-        entity = Route::class,
-        parentColumns = arrayOf("route_id"),
-        childColumns = arrayOf("id"),
-        onDelete = ForeignKey.NO_ACTION
-    )]
+    tableName = "ascents"
 )
 data class Ascent(
     @ColumnInfo(name = "route_id") val route_id: Int,

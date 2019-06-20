@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
+import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
 import com.example.climblogger.util.inTransaction
@@ -25,6 +26,24 @@ class MainActivity : AppCompatActivity(),
         initBottomNavigation()
 
         switchToRoutes()
+
+        floatingActionButton.setOnClickListener { floatingButtonClicked() }
+    }
+
+    private fun floatingButtonClicked() {
+        when (currentFragmentTag) {
+            RoutesFragment.TAG -> newRouteActivity()
+            AscentsFragment.TAG -> newAscentActivity()
+        }
+    }
+
+    private fun newAscentActivity() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun newRouteActivity() {
+        val intent = Intent(this, AddRouteActivity::class.java)
+        startActivity(intent)
     }
 
     /**
