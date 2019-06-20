@@ -8,6 +8,7 @@ import com.example.climblogger.R
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
 import com.example.climblogger.ui.route.RouteActivity
+import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
 import com.example.climblogger.util.inTransaction
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -84,7 +85,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     companion object {
-        public const val EXTRA_ROUTE = "EXTRA_ROUTE"
         public val TAG = MainActivity::class.qualifiedName
 
     }

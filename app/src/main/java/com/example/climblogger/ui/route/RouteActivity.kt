@@ -16,7 +16,6 @@ import com.example.climblogger.R
 import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
 import com.example.climblogger.ui.ascent.AddAscentActivity
-import com.example.climblogger.ui.main.MainActivity.Companion.EXTRA_ROUTE
 import kotlinx.android.synthetic.main.activity_route.*
 import kotlinx.android.synthetic.main.ascent_list_item.view.*
 
@@ -104,5 +103,6 @@ class RouteActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID"
+        public const val EXTRA_ROUTE = "EXTRA_ROUTE"
     }
 }

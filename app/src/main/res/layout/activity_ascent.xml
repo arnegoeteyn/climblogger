@@ -11,14 +11,20 @@
             android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ascentDate" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="106dp"
-            android:layout_marginStart="176dp"/>
+            android:id="@+id/ascentDate"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="56dp" android:layout_marginStart="24dp"/>
+    <TextView
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/routeName"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="119dp" android:layout_marginStart="24dp"/>
     <Button
             android:text="@string/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/delete_button" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="319dp"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:id="@+id/delete_button"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="319dp" app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

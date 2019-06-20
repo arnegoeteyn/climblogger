@@ -25,4 +25,8 @@ class AscentRepository(private val ascentDao: AscentDao, private val ascentWithR
     suspend fun deleteAscent(ascent: Ascent) {
         return ascentDao.deleteAscent(ascent)
     }
+
+    fun getAscentsWithRoute(ascent_id: Int): LiveData<AscentWithRoute> {
+        return ascentWithRouteDao.getAscentWithRoute(ascent_id)
+    }
 }
