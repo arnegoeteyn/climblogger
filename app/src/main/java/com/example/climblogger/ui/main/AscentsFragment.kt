@@ -16,6 +16,8 @@ import com.example.climblogger.R
 import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.util.LiveDataAdapter
+import com.example.climblogger.util.RecyclerViewOnItemClickListener
+import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
@@ -37,9 +39,6 @@ class AscentsFragment() : Fragment() {
         initRecyclerView()
         ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
-//        ascentViewModel.allAscents.observe(this, Observer {
-//            recyclerView.setRecyclerViewProperties(it)
-//        })
         ascentViewModel.allAscentsWithRoute.observe(this, Observer {
             recyclerView.setRecyclerViewProperties(it)
         })
@@ -52,6 +51,15 @@ class AscentsFragment() : Fragment() {
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = AscentsAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+
+        // add an onclicklistener for the recyclerview
+        recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // some null safety checking
+                ascentViewModel.allAscentsWithRoute.value?.get(position)
+                    ?.let { listener?.onAscentClicked(it.ascent.ascent_id) }
+            }
+        })
 
     }
 
@@ -70,7 +78,9 @@ class AscentsFragment() : Fragment() {
         listener = null
     }
 
-    interface OnFragmentInteractionListener
+    interface OnFragmentInteractionListener {
+        fun onAscentClicked(ascent_id: Int)
+    }
 
 
     class AscentsAdapter : LiveDataAdapter<AscentWithRoute>() {

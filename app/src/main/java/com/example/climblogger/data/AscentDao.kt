@@ -18,4 +18,6 @@ interface AscentDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertAscents(vararg ascents: Ascent)
 
+    @Query("SELECT * FROM ascents WHERE id == :ascent_id")
+    fun getAscent(ascent_id: Int): LiveData<Ascent>
 }

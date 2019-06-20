@@ -2,8 +2,11 @@ package com.example.climblogger.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
+import com.example.climblogger.ui.ascent.AscentActivity
+import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.util.inTransaction
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,10 +30,16 @@ class MainActivity : AppCompatActivity(),
      * Handle what happens when a route gets selected
      */
     override fun onRouteClicked(route_id: Int) {
-        val intent: Intent = Intent(this, RouteActivity::class.java)
+        val intent = Intent(this, RouteActivity::class.java)
         intent.putExtra(EXTRA_ROUTE, route_id)
         startActivity(intent)
 
+    }
+
+    override fun onAscentClicked(ascent_id: Int) {
+        val intent = Intent(this, AscentActivity::class.java)
+        intent.putExtra(EXTRA_ASCENT, ascent_id)
+        startActivity(intent)
     }
 
     private fun initBottomNavigation() {

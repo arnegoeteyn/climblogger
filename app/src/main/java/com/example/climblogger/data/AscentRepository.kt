@@ -12,6 +12,10 @@ class AscentRepository(private val ascentDao: AscentDao, private val ascentWithR
         return ascentDao.ascentsFromRoute(route_id)
     }
 
+    fun getAscent(ascent_id: Int): LiveData<Ascent> {
+        return ascentDao.getAscent(ascent_id)
+    }
+
     @WorkerThread
     suspend fun insertAscent(ascent: Ascent) {
         return ascentDao.insertAscents(ascent)
