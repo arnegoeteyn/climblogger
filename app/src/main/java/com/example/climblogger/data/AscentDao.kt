@@ -1,10 +1,7 @@
 package com.example.climblogger.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface AscentDao {
@@ -17,6 +14,9 @@ interface AscentDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertAscents(vararg ascents: Ascent)
+
+    @Delete
+    fun deleteAscent(ascent: Ascent)
 
     @Query("SELECT * FROM ascents WHERE id == :ascent_id")
     fun getAscent(ascent_id: Int): LiveData<Ascent>

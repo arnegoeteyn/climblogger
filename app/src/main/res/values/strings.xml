@@ -10,6 +10,7 @@
     <string name="comment_text_add_ascent">comment</string>
     <string name="date">Date</string>
     <string name="date_view">%1$04d-%2$02d-%3$02d</string>
+    <string name="delete">Delete</string>
 
 
     <string-array name="ascent_kind">

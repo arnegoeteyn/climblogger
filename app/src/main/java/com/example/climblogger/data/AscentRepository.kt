@@ -20,4 +20,9 @@ class AscentRepository(private val ascentDao: AscentDao, private val ascentWithR
     suspend fun insertAscent(ascent: Ascent) {
         return ascentDao.insertAscents(ascent)
     }
+
+    @WorkerThread
+    suspend fun deleteAscent(ascent: Ascent) {
+        return ascentDao.deleteAscent(ascent)
+    }
 }
