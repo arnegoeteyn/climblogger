@@ -13,6 +13,8 @@
     <string name="delete">Delete</string>
     <string name="add_route">Add Route</string>
     <string name="name">Name</string>
+    <string name="text_menu_areas">Areas</string>
+    <string name="text_menu_sectors">Sectors</string>
 
 
     <string-array name="ascent_kind">

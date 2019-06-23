@@ -8,10 +8,23 @@
             android:title="@string/text_menu_routes"
             app:showAsAction="ifRoom"/>
 
-<item
+    <item
             android:id="@+id/action_ascents"
             android:enabled="true"
             android:icon="@drawable/baseline_android_24"
             android:title="@string/text_menu_ascents"
+            app:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/action_sectors"
+            android:enabled="true"
+            android:icon="@drawable/baseline_android_24"
+            android:title="@string/text_menu_sectors"
+            app:showAsAction="ifRoom"/>
+
+    <item
+            android:id="@+id/action_areas"
+            android:enabled="true"
+            android:icon="@drawable/baseline_android_24"
+            android:title="@string/text_menu_areas"
             app:showAsAction="ifRoom"/>
 </menu>

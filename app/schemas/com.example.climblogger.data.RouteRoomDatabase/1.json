@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b4466198bb0db78acb3e3ac65bd146e8",
+    "identityHash": "103a7aba884b40507d9be9791e10d277",
     "entities": [
       {
         "tableName": "routes",
@@ -103,12 +103,50 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "sectors",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `crag_id` INTEGER NOT NULL, `comment` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "ascent_id",
+            "columnName": "sector_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cragId",
+            "columnName": "crag_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comment",
+            "columnName": "comment",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sector_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b4466198bb0db78acb3e3ac65bd146e8\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"103a7aba884b40507d9be9791e10d277\")"
     ]
   }
 }

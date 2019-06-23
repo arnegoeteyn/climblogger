@@ -8,10 +8,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.migration.Migration
 
 
-@Database(entities = [Route::class, Ascent::class], version = 1)
+@Database(entities = [Route::class, Ascent::class, Sector::class], version = 1)
 public abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun routeDao(): RouteDao
     abstract fun ascentDao(): AscentDao
+    abstract fun sectorDao(): SectorDao
     abstract fun ascentWithRouteDao(): AscentWithRouteDao
 
 
