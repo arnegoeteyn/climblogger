@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
+import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
 import com.example.climblogger.ui.route.AddRouteActivity
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun newAscentActivity() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, AddAscentActivity::class.java)
+        startActivity(intent)
     }
 
     private fun newRouteActivity() {

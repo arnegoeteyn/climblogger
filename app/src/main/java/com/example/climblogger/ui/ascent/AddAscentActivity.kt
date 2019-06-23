@@ -17,16 +17,18 @@ class AddAscentActivity : AppCompatActivity() {
 
     private lateinit var addAscentViewModel: AddAscentViewModel
 
-
     private var arrayAdapter: ArrayAdapter<Route>? = null
 
-    private lateinit var route: Route
+    private var route: Route? = null // route can be null if no route has been passed from intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_ascent)
 
-        val route_id = intent.extras?.get(EXTRA_ROUTE_ID) as Int
+        var route_id = -1
+        intent.extras?.let {
+            route_id = intent.extras?.get(EXTRA_ROUTE_ID) as Int
+        }
 
         addAscentViewModel = ViewModelProviders.of(this, AddAscentViewModelFactory(this.application, route_id))
             .get(AddAscentViewModel::class.java)
@@ -34,12 +36,12 @@ class AddAscentActivity : AppCompatActivity() {
 
         addAscentViewModel.allRoutes.observe(this, Observer {
             setRouteSpinnerData(it)
-            selectRouteInRouteSpinner(route)
+            this.route?.let { safeRoute -> selectRouteInRouteSpinner(safeRoute) }
         })
 
-        addAscentViewModel.route.observe(this, Observer {
-            route = it
-            selectRouteInRouteSpinner(route)
+        addAscentViewModel.route.observe(this, Observer { route ->
+            this.route = route
+            this.route?.let { selectRouteInRouteSpinner(route) }
         })
 
         dateButton.setOnClickListener { selectDate().toString() }
