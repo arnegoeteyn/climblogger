@@ -28,11 +28,13 @@ class AscentActivity : AppCompatActivity() {
             ViewModelProviders.of(this, AscentViewModelFactory(application, ascent_id))
                 .get(AscentViewModel::class.java)
 
-        ascentViewModel.ascentWithRoute.observe(this, Observer {
-            it?.let {
+        ascentViewModel.ascentWithRoute.observe(this, Observer { ascentWithRoute ->
+            ascentWithRoute?.let {
                 this.ascentWithRoute = it
                 ascentDate.text = it.ascent.date
                 routeName.text = it.route.name
+                kind.text =  it.ascent.kind
+                comment.text =  it.ascent.comment
             }
         })
 

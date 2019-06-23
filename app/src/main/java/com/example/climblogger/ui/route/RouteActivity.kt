@@ -17,7 +17,7 @@ import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import kotlinx.android.synthetic.main.activity_route.*
-import kotlinx.android.synthetic.main.ascent_list_item.view.*
+import kotlinx.android.synthetic.main.list_item_ascent.view.*
 
 class RouteActivity : AppCompatActivity() {
 
@@ -85,7 +85,7 @@ class RouteActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AscentsAdapter.AscentHolder {
             val inflater = LayoutInflater.from(parent.context)
-            return AscentHolder(inflater.inflate(R.layout.ascent_list_item, parent, false))
+            return AscentHolder(inflater.inflate(R.layout.list_item_ascent, parent, false))
         }
 
         override fun getItemCount(): Int = ascents.size

@@ -41,7 +41,12 @@ class AddAscentActivity : AppCompatActivity() {
     }
 
     private fun addAscent() {
-        addAscentViewModel.insertAscent(Ascent( route_id, date.text.toString()))
+        addAscentViewModel.insertAscent(
+            Ascent(
+                route_id, date.text.toString(),
+                spinner.selectedItem.toString(), comment.editText?.text.toString()
+            )
+        )
         finish()
     }
 

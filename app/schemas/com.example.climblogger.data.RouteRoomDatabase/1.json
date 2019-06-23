@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "31105e233c4308bc36d09d94e94c7eb4",
+    "identityHash": "b1b05dcf852b0aec5b5d97f0536f82dd",
     "entities": [
       {
         "tableName": "routes",
@@ -74,7 +74,7 @@
       },
       {
         "tableName": "ascents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `route_id` INTEGER NOT NULL, `date` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `route_id` INTEGER NOT NULL, `date` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT)",
         "fields": [
           {
             "fieldPath": "ascent_id",
@@ -93,6 +93,18 @@
             "columnName": "date",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comment",
+            "columnName": "comment",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -178,7 +190,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"31105e233c4308bc36d09d94e94c7eb4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b1b05dcf852b0aec5b5d97f0536f82dd\")"
     ]
   }
 }

@@ -11,7 +11,9 @@ import java.io.Serializable
 )
 data class Ascent(
     @ColumnInfo(name = "route_id") val route_id: Int,
-    @ColumnInfo(name = "date") val date: String
+    @ColumnInfo(name = "date") val date: String,
+    @ColumnInfo(name = "kind") val kind: String,
+    @ColumnInfo(name = "comment") val comment: String?
 ) : Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

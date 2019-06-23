@@ -2,7 +2,6 @@ package com.example.climblogger.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
-import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RecyclerViewOnItemClickListener
@@ -87,7 +85,7 @@ class AscentsFragment() : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AscentHolder {
             val inflater = LayoutInflater.from(parent.context)
-            return AscentHolder(inflater.inflate(R.layout.ascent_list_item, parent, false))
+            return AscentHolder(inflater.inflate(R.layout.list_item_ascent, parent, false))
         }
 
         class AscentHolder(itemView: View) : LiveDataViewHolder<AscentWithRoute>(itemView) {
