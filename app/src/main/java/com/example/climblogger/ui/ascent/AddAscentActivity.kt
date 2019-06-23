@@ -17,19 +17,29 @@ class AddAscentActivity : AppCompatActivity() {
 
     private lateinit var addAscentViewModel: AddAscentViewModel
 
-    private var route_id: Int = -1
+
+    private var arrayAdapter: ArrayAdapter<Route>? = null
+
+    private lateinit var route: Route
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_ascent)
 
-        route_id = intent.extras?.get(EXTRA_ROUTE_ID) as Int
+        val route_id = intent.extras?.get(EXTRA_ROUTE_ID) as Int
 
         addAscentViewModel = ViewModelProviders.of(this, AddAscentViewModelFactory(this.application, route_id))
             .get(AddAscentViewModel::class.java)
 
+
+        addAscentViewModel.allRoutes.observe(this, Observer {
+            setRouteSpinnerData(it)
+            selectRouteInRouteSpinner(route)
+        })
+
         addAscentViewModel.route.observe(this, Observer {
-            updateRouteUiParts(it)
+            route = it
+            selectRouteInRouteSpinner(route)
         })
 
         dateButton.setOnClickListener { selectDate().toString() }
@@ -40,10 +50,11 @@ class AddAscentActivity : AppCompatActivity() {
         addAscentButton.setOnClickListener { addAscent() }
     }
 
+
     private fun addAscent() {
         addAscentViewModel.insertAscent(
             Ascent(
-                route_id, date.text.toString(),
+                (routeSpinner.selectedItem as Route).route_id, date.text.toString(),
                 spinner.selectedItem.toString(), comment.editText?.text.toString()
             )
         )
@@ -60,8 +71,17 @@ class AddAscentActivity : AppCompatActivity() {
         spinner.adapter = arrayAdapter
     }
 
-    private fun updateRouteUiParts(route: Route) {
-        routeName.text = route.name
+    private fun setRouteSpinnerData(routes: List<Route>) {
+        arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, routes)
+        arrayAdapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        routeSpinner.adapter = arrayAdapter
+    }
+
+    private fun selectRouteInRouteSpinner(route: Route) {
+        // hacky, should change this but probably wont
+        arrayAdapter?.let {
+            routeSpinner.setSelection(arrayAdapter!!.getPosition(route))
+        }
     }
 
     private fun selectDate() {

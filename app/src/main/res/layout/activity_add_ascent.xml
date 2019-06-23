@@ -7,13 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.ascent.AddAscentActivity">
 
-    <TextView
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/routeName"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
+
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
@@ -57,4 +51,11 @@
             android:id="@+id/addAscentButton"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="17dp" app:layout_constraintEnd_toEndOf="parent"/>
+    <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/routeSpinner" android:layout_marginTop="83dp"
+            app:layout_constraintTop_toBottomOf="@+id/spinner" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

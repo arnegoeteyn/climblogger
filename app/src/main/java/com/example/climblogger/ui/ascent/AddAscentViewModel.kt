@@ -16,6 +16,8 @@ class AddAscentViewModel(application: Application, route_id: Int) : AndroidViewM
 
     val route: LiveData<Route>
 
+    val allRoutes: LiveData<List<Route>>
+
     init {
 
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
@@ -24,6 +26,8 @@ class AddAscentViewModel(application: Application, route_id: Int) : AndroidViewM
         ascentRepository = AscentRepository(ascentDao, ascentWithRouteDao)
         routeRepository = RouteRepository(routeDao)
         route = routeRepository.getRoute(route_id)
+
+        allRoutes = routeRepository.allRoutes
     }
 
     // wrapper function so it gets called on another thread
