@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "103a7aba884b40507d9be9791e10d277",
+    "identityHash": "31105e233c4308bc36d09d94e94c7eb4",
     "entities": [
       {
         "tableName": "routes",
@@ -141,12 +141,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "crags",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`crag_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `country` TEXT NOT NULL, `name` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "areaId",
+            "columnName": "crag_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "country",
+            "columnName": "country",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "crag_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"103a7aba884b40507d9be9791e10d277\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"31105e233c4308bc36d09d94e94c7eb4\")"
     ]
   }
 }

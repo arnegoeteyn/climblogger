@@ -16,7 +16,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(),
     RoutesFragment.OnFragmentInteractionListener,
     AscentsFragment.OnFragmentInteractionListener,
-    SectorsFragment.OnFragmentInteractionListener{
+    SectorsFragment.OnFragmentInteractionListener,
+    AreasFragment.OnFragmentInteractionListener {
 
     private var currentFragmentTag: String = RoutesFragment.TAG
 
@@ -69,9 +70,8 @@ class MainActivity : AppCompatActivity(),
                 R.id.action_routes -> switchToRoutes()
                 R.id.action_ascents -> switchToAscents()
                 R.id.action_sectors -> switchToSectors()
-                else -> switchToRoutes()
+                R.id.action_areas -> switchToAreas()
             }
-            supportFragmentManager.executePendingTransactions()
             true
         }
     }
@@ -107,6 +107,10 @@ class MainActivity : AppCompatActivity(),
 
     private fun switchToSectors() {
         switchTo(SectorsFragment.Companion)
+    }
+
+    private fun switchToAreas() {
+        switchTo(AreasFragment.Companion)
     }
 
     companion object {
