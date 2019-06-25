@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
+import com.example.climblogger.ui.area.AddAreaActivity
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
@@ -39,7 +40,13 @@ class MainActivity : AppCompatActivity(),
             RoutesFragment.TAG -> newRouteActivity()
             AscentsFragment.TAG -> newAscentActivity()
             SectorsFragment.TAG -> newSectorActivity()
+            AreasFragment.TAG -> newAreaActivity()
         }
+    }
+
+    private fun newAreaActivity() {
+        val intent = Intent(this, AddAreaActivity::class.java)
+        startActivity(intent)
     }
 
     private fun newAscentActivity() {
