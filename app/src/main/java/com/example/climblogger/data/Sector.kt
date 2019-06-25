@@ -13,4 +13,7 @@ data class Sector(
     @ColumnInfo(name = "sector_uuid")
     val sectorId: String
 ) {
+    override fun toString(): String {
+        return "$name"
+    }
 }
