@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     tableName = "routes"
 )
 data class Route(
-    @ColumnInfo(name = "sector_uuid") val sector_id: Int,
+    @ColumnInfo(name = "sector_uuid") val sector_id: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "grade") val grade: String,
     @ColumnInfo(name = "kind") val kind: String,

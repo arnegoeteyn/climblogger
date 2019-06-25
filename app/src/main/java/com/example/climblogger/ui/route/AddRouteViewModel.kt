@@ -2,19 +2,25 @@ package com.example.climblogger.ui.route
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.climblogger.data.Route
-import com.example.climblogger.data.RouteRepository
-import com.example.climblogger.data.RouteRoomDatabase
+import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddRouteViewModel(application: Application) : AndroidViewModel(application) {
     private val routeRepository: RouteRepository
+    private val sectorRepository: SectorRepository
+
+    val allSectors: LiveData<List<Sector>>
 
     init {
         val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
+        val sectorDao = RouteRoomDatabase.getDatabase(application).sectorDao()
         routeRepository = RouteRepository(routeDao)
+        sectorRepository = SectorRepository(sectorDao)
+
+        allSectors = sectorRepository.allSectors
     }
 
     fun insertRoute(route: Route) = viewModelScope.launch(Dispatchers.IO) {

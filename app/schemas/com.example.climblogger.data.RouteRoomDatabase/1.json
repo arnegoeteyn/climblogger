@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4fa96afaa3ea2a853c04fbb266661be2",
+    "identityHash": "eff61e17c6fc70ca8351c92abbb52bae",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` TEXT NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`))",
         "fields": [
           {
             "fieldPath": "sector_id",
             "columnName": "sector_uuid",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -130,7 +130,7 @@
       },
       {
         "tableName": "sectors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` INTEGER NOT NULL, `comment` TEXT, `sector_uuid` INTEGER NOT NULL, PRIMARY KEY(`sector_uuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` INTEGER NOT NULL, `comment` TEXT, `sector_uuid` TEXT NOT NULL, PRIMARY KEY(`sector_uuid`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -151,9 +151,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "ascent_id",
+            "fieldPath": "sectorId",
             "columnName": "sector_uuid",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -202,7 +202,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4fa96afaa3ea2a853c04fbb266661be2\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"eff61e17c6fc70ca8351c92abbb52bae\")"
     ]
   }
 }

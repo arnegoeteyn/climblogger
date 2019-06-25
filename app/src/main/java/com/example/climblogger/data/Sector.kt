@@ -11,6 +11,6 @@ data class Sector(
     @ColumnInfo(name = "comment") val comment: String?,
     @PrimaryKey
     @ColumnInfo(name = "sector_uuid")
-    val ascent_id: Int
+    val sectorId: String
 ) {
 }
