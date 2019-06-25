@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "eff61e17c6fc70ca8351c92abbb52bae",
+    "identityHash": "1a0177fccd26210af45b2aac616983b0",
     "entities": [
       {
         "tableName": "routes",
@@ -130,7 +130,7 @@
       },
       {
         "tableName": "sectors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` INTEGER NOT NULL, `comment` TEXT, `sector_uuid` TEXT NOT NULL, PRIMARY KEY(`sector_uuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` TEXT NOT NULL, `comment` TEXT, `sector_uuid` TEXT NOT NULL, PRIMARY KEY(`sector_uuid`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -141,7 +141,7 @@
           {
             "fieldPath": "areaId",
             "columnName": "area_uuid",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -202,7 +202,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"eff61e17c6fc70ca8351c92abbb52bae\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1a0177fccd26210af45b2aac616983b0\")"
     ]
   }
 }

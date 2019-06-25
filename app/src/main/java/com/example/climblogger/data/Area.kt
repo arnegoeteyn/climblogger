@@ -12,4 +12,8 @@ data class Area(
     @PrimaryKey
     @ColumnInfo(name = "area_uuid")
     val areaId: String
-)
+) {
+    override fun toString(): String {
+        return "$name - $country"
+    }
+}

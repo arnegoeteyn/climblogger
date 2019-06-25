@@ -11,6 +11,7 @@ import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
+import com.example.climblogger.ui.sector.AddSectorActivity
 import com.example.climblogger.util.inTransaction
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(),
         when (currentFragmentTag) {
             RoutesFragment.TAG -> newRouteActivity()
             AscentsFragment.TAG -> newAscentActivity()
+            SectorsFragment.TAG -> newSectorActivity()
         }
     }
 
@@ -47,6 +49,11 @@ class MainActivity : AppCompatActivity(),
 
     private fun newRouteActivity() {
         val intent = Intent(this, AddRouteActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun newSectorActivity() {
+        val intent = Intent(this, AddSectorActivity::class.java)
         startActivity(intent)
     }
 

@@ -48,7 +48,6 @@ class AddRouteActivity : AppCompatActivity() {
         addRouteViewModel.insertRoute(
             route
         )
-        Log.i(AddRouteActivity::class.qualifiedName, route.sector_id)
         finish()
     }
 

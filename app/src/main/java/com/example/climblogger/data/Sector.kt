@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "sectors")
 data class Sector(
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "area_uuid") val areaId: Int,
+    @ColumnInfo(name = "area_uuid") val areaId: String,
     @ColumnInfo(name = "comment") val comment: String?,
     @PrimaryKey
     @ColumnInfo(name = "sector_uuid")
