@@ -16,4 +16,8 @@ class RouteRepository(private val routeDao: RouteDao) {
 
     val allRoutes: LiveData<List<Route>> = routeDao.getAllRoutes()
 
+    @WorkerThread
+    suspend fun deleteRoute(route: Route) {
+        return routeDao.deleteRoute(route)
+    }
 }

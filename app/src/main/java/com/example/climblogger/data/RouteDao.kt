@@ -2,6 +2,7 @@ package com.example.climblogger.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -16,4 +17,7 @@ interface RouteDao {
 
     @Insert
     fun insertRoute(route: Route)
+
+    @Delete
+    fun deleteRoute(route: Route)
 }

@@ -23,6 +23,8 @@ class RouteActivity : AppCompatActivity() {
 
     private lateinit var routeViewModel: RouteViewModel
 
+    private lateinit var route: Route
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_route)
@@ -45,14 +47,25 @@ class RouteActivity : AppCompatActivity() {
         routeViewModel = ViewModelProviders.of(this, RouteViewModelFactory(this.application, route_id))
             .get(RouteViewModel::class.java)
 
-        routeViewModel.route.observe(this, Observer { setRouteViews(it) })
+        routeViewModel.route.observe(this, Observer { route ->
+            route?.let {
+                setRouteViews(it)
+                this.route = it
+            }
+        })
         routeViewModel.routeAscents.observe(this, Observer {
             setRecyclerViewProperties(ascentsRecyclerView, it)
         })
 
         addAscentButton.setOnClickListener { addAscent(route_id) }
 
+        delete_button.setOnClickListener { deleteRoute() }
 
+    }
+
+    private fun deleteRoute() {
+        routeViewModel.deleteRoute(this.route)
+        finish()
     }
 
     private fun addAscent(route_id: Int) {

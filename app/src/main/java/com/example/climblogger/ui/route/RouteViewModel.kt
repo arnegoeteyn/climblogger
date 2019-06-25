@@ -3,9 +3,13 @@ package com.example.climblogger.ui.route
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.example.climblogger.data.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RouteViewModel(application: Application, route_id: Int) : AndroidViewModel(application) {
+
     private val ascentRepository: AscentRepository
     private val routeRepository: RouteRepository
 
@@ -21,4 +25,10 @@ class RouteViewModel(application: Application, route_id: Int) : AndroidViewModel
         routeAscents = ascentRepository.loadAscentsFromRoute(route_id)
         route = routeRepository.getRoute(route_id)
     }
+
+
+    fun deleteRoute(route: Route) = viewModelScope.launch(Dispatchers.IO) {
+        routeRepository.deleteRoute(route)
+    }
+
 }
