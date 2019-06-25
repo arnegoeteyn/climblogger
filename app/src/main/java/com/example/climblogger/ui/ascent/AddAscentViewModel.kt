@@ -3,13 +3,12 @@ package com.example.climblogger.ui.ascent
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddAscentViewModel(application: Application, route_id: Int) : AndroidViewModel(application) {
+class AddAscentViewModel(application: Application, route_id: String) : AndroidViewModel(application) {
 
     private val ascentRepository: AscentRepository
     private val routeRepository: RouteRepository

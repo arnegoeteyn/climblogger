@@ -6,6 +6,6 @@ import androidx.room.Query
 
 @Dao
 interface AreaDao {
-    @Query("SELECT * FROM crags ORDER BY name")
+    @Query("SELECT * FROM areas ORDER BY name")
     fun getAllAreas(): LiveData<List<Area>>
 }

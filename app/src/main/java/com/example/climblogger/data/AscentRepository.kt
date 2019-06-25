@@ -8,11 +8,11 @@ class AscentRepository(private val ascentDao: AscentDao, private val ascentWithR
     val allAscents: LiveData<List<Ascent>> = ascentDao.getAllAscents()
     val allAscentsWithRoute: LiveData<List<AscentWithRoute>> = ascentWithRouteDao.getAllAscentsWithRoute()
 
-    fun loadAscentsFromRoute(route_id: Int): LiveData<List<Ascent>> {
+    fun loadAscentsFromRoute(route_id: String): LiveData<List<Ascent>> {
         return ascentDao.ascentsFromRoute(route_id)
     }
 
-    fun getAscent(ascent_id: Int): LiveData<Ascent> {
+    fun getAscent(ascent_id: String): LiveData<Ascent> {
         return ascentDao.getAscent(ascent_id)
     }
 
@@ -26,7 +26,7 @@ class AscentRepository(private val ascentDao: AscentDao, private val ascentWithR
         return ascentDao.deleteAscent(ascent)
     }
 
-    fun getAscentsWithRoute(ascent_id: Int): LiveData<AscentWithRoute> {
+    fun getAscentsWithRoute(ascent_id: String): LiveData<AscentWithRoute> {
         return ascentWithRouteDao.getAscentWithRoute(ascent_id)
     }
 }

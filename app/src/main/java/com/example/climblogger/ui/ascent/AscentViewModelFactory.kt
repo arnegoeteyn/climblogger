@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 
-class AscentViewModelFactory(private val application: Application, private val ascent_id: Int) :
+class AscentViewModelFactory(private val application: Application, private val ascent_id: String) :
     ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

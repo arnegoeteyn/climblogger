@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "sectors")
 data class Sector(
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "crag_id") val cragId: Int,
-    @ColumnInfo(name = "comment") val comment: String?
+    @ColumnInfo(name = "area_uuid") val areaId: Int,
+    @ColumnInfo(name = "comment") val comment: String?,
+    @PrimaryKey
+    @ColumnInfo(name = "sector_uuid")
+    val ascent_id: Int
 ) {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "sector_id")
-    var ascent_id: Int = 0
 }

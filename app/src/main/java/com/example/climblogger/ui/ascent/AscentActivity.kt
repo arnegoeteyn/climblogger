@@ -22,7 +22,7 @@ class AscentActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ascent)
 
         // get ascent from intent
-        val ascent_id = intent.extras?.get(EXTRA_ASCENT) as Int
+        val ascent_id = intent.extras?.get(EXTRA_ASCENT) as String
 
         ascentViewModel =
             ViewModelProviders.of(this, AscentViewModelFactory(application, ascent_id))

@@ -25,9 +25,9 @@ class AddAscentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_ascent)
 
-        var route_id = -1
+        var route_id = ""
         intent.extras?.let {
-            route_id = intent.extras?.get(EXTRA_ROUTE_ID) as Int
+            route_id = intent.extras?.get(EXTRA_ROUTE_ID) as String
         }
 
         addAscentViewModel = ViewModelProviders.of(this, AddAscentViewModelFactory(this.application, route_id))
@@ -57,7 +57,8 @@ class AddAscentActivity : AppCompatActivity() {
         addAscentViewModel.insertAscent(
             Ascent(
                 (routeSpinner.selectedItem as Route).route_id, date.text.toString(),
-                spinner.selectedItem.toString(), comment.editText?.text.toString()
+                spinner.selectedItem.toString(), comment.editText?.text.toString(),
+                UUID.randomUUID().toString()
             )
         )
         finish()

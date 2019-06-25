@@ -2,21 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b1b05dcf852b0aec5b5d97f0536f82dd",
+    "identityHash": "4fa96afaa3ea2a853c04fbb266661be2",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sector_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`))",
         "fields": [
           {
-            "fieldPath": "route_id",
-            "columnName": "route_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "sector_id",
-            "columnName": "sector_id",
+            "columnName": "sector_uuid",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -61,31 +55,31 @@
             "columnName": "multipitch_id",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "route_id",
+            "columnName": "route_uuid",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "route_id"
+            "route_uuid"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "ascents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `route_id` INTEGER NOT NULL, `date` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_uuid` TEXT NOT NULL, `date` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `ascent_uuid` TEXT NOT NULL, PRIMARY KEY(`ascent_uuid`), FOREIGN KEY(`route_uuid`) REFERENCES `routes`(`route_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "ascent_id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "route_id",
-            "columnName": "route_id",
-            "affinity": "INTEGER",
+            "columnName": "route_uuid",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -105,27 +99,39 @@
             "columnName": "comment",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "ascent_id",
+            "columnName": "ascent_uuid",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "ascent_uuid"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "routes",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "route_uuid"
+            ],
+            "referencedColumns": [
+              "route_uuid"
+            ]
+          }
+        ]
       },
       {
         "tableName": "sectors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `crag_id` INTEGER NOT NULL, `comment` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` INTEGER NOT NULL, `comment` TEXT, `sector_uuid` INTEGER NOT NULL, PRIMARY KEY(`sector_uuid`))",
         "fields": [
-          {
-            "fieldPath": "ascent_id",
-            "columnName": "sector_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
@@ -133,8 +139,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "cragId",
-            "columnName": "crag_id",
+            "fieldPath": "areaId",
+            "columnName": "area_uuid",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -143,27 +149,27 @@
             "columnName": "comment",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "ascent_id",
+            "columnName": "sector_uuid",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "sector_id"
+            "sector_uuid"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
-        "tableName": "crags",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`crag_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `country` TEXT NOT NULL, `name` TEXT NOT NULL)",
+        "tableName": "areas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`country` TEXT NOT NULL, `name` TEXT NOT NULL, `area_uuid` TEXT NOT NULL, PRIMARY KEY(`area_uuid`))",
         "fields": [
-          {
-            "fieldPath": "areaId",
-            "columnName": "crag_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "country",
             "columnName": "country",
@@ -175,13 +181,19 @@
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "areaId",
+            "columnName": "area_uuid",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "crag_id"
+            "area_uuid"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -190,7 +202,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b1b05dcf852b0aec5b5d97f0536f82dd\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4fa96afaa3ea2a853c04fbb266661be2\")"
     ]
   }
 }

@@ -9,8 +9,8 @@ interface AscentDao {
     @Query("SELECT * from ascents ORDER BY date DESC")
     fun getAllAscents(): LiveData<List<Ascent>>
 
-    @Query("SELECT * from ascents where route_id == :route_id ORDER BY date DESC")
-    fun ascentsFromRoute(route_id: Int): LiveData<List<Ascent>>
+    @Query("SELECT * from ascents where route_uuid == :route_id ORDER BY date DESC")
+    fun ascentsFromRoute(route_id: String): LiveData<List<Ascent>>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertAscents(vararg ascents: Ascent)
@@ -18,6 +18,6 @@ interface AscentDao {
     @Delete
     fun deleteAscent(ascent: Ascent)
 
-    @Query("SELECT * FROM ascents WHERE id == :ascent_id")
-    fun getAscent(ascent_id: Int): LiveData<Ascent>
+    @Query("SELECT * FROM ascents WHERE ascent_uuid == :ascent_id")
+    fun getAscent(ascent_id: String): LiveData<Ascent>
 }

@@ -89,7 +89,7 @@ class RoutesFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onRouteClicked(route_id: Int)
+        fun onRouteClicked(route_id: String)
     }
 
 

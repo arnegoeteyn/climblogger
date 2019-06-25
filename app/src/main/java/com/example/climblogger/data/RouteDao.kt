@@ -12,8 +12,8 @@ interface RouteDao {
     @Query("SELECT * from routes ORDER BY grade DESC")
     fun getAllRoutes(): LiveData<List<Route>>
 
-    @Query("SELECT * FROM routes WHERE route_id == :route_id")
-    fun getRoute(route_id: Int): LiveData<Route>
+    @Query("SELECT * FROM routes WHERE route_uuid == :route_id")
+    fun getRoute(route_id: String): LiveData<Route>
 
     @Insert
     fun insertRoute(route: Route)

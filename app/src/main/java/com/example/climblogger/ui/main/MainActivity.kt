@@ -53,14 +53,14 @@ class MainActivity : AppCompatActivity(),
     /**
      * Handle what happens when a route gets selected
      */
-    override fun onRouteClicked(route_id: Int) {
+    override fun onRouteClicked(route_id: String) {
         val intent = Intent(this, RouteActivity::class.java)
         intent.putExtra(EXTRA_ROUTE, route_id)
         startActivity(intent)
 
     }
 
-    override fun onAscentClicked(ascent_id: Int) {
+    override fun onAscentClicked(ascent_id: String) {
         val intent = Intent(this, AscentActivity::class.java)
         intent.putExtra(EXTRA_ASCENT, ascent_id)
         startActivity(intent)

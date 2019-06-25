@@ -30,7 +30,7 @@ class RouteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_route)
 
         // get route from intent
-        val route_id = intent.extras?.get(EXTRA_ROUTE) as Int
+        val route_id = intent.extras?.get(EXTRA_ROUTE) as String
 
         // Setting the recyclerview
         val linearLayoutManager = LinearLayoutManager(applicationContext)
@@ -68,7 +68,7 @@ class RouteActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun addAscent(route_id: Int) {
+    private fun addAscent(route_id: String) {
         intent = Intent(this, AddAscentActivity::class.java)
         intent.putExtra(EXTRA_ROUTE_ID, route_id)
         startActivity(intent)

@@ -8,7 +8,7 @@ import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RouteViewModel(application: Application, route_id: Int) : AndroidViewModel(application) {
+class RouteViewModel(application: Application, route_id: String) : AndroidViewModel(application) {
 
     private val ascentRepository: AscentRepository
     private val routeRepository: RouteRepository

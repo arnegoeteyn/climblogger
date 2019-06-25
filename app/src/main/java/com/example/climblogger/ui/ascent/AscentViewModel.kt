@@ -11,7 +11,7 @@ import com.example.climblogger.data.RouteRoomDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AscentViewModel(application: Application, ascent_id: Int) : AndroidViewModel(application) {
+class AscentViewModel(application: Application, ascent_id: String) : AndroidViewModel(application) {
 
     private val ascentRepository: AscentRepository
 

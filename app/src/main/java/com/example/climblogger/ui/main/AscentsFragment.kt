@@ -77,7 +77,7 @@ class AscentsFragment() : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onAscentClicked(ascent_id: Int)
+        fun onAscentClicked(ascent_id: String)
     }
 
 

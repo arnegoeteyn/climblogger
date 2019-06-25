@@ -7,6 +7,7 @@ import com.example.climblogger.R
 import com.example.climblogger.data.Route
 import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_route.*
+import java.util.*
 
 class AddRouteActivity : AppCompatActivity() {
 
@@ -26,7 +27,8 @@ class AddRouteActivity : AppCompatActivity() {
             Route(
                 0, nameTextInput.editText!!.text.toString(),
                 "8a", "sport", null, null,
-                null, null
+                null, null,
+                UUID.randomUUID().toString()
             )
         )
         finish()

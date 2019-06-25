@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 
 class RouteRepository(private val routeDao: RouteDao) {
 
-    fun getRoute(route_id: Int): LiveData<Route> {
+    fun getRoute(route_id: String): LiveData<Route> {
         return routeDao.getRoute(route_id)
     }
 
