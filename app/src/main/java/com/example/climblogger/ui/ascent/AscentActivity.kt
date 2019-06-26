@@ -33,12 +33,12 @@ class AscentActivity : AppCompatActivity() {
                 this.ascentWithRoute = it
                 ascentDate.text = it.ascent.date
                 routeName.text = it.route.name
-                kind.text =  it.ascent.kind
-                comment.text =  it.ascent.comment
+                kind.text = it.ascent.kind
+                comment.text = it.ascent.comment
             }
         })
 
-        delete_button.setOnClickListener { deleteAscent() }
+        delete_button.setOnPositiveClickListener { deleteAscent() }
         routeName.setOnClickListener { goToRoute() }
     }
 

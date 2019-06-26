@@ -20,7 +20,7 @@
             android:layout_height="wrap_content" android:id="@+id/routeName"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="119dp" android:layout_marginStart="24dp"/>
-    <Button
+    <com.example.climblogger.util.ConfirmationButton
             android:text="@string/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
