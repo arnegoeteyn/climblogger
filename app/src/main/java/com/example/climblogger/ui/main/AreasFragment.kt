@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
 import com.example.climblogger.data.Area
 import com.example.climblogger.util.LiveDataAdapter
+import com.example.climblogger.util.RecyclerViewOnItemClickListener
+import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
@@ -53,13 +55,13 @@ class AreasFragment : Fragment() {
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
         // add an onclicklistener for the recyclerview
-//        recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
-//            override fun onItemClicked(position: Int, view: View) {
-//                // some null safety checking
-//                areasViewModel.allAscentsWithRoute.value?.get(position)
-//                    ?.let { listener?.onAscentClicked(it.ascent.ascent_id) }
-//            }
-//        })
+        recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // some null safety checking
+                areasViewModel.allAreas.value?.get(position)
+                    ?.let { listener?.onAreaClicked(it.areaId) }
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -77,6 +79,7 @@ class AreasFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
+        fun onAreaClicked(areaId: String)
     }
 
     class AreasAdapter : LiveDataAdapter<Area>() {

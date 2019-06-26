@@ -12,4 +12,7 @@ interface AreaDao {
 
     @Insert
     fun insertArea(area: Area)
+
+    @Query("SELECT * FROM areas WHERE area_uuid == :areaId")
+    fun getArea(areaId: String): LiveData<Area>
 }

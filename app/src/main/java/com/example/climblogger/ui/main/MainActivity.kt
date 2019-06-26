@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
 import com.example.climblogger.ui.area.AddAreaActivity
+import com.example.climblogger.ui.area.AreaActivity
+import com.example.climblogger.ui.area.AreaActivity.Companion.EXTRA_AREA
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
@@ -85,6 +87,12 @@ class MainActivity : AppCompatActivity(),
     override fun onSectorClicked(sector_id: String) {
         val intent = Intent(this, SectorActivity::class.java)
         intent.putExtra(EXTRA_SECTOR, sector_id)
+        startActivity(intent)
+    }
+
+    override fun onAreaClicked(areaId: String) {
+        val intent = Intent(this, AreaActivity::class.java)
+        intent.putExtra(EXTRA_AREA, areaId)
         startActivity(intent)
     }
 

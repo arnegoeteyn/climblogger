@@ -9,5 +9,9 @@ class AreaRepository(private val areaDao: AreaDao) {
         areaDao.insertArea(area)
     }
 
+    fun getArea(areaId: String): LiveData<Area> = areaDao.getArea(areaId)
+
+
+
     val allAreas: LiveData<List<Area>> = areaDao.getAllAreas()
 }
