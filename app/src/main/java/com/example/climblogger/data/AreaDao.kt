@@ -2,6 +2,7 @@ package com.example.climblogger.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -15,4 +16,7 @@ interface AreaDao {
 
     @Query("SELECT * FROM areas WHERE area_uuid == :areaId")
     fun getArea(areaId: String): LiveData<Area>
+
+    @Delete
+    fun deleteArea(area: Area)
 }

@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.migration.Migration
 
 
-@Database(entities = [Route::class, Ascent::class, Sector::class, Area::class], version = 1)
+@Database(entities = [Route::class, Ascent::class, Sector::class, Area::class], version = 2)
 public abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun routeDao(): RouteDao
     abstract fun ascentDao(): AscentDao
@@ -35,7 +35,8 @@ public abstract class RouteRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     RouteRoomDatabase::class.java,
                     "climb.db"
-                ).build()
+                ).addMigrations(MIGRATION_1_2)
+                    .build()
                 INSTANCE = instance
                 instance
             }

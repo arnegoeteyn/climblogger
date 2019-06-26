@@ -2,10 +2,18 @@ package com.example.climblogger.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "routes"
+    tableName = "routes",
+    foreignKeys = [ForeignKey(
+        entity = Sector::class,
+        parentColumns = arrayOf("sector_uuid"),
+        childColumns = arrayOf("sector_uuid"),
+        onDelete = CASCADE
+    )]
 )
 data class Route(
     @ColumnInfo(name = "sector_uuid") val sector_id: String,

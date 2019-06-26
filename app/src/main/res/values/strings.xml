@@ -22,6 +22,7 @@
     <string name="add_sector">Add Sector</string>
     <string name="country">Country</string>
     <string name="add_area">Add Area</string>
+    <string name="delete_area">Delete Area</string>
 
 
     <string-array name="ascent_kind">

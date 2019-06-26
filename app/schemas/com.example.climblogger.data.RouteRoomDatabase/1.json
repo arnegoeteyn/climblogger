@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1a0177fccd26210af45b2aac616983b0",
+    "identityHash": "5e309ca187c696b10b18b85c76fe60b4",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` TEXT NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` TEXT NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`), FOREIGN KEY(`sector_uuid`) REFERENCES `sectors`(`sector_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "sector_id",
@@ -70,7 +70,19 @@
           "autoGenerate": false
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "sectors",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "sector_uuid"
+            ],
+            "referencedColumns": [
+              "sector_uuid"
+            ]
+          }
+        ]
       },
       {
         "tableName": "ascents",
@@ -130,7 +142,7 @@
       },
       {
         "tableName": "sectors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` TEXT NOT NULL, `comment` TEXT, `sector_uuid` TEXT NOT NULL, PRIMARY KEY(`sector_uuid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` TEXT NOT NULL, `comment` TEXT, `sector_uuid` TEXT NOT NULL, PRIMARY KEY(`sector_uuid`), FOREIGN KEY(`area_uuid`) REFERENCES `areas`(`area_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "name",
@@ -164,7 +176,19 @@
           "autoGenerate": false
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "area_uuid"
+            ],
+            "referencedColumns": [
+              "area_uuid"
+            ]
+          }
+        ]
       },
       {
         "tableName": "areas",
@@ -202,7 +226,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1a0177fccd26210af45b2aac616983b0\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5e309ca187c696b10b18b85c76fe60b4\")"
     ]
   }
 }

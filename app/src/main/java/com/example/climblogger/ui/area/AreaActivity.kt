@@ -25,14 +25,23 @@ class AreaActivity : AppCompatActivity() {
 
 
         areaViewModel.area.observe(this, Observer { area ->
-            this.area = area
-            updateAreaUi()
+            area?.let {
+                this.area = it
+                updateAreaUi()
+            }
         })
+
+        delete_button.setOnPositiveClickListener { deleteArea() }
     }
 
     private fun updateAreaUi() {
         nameText.text = area.name
         countryText.text = area.country
+    }
+
+    private fun deleteArea() {
+        areaViewModel.deleteArea(this.area)
+        finish()
     }
 
 
