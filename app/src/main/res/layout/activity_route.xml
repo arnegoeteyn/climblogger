@@ -7,56 +7,68 @@
         android:layout_height="match_parent"
         tools:context=".ui.route.RouteActivity">
 
-    <TextView
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/name" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="72dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.045"/>
-    <TextView
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/grade" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="104dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.045"/>
-    <TextView
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/comment" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="136dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.045"/>
-    <TextView
-            android:text=""
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/kind" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="176dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.045"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/linearLayout2"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="8dp">
+        <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/grade"
+        />
+        <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/kind"
+        />
+        <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/name"
+        />
+        <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/comment"
+        />
+        <TextView
+                android:text=""
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sectorTextView"/>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="382dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/ascentsRecyclerView"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="214dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="228dp" app:layout_constraintBottom_toTopOf="@+id/delete_button"/>
-    <Button
-            android:text="@string/add_ascent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/addAscentButton"
-            app:layout_constraintStart_toStartOf="@+id/ascentsRecyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+            app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/buttonsLayout"
+            app:layout_constraintTop_toBottomOf="@id/ascentsRecyclerView"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ascentsRecyclerView" android:layout_marginBottom="273dp"/>
-    <Button
-            android:text="@string/delete_route"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/delete_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ascentsRecyclerView" android:layout_marginEnd="130dp"
-            android:layout_marginBottom="52dp"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:gravity="center">
+        <Button
+                android:text="@string/add_ascent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/addAscentButton"/>
+        <com.example.climblogger.util.ConfirmationButton
+                android:text="@string/delete_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/delete_button"
+        />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

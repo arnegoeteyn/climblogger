@@ -59,7 +59,7 @@ class RouteActivity : AppCompatActivity() {
 
         addAscentButton.setOnClickListener { addAscent(route_id) }
 
-        delete_button.setOnClickListener { deleteRoute() }
+        delete_button.setOnPositiveClickListener { deleteRoute() }
 
     }
 
