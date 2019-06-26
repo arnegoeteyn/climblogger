@@ -10,5 +10,9 @@ class SectorRepository(private val sectorDao: SectorDao) {
         sectorDao.insertSector(sector)
     }
 
+    fun getSector(sector_id: String): LiveData<Sector> {
+        return sectorDao.getSector(sector_id)
+    }
+
     val allSectors: LiveData<List<Sector>> = sectorDao.getAllSectors()
 }

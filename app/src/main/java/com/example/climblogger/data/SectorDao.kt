@@ -13,4 +13,8 @@ interface SectorDao {
 
     @Insert
     fun insertSector(sector: Sector)
+
+    @Query("SELECT * FROM sectors WHERE sector_uuid = :sector_id")
+    fun getSector(sector_id: String): LiveData<Sector>
+
 }

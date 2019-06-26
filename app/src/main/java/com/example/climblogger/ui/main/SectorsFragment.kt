@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
 import com.example.climblogger.data.Sector
 import com.example.climblogger.util.LiveDataAdapter
+import com.example.climblogger.util.RecyclerViewOnItemClickListener
+import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
@@ -55,14 +57,14 @@ class SectorsFragment : Fragment() {
         recyclerView.adapter = SectorsAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
-//        // add an onclicklistener for the recyclerview
-//        recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
-//            override fun onItemClicked(position: Int, view: View) {
-//                // some null safety checking
-//                ascentViewModel.allAscentsWithRoute.value?.get(position)
-//                    ?.let { listener?.onAscentClicked(it.ascent.ascent_id) }
-//            }
-//        })
+        // add an onclicklistener for the recyclerview
+        recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // some null safety checking
+                sectorsViewModel.allSectors.value?.get(position)
+                    ?.let { listener?.onSectorClicked(it.sectorId) }
+            }
+        })
     }
 
 
@@ -81,6 +83,7 @@ class SectorsFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
+        fun onSectorClicked(sector_id: String)
     }
 
     class SectorsAdapter : LiveDataAdapter<Sector>() {

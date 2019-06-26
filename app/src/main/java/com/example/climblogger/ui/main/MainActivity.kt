@@ -13,6 +13,8 @@ import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
 import com.example.climblogger.ui.sector.AddSectorActivity
+import com.example.climblogger.ui.sector.SectorActivity
+import com.example.climblogger.ui.sector.SectorActivity.Companion.EXTRA_SECTOR
 import com.example.climblogger.util.inTransaction
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -77,6 +79,12 @@ class MainActivity : AppCompatActivity(),
     override fun onAscentClicked(ascent_id: String) {
         val intent = Intent(this, AscentActivity::class.java)
         intent.putExtra(EXTRA_ASCENT, ascent_id)
+        startActivity(intent)
+    }
+
+    override fun onSectorClicked(sector_id: String) {
+        val intent = Intent(this, SectorActivity::class.java)
+        intent.putExtra(EXTRA_SECTOR, sector_id)
         startActivity(intent)
     }
 
