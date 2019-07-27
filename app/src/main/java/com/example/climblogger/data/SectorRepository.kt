@@ -14,5 +14,10 @@ class SectorRepository(private val sectorDao: SectorDao) {
         return sectorDao.getSector(sector_id)
     }
 
+    @WorkerThread
+    fun deleteSector(sector: Sector) {
+        sectorDao.deleteSector(sector)
+    }
+
     val allSectors: LiveData<List<Sector>> = sectorDao.getAllSectors()
 }

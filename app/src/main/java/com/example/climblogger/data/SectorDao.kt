@@ -2,6 +2,7 @@ package com.example.climblogger.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -17,4 +18,6 @@ interface SectorDao {
     @Query("SELECT * FROM sectors WHERE sector_uuid = :sector_id")
     fun getSector(sector_id: String): LiveData<Sector>
 
+    @Delete
+    fun deleteSector(sector: Sector)
 }

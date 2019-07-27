@@ -29,10 +29,17 @@ class SectorActivity : AppCompatActivity() {
             updateSectorUi()
         })
 
+        delete_button.setOnPositiveClickListener { deleteSector() }
+
     }
 
     fun updateSectorUi() {
         nameText.text = sector.name
+    }
+
+    private fun deleteSector() {
+        sectorViewModel.deleteSector(this.sector)
+        finish()
     }
 
 
