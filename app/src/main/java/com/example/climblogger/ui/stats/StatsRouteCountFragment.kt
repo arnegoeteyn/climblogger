@@ -6,12 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
+import com.example.climblogger.data.RouteAmount
+import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RouteKind
+import com.example.climblogger.util.setRecyclerViewProperties
+import kotlinx.android.synthetic.main.fragment_stats_route_count.*
+import kotlinx.android.synthetic.main.route_amount_list_item.view.*
 
 private const val ARG_KIND = "kind"
 
 class StatsRouteCountFragment : Fragment() {
+
+    private lateinit var stasRouteCountViewModel: StatsRouteCountViewModel
+
     private var kind: RouteKind? = null
     private var listener: OnFragmentInteractionListener? = null
 
@@ -30,6 +42,33 @@ class StatsRouteCountFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_stats_route_count, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        stasRouteCountViewModel = ViewModelProviders.of(this).get(StatsRouteCountViewModel::class.java)
+
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        // Setting the recyclerview
+        val linearLayoutManager = LinearLayoutManager(this.context)
+
+        recyclerView.setHasFixedSize(true)
+
+        recyclerView.layoutManager = linearLayoutManager
+
+        recyclerView.adapter = RouteCountAdapter()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+
+
+        // listen for changes in the data
+        stasRouteCountViewModel.sportAmounts.observe(this, Observer {
+            recyclerView.setRecyclerViewProperties(it)
+        })
+
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -45,6 +84,21 @@ class StatsRouteCountFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
+    }
+
+    class RouteCountAdapter : LiveDataAdapter<RouteAmount>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteAmountHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            return RouteAmountHolder(inflater.inflate(R.layout.route_amount_list_item, parent, false))
+        }
+
+        class RouteAmountHolder(itemView: View) : LiveDataViewHolder<RouteAmount>(itemView) {
+
+            override fun bind(item: RouteAmount) {
+                itemView.gradeText.text = item.grade
+                itemView.amountText.text = item.amount.toString()
+            }
+        }
     }
 
     companion object {

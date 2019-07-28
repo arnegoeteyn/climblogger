@@ -46,7 +46,6 @@ class RoutesFragment : Fragment() {
 
 
     private fun initRecyclerView() {
-        Log.i(TAG, "initRecc")
         // Setting the recyclerview
         val linearLayoutManager = LinearLayoutManager(this.context)
 

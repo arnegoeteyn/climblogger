@@ -14,16 +14,10 @@ import kotlinx.android.synthetic.main.activity_stats.*
 class StatsActivity : AppCompatActivity(),
     StatsRouteCountFragment.OnFragmentInteractionListener {
 
-    private lateinit var statsViewModel: StatsViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stats)
 
-        statsViewModel = ViewModelProviders.of(this).get(StatsViewModel::class.java)
-
-        statsViewModel.routeAmounts.observe(this, Observer { amounts ->
-        })
 
         val pagerAdapter = StatsRouteCountPagerAdapter(supportFragmentManager)
         pager.adapter = pagerAdapter
