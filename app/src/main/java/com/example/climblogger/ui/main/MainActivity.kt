@@ -3,6 +3,8 @@ package com.example.climblogger.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
 import com.example.climblogger.ui.area.AddAreaActivity
@@ -17,6 +19,7 @@ import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
 import com.example.climblogger.ui.sector.AddSectorActivity
 import com.example.climblogger.ui.sector.SectorActivity
 import com.example.climblogger.ui.sector.SectorActivity.Companion.EXTRA_SECTOR
+import com.example.climblogger.ui.stats.StatsActivity
 import com.example.climblogger.util.inTransaction
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -39,6 +42,22 @@ class MainActivity : AppCompatActivity(),
         switchToRoutes()
 
         floatingActionButton.setOnClickListener { floatingButtonClicked() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item?.itemId) {
+            R.id.action_stats -> {
+                startActivity(Intent(this, StatsActivity::class.java))
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun floatingButtonClicked() {
