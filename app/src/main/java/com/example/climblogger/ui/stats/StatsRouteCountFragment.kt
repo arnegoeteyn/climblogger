@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
+import com.example.climblogger.data.Route
 import com.example.climblogger.data.RouteAmount
 import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RouteKind
@@ -61,9 +63,13 @@ class StatsRouteCountFragment : Fragment() {
         recyclerView.adapter = RouteCountAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
-
+        var toObserve: LiveData<List<RouteAmount>> = stasRouteCountViewModel.sportAmounts
+        when (kind) {
+            RouteKind.BOULDER -> toObserve = stasRouteCountViewModel.boulderAmounts
+            RouteKind.SPORT -> toObserve = stasRouteCountViewModel.sportAmounts
+        }
         // listen for changes in the data
-        stasRouteCountViewModel.sportAmounts.observe(this, Observer {
+        toObserve.observe(this, Observer {
             recyclerView.setRecyclerViewProperties(it)
         })
 

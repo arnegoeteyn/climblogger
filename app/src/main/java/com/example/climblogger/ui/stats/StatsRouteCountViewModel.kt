@@ -16,8 +16,8 @@ class StatsRouteCountViewModel(application: Application) : AndroidViewModel(appl
     init {
         val routeAmountDoa = RouteRoomDatabase.getDatabase(application).routeAmountDao()
         routeAmountRepository = RouteAmountRepository(routeAmountDoa)
-        sportAmounts = routeAmountRepository.routeAmounts
-        boulderAmounts = routeAmountRepository.routeAmounts
+        sportAmounts = routeAmountRepository.sportAmounts
+        boulderAmounts = routeAmountRepository.boulderAmounts
     }
 }
 
