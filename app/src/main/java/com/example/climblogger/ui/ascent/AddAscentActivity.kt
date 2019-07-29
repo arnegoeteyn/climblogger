@@ -94,9 +94,9 @@ class AddAscentActivity : AppCompatActivity() {
         val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, myear, monthOfYear, dayOfMonth ->
             // Display Selected date in textbox
-            date.text = getString(R.string.date_view, year, monthOfYear, dayOfMonth)
+            date.text = getStringDate(dayOfMonth, monthOfYear, myear)
         }, year, month, day)
 
         dpd.show()
@@ -107,12 +107,12 @@ class AddAscentActivity : AppCompatActivity() {
      */
     private fun getStringDate(day: Int = -1, month: Int = -1, year: Int = -1): String {
         var newYear = year
-        var newMonth = month
+        var newMonth = month + 1
         var newDay = day
         if (day == -1) {
             val c = Calendar.getInstance()
             newYear = c.get(Calendar.YEAR)
-            newMonth = c.get(Calendar.MONTH)
+            newMonth = c.get(Calendar.MONTH) + 1
             newDay = c.get(Calendar.DAY_OF_MONTH)
         }
         return getString(R.string.date_view, newYear, newMonth, newDay)
