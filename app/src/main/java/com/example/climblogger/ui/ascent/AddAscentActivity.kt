@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
-import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE_ID
 import kotlinx.android.synthetic.main.activity_add_ascent.*
 import java.util.*
 
@@ -116,6 +115,10 @@ class AddAscentActivity : AppCompatActivity() {
             newDay = c.get(Calendar.DAY_OF_MONTH)
         }
         return getString(R.string.date_view, newYear, newMonth, newDay)
+    }
+
+    companion object {
+        const val EXTRA_ROUTE_ID = "EXTRA_ROUTE_ID" // route ID can be passed to already select the route
     }
 
 }

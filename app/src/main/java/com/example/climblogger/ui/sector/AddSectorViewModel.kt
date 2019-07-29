@@ -23,7 +23,11 @@ class AddSectorViewModel(application: Application) : AndroidViewModel(applicatio
         allAreas = areaDao.getAllAreas()
     }
 
-    fun insertSector(sector: Sector) = viewModelScope.launch(Dispatchers.IO){
+    fun insertSector(sector: Sector) = viewModelScope.launch(Dispatchers.IO) {
         sectorRepository.insert(sector)
+    }
+
+    fun getArea(areaId: String): LiveData<Area> {
+        return areaRepository.getArea(areaId)
     }
 }

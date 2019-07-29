@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.data.Route
 import com.example.climblogger.data.Sector
-import com.example.climblogger.util.setSpinnerData
+import com.example.climblogger.util.ItemSpinner
 import kotlinx.android.synthetic.main.activity_add_route.*
 import java.util.*
 
@@ -28,7 +28,7 @@ class AddRouteActivity : AppCompatActivity() {
         initKindSpinner()
 
         addRouteViewModel.allSectors.observe(this, Observer { sectors ->
-            sectorSpinner.setSpinnerData(sectors)
+            (sectorSpinner as ItemSpinner<Sector>).setData(sectors)
         })
     }
 
