@@ -27,32 +27,31 @@ class AddSectorActivity : AppCompatActivity() {
 
         addSectorViewModel = ViewModelProviders.of(this).get(AddSectorViewModel::class.java)
 
+        this.spinner = findViewById(R.id.areaSpinner)
+
+
         // check if an areaId is passed along and selct that area
         intent.extras?.let {
             val areaId = intent.extras?.get(EXTRA_AREA_ID) as String
             addSectorViewModel.getArea(areaId).observe(this, Observer {
-                selectAreaInSpinner(it)
+                initAreaSpinner(it)
             })
-        }
+        } ?: initAreaSpinner(null)
 
-
-
-        this.spinner = findViewById(R.id.areaSpinner)
-
-        initAreaSpinner()
 
         addSectorButton.setOnClickListener { addSector() }
 
     }
 
-    private fun initAreaSpinner() {
+    private fun initAreaSpinner(selectedArea: Area?) {
         addSectorViewModel.allAreas.observe(this, Observer { sectors ->
-            Log.i("FJDSS", sectors.size.toString())
             this.spinner.setData(sectors)
+            selectedArea?.let { selectAreaInSpinner(it) }
         })
     }
 
     private fun selectAreaInSpinner(area: Area) {
+        Log.d("SELECTING", area.toString())
         spinner.selectItemInSpinner(area)
     }
 

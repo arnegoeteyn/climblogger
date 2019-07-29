@@ -21,6 +21,6 @@ class ItemSpinner<T>(context: Context, attributeSet: AttributeSet) : Spinner(con
 
 
     fun selectItemInSpinner(item: T) {
-        adapter?.getPosition(item)?.let { setSelection(it) }
+        adapter?.getPosition(item)?.let { super.setSelection(it) }
     }
 }
