@@ -17,7 +17,11 @@ import com.example.climblogger.data.Route
 import com.example.climblogger.data.Sector
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.AddRouteActivity.Companion.EXTRA_SECTOR_ID
+import com.example.climblogger.ui.route.RouteActivity
+import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
 import com.example.climblogger.util.LiveDataAdapter
+import com.example.climblogger.util.RecyclerViewOnItemClickListener
+import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.activity_sector.*
 import kotlinx.android.synthetic.main.route_list_item.view.*
@@ -66,6 +70,14 @@ class SectorActivity : AppCompatActivity() {
             )
         )
 
+        // clicking brings you to the routedetail
+        routesRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // some null safety checking
+                sectorViewModel.sectorRoutes.value?.get(position)?.let { onRouteClicked(it.route_id) }
+            }
+        })
+
         // loading the data
         sectorViewModel.sectorRoutes.observe(this, Observer {
             routesRecyclerView.setRecyclerViewProperties(it)
@@ -75,6 +87,12 @@ class SectorActivity : AppCompatActivity() {
     private fun deleteSector() {
         sectorViewModel.deleteSector(this.sector)
         finish()
+    }
+
+    private fun onRouteClicked(route_id: String) {
+        val intent = Intent(this, RouteActivity::class.java)
+        intent.putExtra(EXTRA_ROUTE, route_id)
+        startActivity(intent)
     }
 
     /**
