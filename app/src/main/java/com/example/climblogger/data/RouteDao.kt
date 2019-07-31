@@ -20,4 +20,7 @@ interface RouteDao {
 
     @Delete
     fun deleteRoute(route: Route)
+
+    @Query(" SELECT * FROM routes WHERE sector_uuid == :sector_id ORDER BY grade DESC")
+    fun routesFromSector(sector_id: String): LiveData<List<Route>>
 }

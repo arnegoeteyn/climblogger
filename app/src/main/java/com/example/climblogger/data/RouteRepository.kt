@@ -20,4 +20,8 @@ class RouteRepository(private val routeDao: RouteDao) {
     suspend fun deleteRoute(route: Route) {
         return routeDao.deleteRoute(route)
     }
+
+    fun routesFromSector(sector_id: String): LiveData<List<Route>> {
+        return routeDao.routesFromSector(sector_id)
+    }
 }
