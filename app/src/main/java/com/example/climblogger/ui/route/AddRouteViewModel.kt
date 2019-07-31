@@ -26,4 +26,8 @@ class AddRouteViewModel(application: Application) : AndroidViewModel(application
     fun insertRoute(route: Route) = viewModelScope.launch(Dispatchers.IO) {
         routeRepository.insertRoute(route)
     }
+
+    fun getSector(sector_id: String): LiveData<Sector> {
+        return sectorRepository.getSector(sector_id)
+    }
 }

@@ -51,7 +51,6 @@ class AddSectorActivity : AppCompatActivity() {
     }
 
     private fun selectAreaInSpinner(area: Area) {
-        Log.d("SELECTING", area.toString())
         spinner.selectItemInSpinner(area)
     }
 
