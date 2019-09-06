@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface RouteDao {
 
-    @Query("SELECT * from routes ORDER BY grade DESC")
+    @Query("SELECT * from routes ORDER BY grade DESC, name ASC")
     fun getAllRoutes(): LiveData<List<Route>>
 
     @Query("SELECT * FROM routes WHERE route_uuid == :route_id")
