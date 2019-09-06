@@ -20,4 +20,7 @@ interface SectorDao {
 
     @Delete
     fun deleteSector(sector: Sector)
+
+    @Query(" SELECT * FROM sectors WHERE area_uuid == :area_id ORDER BY name")
+    fun sectorsFromArea(area_id: String): LiveData<List<Sector>>
 }

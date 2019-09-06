@@ -19,5 +19,9 @@ class SectorRepository(private val sectorDao: SectorDao) {
         sectorDao.deleteSector(sector)
     }
 
+    fun sectorsFromArea(areaId: String): LiveData<List<Sector>> {
+        return sectorDao.sectorsFromArea(areaId)
+    }
+
     val allSectors: LiveData<List<Sector>> = sectorDao.getAllSectors()
 }
