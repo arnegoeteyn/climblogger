@@ -54,7 +54,7 @@ class AreaActivity : AppCompatActivity() {
         add_sector_button.setOnClickListener { addSector(areaId) }
     }
 
-private fun onSectorClicked(route_id: String) {
+    private fun onSectorClicked(route_id: String) {
         val intent = Intent(this, SectorActivity::class.java)
         intent.putExtra(EXTRA_SECTOR, route_id)
         startActivity(intent)

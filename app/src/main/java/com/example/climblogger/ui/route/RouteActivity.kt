@@ -17,6 +17,12 @@ import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AddAscentActivity.Companion.EXTRA_ROUTE_ID
+import com.example.climblogger.ui.ascent.AscentActivity
+import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
+import com.example.climblogger.util.LiveDataAdapter
+import com.example.climblogger.util.RecyclerViewOnItemClickListener
+import com.example.climblogger.util.addOnItemClickListener
+import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.activity_route.*
 import kotlinx.android.synthetic.main.list_item_ascent.view.*
 
@@ -54,9 +60,8 @@ class RouteActivity : AppCompatActivity() {
                 this.route = it
             }
         })
-        routeViewModel.routeAscents.observe(this, Observer {
-            setRecyclerViewProperties(ascentsRecyclerView, it)
-        })
+
+        initAscentsRecyclerView()
 
         addAscentButton.setOnClickListener { addAscent(route_id) }
 
@@ -75,6 +80,12 @@ class RouteActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun onAscentClicked(ascentId: String) {
+        val intent = Intent(this, AscentActivity::class.java)
+        intent.putExtra(EXTRA_ASCENT, ascentId)
+        startActivity(intent)
+    }
+
     private fun setRouteViews(route: Route) {
         name.text = route.name
         grade.text = route.grade
@@ -82,38 +93,46 @@ class RouteActivity : AppCompatActivity() {
         kind.text = route.kind
     }
 
-    @BindingAdapter("data")
-    fun setRecyclerViewProperties(recyclerView: RecyclerView, items: List<Ascent>) {
-        if (recyclerView.adapter is AscentsAdapter) {
-            (recyclerView.adapter as AscentsAdapter).setData(items)
-        }
+    private fun initAscentsRecyclerView() {
+        val linearLayoutManager = LinearLayoutManager(applicationContext)
+        ascentsRecyclerView.setHasFixedSize(true)
+        ascentsRecyclerView.layoutManager = linearLayoutManager
+        ascentsRecyclerView.adapter = AscentsAdapter()
+        ascentsRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                ascentsRecyclerView.context,
+                linearLayoutManager.orientation
+            )
+        )
+
+        // clicking brings you to the routedetail
+        ascentsRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // some null safety checking
+                routeViewModel.routeAscents.value?.get(position)?.let { onAscentClicked(it.ascent_id) }
+            }
+        })
+
+        // loading the data
+        routeViewModel.routeAscents.observe(this, Observer {
+            ascentsRecyclerView.setRecyclerViewProperties(it)
+        })
     }
 
-    class AscentsAdapter : RecyclerView.Adapter<AscentsAdapter.AscentHolder>() {
-        var ascents = emptyList<Ascent>()
 
-        fun setData(items: List<Ascent>) {
-            ascents = items
-            notifyDataSetChanged()
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AscentsAdapter.AscentHolder {
+    class AscentsAdapter : LiveDataAdapter<Ascent>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LiveDataViewHolder<Ascent> {
             val inflater = LayoutInflater.from(parent.context)
-            return AscentHolder(inflater.inflate(R.layout.list_item_ascent, parent, false))
+            return SectorHolder(inflater.inflate(R.layout.list_item_ascent, parent, false))
         }
 
-        override fun getItemCount(): Int = ascents.size
-
-        override fun onBindViewHolder(holder: AscentsAdapter.AscentHolder, position: Int) {
-            holder.bind(ascents[position])
-        }
-
-        class AscentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(ascent: Ascent) {
-                itemView.date.text = ascent.date
+        class SectorHolder(itemView: View) : LiveDataViewHolder<Ascent>(itemView) {
+            override fun bind(item: Ascent) {
+                itemView.date.text = item.date
             }
         }
     }
+
 
     companion object {
         public const val EXTRA_ROUTE = "EXTRA_ROUTE"
