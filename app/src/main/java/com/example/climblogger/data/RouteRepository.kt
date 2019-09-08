@@ -10,16 +10,22 @@ class RouteRepository(private val routeDao: RouteDao) {
     }
 
     @WorkerThread
-    fun insertRoute(route: Route) {
-        return routeDao.insertRoute(route)
+    fun insertRoute(route: Route): Long {
+        return routeDao.insert(route)
+    }
+
+    @WorkerThread
+    fun updateRoute(route: Route) {
+        return routeDao.update(route)
+    }
+    
+    @WorkerThread
+    fun deleteRoute(route: Route) {
+        return routeDao.delete(route)
     }
 
     val allRoutes: LiveData<List<Route>> = routeDao.getAllRoutes()
 
-    @WorkerThread
-    suspend fun deleteRoute(route: Route) {
-        return routeDao.deleteRoute(route)
-    }
 
     fun routesFromSector(sector_id: String): LiveData<List<Route>> {
         return routeDao.routesFromSector(sector_id)

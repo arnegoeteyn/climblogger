@@ -1,26 +1,26 @@
 package com.example.climblogger.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
-interface RouteDao {
+abstract class RouteDao : BaseDao<Route>() {
 
     @Query("SELECT * from routes ORDER BY grade DESC, name ASC")
-    fun getAllRoutes(): LiveData<List<Route>>
+    abstract fun getAllRoutes(): LiveData<List<Route>>
 
     @Query("SELECT * FROM routes WHERE route_uuid == :route_id")
-    fun getRoute(route_id: String): LiveData<Route>
+    abstract fun getRoute(route_id: String): LiveData<Route>
 
-    @Insert
-    fun insertRoute(route: Route)
+//    @Insert
+//    abstract fun insertRoute(route: Route)
+//
+//    @Delete
+//    abstract fun deleteRoute(route: Route)
 
-    @Delete
-    fun deleteRoute(route: Route)
+//    @Update
+//    fun editRoute(route: Route)
 
     @Query(" SELECT * FROM routes WHERE sector_uuid == :sector_id ORDER BY grade DESC")
-    fun routesFromSector(sector_id: String): LiveData<List<Route>>
+    abstract fun routesFromSector(sector_id: String): LiveData<List<Route>>
 }

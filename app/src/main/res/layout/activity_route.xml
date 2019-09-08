@@ -64,6 +64,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/addAscentButton"/>
+        <Button
+                android:text="@string/edit_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/edit_button" />
         <com.example.climblogger.util.ConfirmationButton
                 android:text="@string/delete_route"
                 android:layout_width="wrap_content"
