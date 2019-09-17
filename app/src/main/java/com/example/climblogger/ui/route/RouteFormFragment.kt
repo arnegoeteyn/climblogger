@@ -16,9 +16,11 @@ import com.example.climblogger.util.ItemSpinner
 import kotlinx.android.synthetic.main.fragment_route_form.*
 
 private const val ARG_PARAM_ROUTE_ID = "route_ID_PARAM"
+private const val ARG_PARAM_SECTOR_ID = "sector_id_param"
 
 class RouteFormFragment : Fragment() {
     private var route_id: String = ""
+    private var sector_id: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
 
@@ -33,6 +35,10 @@ class RouteFormFragment : Fragment() {
         arguments?.let { bundle ->
             bundle.getString(ARG_PARAM_ROUTE_ID)?.let {
                 route_id = it
+            }
+
+            bundle.getString(ARG_PARAM_SECTOR_ID)?.let {
+                sector_id = it
             }
         }
 
@@ -53,10 +59,9 @@ class RouteFormFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        initSectorSpinner(null)
-        initKindSpinner()
 
+        initSectorSpinner(sector_id)
+        initKindSpinner()
     }
 
 
@@ -87,15 +92,21 @@ class RouteFormFragment : Fragment() {
     }
 
 
-    private fun initSectorSpinner(selectedSector: Sector?) {
+    private fun initSectorSpinner(selectedSector_id: String?) {
         addRouteViewModel.allSectors.observe(this, androidx.lifecycle.Observer { sectors ->
             this.spinner.setData(sectors)
-            selectedSector?.let { selectSectorInSpinner(it) }
+            selectedSector_id?.let { selectSectorInSpinner(it) }
         })
     }
 
-    private fun selectSectorInSpinner(sector: Sector) {
-        spinner.selectItemInSpinner(sector)
+    private fun selectSectorInSpinner(sector_id: String) {
+        // ugly
+        for (i in 0 until spinner.count){
+            if( (spinner.getItemAtPosition(i) as Sector).sectorId == sector_id){
+                spinner.setSelection(i)
+            }
+        }
+//        spinner.selectItemInSpinner(sector)
     }
 
 
@@ -118,10 +129,11 @@ class RouteFormFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(route_id: String) =
+        fun newInstance(route_id: String, sector_id: String? = null) =
             RouteFormFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM_ROUTE_ID, route_id)
+                    putString(ARG_PARAM_SECTOR_ID, sector_id)
                 }
             }
     }
