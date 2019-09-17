@@ -64,7 +64,7 @@ class RouteActivity : AppCompatActivity() {
         initAscentsRecyclerView()
 
         addAscentButton.setOnClickListener { addAscent(route_id) }
-
+        edit_button.setOnClickListener { editRoute(route_id) }
         delete_button.setOnPositiveClickListener { deleteRoute() }
 
     }
@@ -72,6 +72,11 @@ class RouteActivity : AppCompatActivity() {
     private fun deleteRoute() {
         routeViewModel.deleteRoute(this.route)
         finish()
+    }
+
+    private fun editRoute(route_id: String) {
+        intent = Intent(this, EditRouteActivity::class.java)
+        startActivity(intent)
     }
 
     private fun addAscent(route_id: String) {

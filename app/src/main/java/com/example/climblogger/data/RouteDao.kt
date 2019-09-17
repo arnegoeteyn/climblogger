@@ -12,15 +12,6 @@ abstract class RouteDao : BaseDao<Route>() {
     @Query("SELECT * FROM routes WHERE route_uuid == :route_id")
     abstract fun getRoute(route_id: String): LiveData<Route>
 
-//    @Insert
-//    abstract fun insertRoute(route: Route)
-//
-//    @Delete
-//    abstract fun deleteRoute(route: Route)
-
-//    @Update
-//    fun editRoute(route: Route)
-
     @Query(" SELECT * FROM routes WHERE sector_uuid == :sector_id ORDER BY grade DESC")
     abstract fun routesFromSector(sector_id: String): LiveData<List<Route>>
 }
