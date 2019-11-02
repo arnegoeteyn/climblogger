@@ -30,4 +30,9 @@ class AddRouteViewModel(application: Application) : AndroidViewModel(application
     fun getSector(sector_id: String): LiveData<Sector> {
         return sectorRepository.getSector(sector_id)
     }
+
+    fun getRoute(route_id: String): LiveData<Route> {
+        return routeRepository.getRoute(route_id)
+    }
+
 }

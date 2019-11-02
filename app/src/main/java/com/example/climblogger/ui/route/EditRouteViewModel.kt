@@ -31,7 +31,7 @@ class EditRouteViewModel(application: Application) : AndroidViewModel(applicatio
         return sectorRepository.getSector(sector_id)
     }
 
-    fun editRoute(route: Route) {
+    fun editRoute(route: Route) = viewModelScope.launch(Dispatchers.IO) {
         routeRepository.updateRoute(route)
     }
 }

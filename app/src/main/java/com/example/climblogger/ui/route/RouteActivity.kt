@@ -76,6 +76,9 @@ class RouteActivity : AppCompatActivity() {
 
     private fun editRoute(route_id: String) {
         intent = Intent(this, EditRouteActivity::class.java)
+        val bundle: Bundle = Bundle()
+        bundle.putString(EditRouteActivity.EXTRA_ROUTE_ID, route_id)
+        intent.putExtras(bundle)
         startActivity(intent)
     }
 
