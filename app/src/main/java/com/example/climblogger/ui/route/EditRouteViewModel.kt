@@ -30,4 +30,8 @@ class EditRouteViewModel(application: Application) : AndroidViewModel(applicatio
     fun getSector(sector_id: String): LiveData<Sector> {
         return sectorRepository.getSector(sector_id)
     }
+
+    fun editRoute(route: Route) {
+        routeRepository.updateRoute(route)
+    }
 }

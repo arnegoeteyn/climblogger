@@ -30,4 +30,5 @@ class RouteRepository(private val routeDao: RouteDao) {
     fun routesFromSector(sector_id: String): LiveData<List<Route>> {
         return routeDao.routesFromSector(sector_id)
     }
+
 }

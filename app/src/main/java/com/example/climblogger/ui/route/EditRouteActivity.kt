@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import java.util.*
 
-class EditRouteActivity : AppCompatActivity() {
+class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInteractionListener {
 
     private lateinit var editRouteViewModel: EditRouteViewModel
 
@@ -21,4 +21,13 @@ class EditRouteActivity : AppCompatActivity() {
             .add(R.id.fragmentPlace, RouteFormFragment.newInstance(UUID.randomUUID().toString()))
             .commit()
     }
+
+    private fun editRoute() {
+        editRouteViewModel.editRoute(
+            (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as RouteFormFragment).createRoute()
+        )
+        finish()
+    }
+
+
 }
