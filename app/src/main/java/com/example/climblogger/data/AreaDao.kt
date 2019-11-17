@@ -7,16 +7,16 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface AreaDao {
+abstract class AreaDao: BaseDao<Area>() {
     @Query("SELECT * FROM areas ORDER BY name")
-    fun getAllAreas(): LiveData<List<Area>>
+    abstract fun getAllAreas(): LiveData<List<Area>>
 
-    @Insert
-    fun insertArea(area: Area)
+//    @Insert
+//    abstract fun insertArea(area: Area)
 
     @Query("SELECT * FROM areas WHERE area_uuid == :areaId")
-    fun getArea(areaId: String): LiveData<Area>
+    abstract fun getArea(areaId: String): LiveData<Area>
 
-    @Delete
-    fun deleteArea(area: Area)
+//    @Delete
+//    abstract fun deleteArea(area: Area)
 }

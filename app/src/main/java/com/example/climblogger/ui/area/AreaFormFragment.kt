@@ -32,19 +32,14 @@ class AreaFormFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        // get the route_id
-//        arguments?.let { bundle ->
-//            bundle.getString(ARG_PARAM_ROUTE_ID)?.let {
-//                route_id = it
-//            }
-//
-//            bundle.getString(ARG_PARAM_SECTOR_ID)?.let {
-//                sector_id = it
-//            }
-//        }
-//
-//
-//        addRouteViewModel = ViewModelProviders.of(this).get(AddRouteViewModel::class.java)
+        // get the area_id
+        arguments?.let { bundle ->
+            bundle.getString(ARG_PARAM_AREA_ID)?.let {
+                area_id = it
+            }
+        }
+
+        addAreaViewModel = ViewModelProviders.of(this).get(AddAreaViewModel::class.java)
 
     }
 
@@ -62,19 +57,13 @@ class AreaFormFragment : Fragment() {
      * Will only do something if the route is already in the db
      */
     private fun loadForm() {
-        // if route already exists load it
-//        addRouteViewModel.getRoute(route_id).observe(this, Observer {route ->
-//            route?.let{
-//                nameTextInput.editText?.setText(it.name)
-//                gradeTextInput.editText?.setText(it.grade)
-//                commentTextInput.editText?.setText(it.comment)
-//                linkTextInput.editText?.setText(it.link)
-//
-//            }
-//            // load the spinners and update them with the already selected info
-//            initSectorSpinner(route?.sector_id)
-//            initKindSpinner(route?.kind)
-//        })
+//         if area already exists load it
+        addAreaViewModel.getArea(area_id).observe(this, Observer {area ->
+            area?.let{
+                nameTextInput.editText?.setText(it.name)
+                countryTextInput.editText?.setText(it.country)
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

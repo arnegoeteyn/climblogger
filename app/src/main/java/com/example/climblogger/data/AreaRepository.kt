@@ -6,16 +6,20 @@ import androidx.lifecycle.LiveData
 class AreaRepository(private val areaDao: AreaDao) {
     @WorkerThread
     fun insert(area: Area) {
-        areaDao.insertArea(area)
+        areaDao.insert(area)
     }
 
     fun getArea(areaId: String): LiveData<Area> = areaDao.getArea(areaId)
 
     @WorkerThread
     fun deleteArea(area: Area) {
-        areaDao.deleteArea(area)
+        areaDao.delete(area)
     }
 
+    @WorkerThread
+    fun update(area: Area) {
+        return areaDao.update(area)
+    }
 
     val allAreas: LiveData<List<Area>> = areaDao.getAllAreas()
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.climblogger">
+        package="com.example.climblogger">
 
     <application
             android:allowBackup="true"
@@ -9,34 +9,25 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.route.EditRouteActivity">
-        </activity>
-        <activity android:name=".ui.stats.StatsActivity">
-        </activity>
-        <activity android:name=".ui.area.AreaActivity">
-        </activity>
-        <activity android:name=".ui.sector.SectorActivity">
-        </activity>
-        <activity android:name=".ui.area.AddAreaActivity">
-        </activity>
-        <activity android:name=".ui.sector.AddSectorActivity">
-        </activity>
-        <activity android:name=".ui.route.AddRouteActivity">
-        </activity>
-        <activity android:name=".ui.ascent.AscentActivity">
-        </activity>
-        <activity android:name=".ui.ascent.AddAscentActivity">
-        </activity>
-        <activity android:name=".ui.route.RouteActivity">
-        </activity>
+        <activity android:name=".ui.route.EditRouteActivity"></activity>
+        <activity android:name=".ui.area.EditAreaActivity"></activity>
+        <activity android:name=".ui.stats.StatsActivity"></activity>
+        <activity android:name=".ui.area.AreaActivity"></activity>
+        <activity android:name=".ui.sector.SectorActivity"></activity>
+        <activity android:name=".ui.area.AddAreaActivity"></activity>
+        <activity android:name=".ui.sector.AddSectorActivity"></activity>
+        <activity android:name=".ui.route.AddRouteActivity"></activity>
+        <activity android:name=".ui.ascent.AscentActivity"></activity>
+        <activity android:name=".ui.ascent.AddAscentActivity"></activity>
+        <activity android:name=".ui.route.RouteActivity"></activity>
         <activity
                 android:name=".ui.main.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

@@ -26,6 +26,7 @@
     <string name="stats">Stats</string>
     <string name="add_sector">Add Sector</string>
     <string name="edit_route">Edit Route</string>
+    <string name="edit_area">Edit Area</string>
 
 
     <string-array name="ascent_kind">
