@@ -8,7 +8,7 @@ import com.example.climblogger.data.Area
 import kotlinx.android.synthetic.main.activity_add_area.*
 import java.util.*
 
-class AddAreaActivity : AppCompatActivity() {
+class AddAreaActivity : AppCompatActivity(), AreaFormFragment.OnFragmentInteractionListener {
 
     private lateinit var addAreaViewModel: AddAreaViewModel
 
@@ -18,17 +18,19 @@ class AddAreaActivity : AppCompatActivity() {
 
         addAreaViewModel = ViewModelProviders.of(this).get(AddAreaViewModel::class.java)
 
+        // attaching the areaFormFragment
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragmentPlace, AreaFormFragment.newInstance(UUID.randomUUID().toString()))
+            .commit()
+
         addAreaButton.setOnClickListener { addArea() }
     }
 
     private fun addArea() {
         addAreaViewModel.insertArea(
-            Area(
-                countryInput.text.toString(),
-                nameInput.text.toString(),
-                UUID.randomUUID().toString()
-            )
+            (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as AreaFormFragment).createArea()
         )
         finish()
     }
+
 }
