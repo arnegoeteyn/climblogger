@@ -122,7 +122,7 @@ class RouteFormFragment : Fragment() {
             )
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.kindSpinner.adapter = arrayAdapter
-        kind?.let{selectKindInSpinner(kind)}
+        kind?.let{selectKindInSpinner(it)}
     }
 
 
