@@ -115,6 +115,7 @@ class SectorActivity : AppCompatActivity() {
             override fun bind(item: Route) {
                 itemView.routeText.text = item.name
                 itemView.gradeText.text = item.grade
+                itemView.kindText.text = item.kind
             }
         }
     }
