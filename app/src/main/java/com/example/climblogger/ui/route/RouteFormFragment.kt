@@ -79,6 +79,11 @@ class RouteFormFragment : Fragment() {
             // load the spinners and update them with the already selected info
             initSectorSpinner(route?.sector_id)
             initKindSpinner(route?.kind)
+
+            // if a sector is passed we should load that one, this has te be coded better
+            sector_id?.let {
+                initSectorSpinner(it)
+            }
         })
     }
 
