@@ -74,7 +74,6 @@ class RouteFormFragment : Fragment() {
                 gradeTextInput.editText?.setText(it.grade)
                 commentTextInput.editText?.setText(it.comment)
                 linkTextInput.editText?.setText(it.link)
-
             }
             // load the spinners and update them with the already selected info
             initSectorSpinner(route?.sector_id)
@@ -146,9 +145,9 @@ class RouteFormFragment : Fragment() {
 
     private fun selectKindInSpinner(kind: String) {
         // ugly
-        for (i in 0 until spinner.count) {
-            if (spinner.getItemAtPosition(i) == kind) {
-                spinner.setSelection(i)
+        for (i in 0 until kindSpinner.count) {
+            if (kindSpinner.getItemAtPosition(i) == kind) {
+                kindSpinner.setSelection(i)
             }
         }
     }
