@@ -11,16 +11,16 @@ import kotlinx.coroutines.launch
 class SectorViewModel(application: Application, sector_id: String) : AndroidViewModel(application) {
 
     private val sectorRepository: SectorRepository
-    private val routeRepository: RouteRepository
+    private val routeRepository: RouteWithAscentsRepository
 
     val sector: LiveData<Sector>
-    val sectorRoutes: LiveData<List<Route>>
+    val sectorRoutes: LiveData<List<RouteWithAscents>>
 
     init {
         val sectorDao: SectorDao = RouteRoomDatabase.getDatabase(application).sectorDao()
-        val routeDao: RouteDao = RouteRoomDatabase.getDatabase(application).routeDao()
+        val routeDao: RouteWithAscentsDoa = RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
         sectorRepository = SectorRepository(sectorDao)
-        routeRepository = RouteRepository(routeDao)
+        routeRepository = RouteWithAscentsRepository(routeDao)
 
         sector = sectorRepository.getSector(sector_id)
         sectorRoutes = routeRepository.routesFromSector(sector_id)

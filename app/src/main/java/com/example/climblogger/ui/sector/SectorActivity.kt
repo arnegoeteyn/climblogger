@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.climblogger.R
+import com.example.climblogger.adapters.RouteWithAscentsAdapter
 import com.example.climblogger.data.Route
 import com.example.climblogger.data.Sector
 import com.example.climblogger.ui.route.AddRouteActivity
@@ -63,7 +64,7 @@ class SectorActivity : AppCompatActivity() {
         val linearLayoutManager = LinearLayoutManager(applicationContext)
         routesRecyclerView.setHasFixedSize(true)
         routesRecyclerView.layoutManager = linearLayoutManager
-        routesRecyclerView.adapter = RoutesAdapter()
+        routesRecyclerView.adapter = RouteWithAscentsAdapter()
         routesRecyclerView.addItemDecoration(
             DividerItemDecoration(
                 routesRecyclerView.context,
@@ -106,20 +107,6 @@ class SectorActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    class RoutesAdapter : LiveDataAdapter<Route>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LiveDataViewHolder<Route> {
-            val inflater = LayoutInflater.from(parent.context)
-            return RouteHolder(inflater.inflate(R.layout.route_list_item, parent, false))
-        }
-
-        class RouteHolder(itemView: View) : LiveDataViewHolder<Route>(itemView) {
-            override fun bind(item: Route) {
-                itemView.routeText.text = item.name
-                itemView.gradeText.text = item.grade
-                itemView.kindText.text = item.kind
-            }
-        }
-    }
 
     companion object {
         const val EXTRA_SECTOR = "EXTRA_SECTOR"

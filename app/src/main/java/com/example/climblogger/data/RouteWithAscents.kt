@@ -31,10 +31,25 @@ interface RouteWithAscentsDoa {
             """
     )
     fun getRoutesWithAscents(): LiveData<List<RouteWithAscents>>
+
+    @Query(
+        """
+                select name, grade, routes.kind, route_uuid, count(name) as amount from routes inner join ascents USING(route_uuid)
+                where sector_uuid == :sector_id
+                group by name
+            """
+    )
+    fun routesFromSector(sector_id: String): LiveData<List<RouteWithAscents>>
 }
 
 
 class RouteWithAscentsRepository(private val routeWithAscentsDoa: RouteWithAscentsDoa) {
     val routeWithAscents: LiveData<List<RouteWithAscents>> = routeWithAscentsDoa.getRoutesWithAscents()
+
+
+    fun routesFromSector(sector_id: String): LiveData<List<RouteWithAscents>> {
+        return routeWithAscentsDoa.routesFromSector(sector_id)
+    }
+
 }
 

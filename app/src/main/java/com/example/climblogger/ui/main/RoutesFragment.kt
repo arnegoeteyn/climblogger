@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
+import com.example.climblogger.adapters.RouteWithAscentsAdapter
 import com.example.climblogger.data.Route
 import com.example.climblogger.data.RouteWithAscents
 import com.example.climblogger.util.LiveDataAdapter
@@ -54,7 +55,7 @@ class RoutesFragment : Fragment() {
 
         recyclerView.layoutManager = linearLayoutManager
 
-        recyclerView.adapter = RoutesAdapter()
+        recyclerView.adapter = RouteWithAscentsAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
         // add an onclicklistener for the recyclerview
@@ -93,23 +94,23 @@ class RoutesFragment : Fragment() {
     }
 
 
-    class RoutesAdapter : LiveDataAdapter<RouteWithAscents>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteHolder {
-            val inflater = LayoutInflater.from(parent.context)
-            return RouteHolder(inflater.inflate(R.layout.route_list_item, parent, false))
-        }
-
-        class RouteHolder(itemView: View) : LiveDataViewHolder<RouteWithAscents>(itemView) {
-
-            override fun bind(item: RouteWithAscents) {
-                itemView.routeText.text = item.name
-                itemView.gradeText.text = item.grade
-                itemView.kindText.text = item.kind
-                itemView.sendText.text = item.amount.toString()
-            }
-        }
-    }
+//    class RoutesAdapter : LiveDataAdapter<RouteWithAscents>() {
+//
+//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteHolder {
+//            val inflater = LayoutInflater.from(parent.context)
+//            return RouteHolder(inflater.inflate(R.layout.route_list_item, parent, false))
+//        }
+//
+//        class RouteHolder(itemView: View) : LiveDataViewHolder<RouteWithAscents>(itemView) {
+//
+//            override fun bind(item: RouteWithAscents) {
+//                itemView.routeText.text = item.name
+//                itemView.gradeText.text = item.grade
+//                itemView.kindText.text = item.kind
+//                itemView.sendText.text = item.amount.toString()
+//            }
+//        }
+//    }
 
     companion object: MainActivityTabFragment {
         @JvmStatic
