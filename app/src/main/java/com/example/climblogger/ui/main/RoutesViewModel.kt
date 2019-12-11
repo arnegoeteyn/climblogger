@@ -3,19 +3,17 @@ package com.example.climblogger.ui.main
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.climblogger.data.Route
-import com.example.climblogger.data.RouteRepository
-import com.example.climblogger.data.RouteRoomDatabase
+import com.example.climblogger.data.*
 
 class RoutesViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: RouteRepository
+    private val repository: RouteWithAscentsRepository
 
-    val allRoutes: LiveData<List<Route>>
+    val allRoutes: LiveData<List<RouteWithAscents>>
 
     init {
-        val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
-        repository = RouteRepository(routeDao)
+        val routeDao = RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
+        repository = RouteWithAscentsRepository(routeDao)
 
-        allRoutes = repository.allRoutes
+        allRoutes = repository.routeWithAscents
     }
 }
