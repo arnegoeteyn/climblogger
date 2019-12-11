@@ -56,6 +56,7 @@ class SectorActivity : AppCompatActivity() {
 
     fun updateSectorUi() {
         nameText.text = sector.name
+        commentText.text = sector.comment
     }
 
     fun initRoutesRecyclerView() {
