@@ -23,7 +23,7 @@ class SectorViewModel(application: Application, sector_id: String) : AndroidView
         routeRepository = RouteWithAscentsRepository(routeDao)
 
         sector = sectorRepository.getSector(sector_id)
-        sectorRoutes = routeRepository.routesFromSector(sector_id)
+        sectorRoutes = routeRepository.routesWithAscents(sector_id, true)
 
     }
 

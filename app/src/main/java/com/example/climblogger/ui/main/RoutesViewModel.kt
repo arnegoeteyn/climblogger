@@ -14,6 +14,6 @@ class RoutesViewModel(application: Application) : AndroidViewModel(application) 
         val routeDao = RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
         repository = RouteWithAscentsRepository(routeDao)
 
-        allRoutes = repository.routeWithAscents
+        allRoutes = repository.routesWithAscents()
     }
 }
