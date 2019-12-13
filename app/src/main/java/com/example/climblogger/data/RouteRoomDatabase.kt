@@ -17,6 +17,7 @@ public abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun ascentWithRouteDao(): AscentWithRouteDao
     abstract fun routeAmountDao(): RouteAmountDoa
     abstract fun routeWithAscentsDao(): RouteWithAscentsDoa
+    abstract fun routeWithSectorDao(): RouteWithSectorDao
 
     companion object {
 

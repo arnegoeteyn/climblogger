@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.climblogger.R
 import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
+import com.example.climblogger.data.RouteWithSector
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AddAscentActivity.Companion.EXTRA_ROUTE_ID
 import com.example.climblogger.ui.ascent.AscentActivity
@@ -30,7 +31,7 @@ class RouteActivity : AppCompatActivity() {
 
     private lateinit var routeViewModel: RouteViewModel
 
-    private lateinit var route: Route
+    private lateinit var route: RouteWithSector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +71,7 @@ class RouteActivity : AppCompatActivity() {
     }
 
     private fun deleteRoute() {
-        routeViewModel.deleteRoute(this.route)
+        routeViewModel.deleteRoute(this.route.route)
         finish()
     }
 
@@ -94,11 +95,12 @@ class RouteActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun setRouteViews(route: Route) {
-        name.text = route.name
-        grade.text = route.grade
-        comment.text = route.comment
-        kind.text = route.kind
+    private fun setRouteViews(route: RouteWithSector) {
+        name.text = route.route.name
+        grade.text = route.route.grade
+        comment.text = route.route.comment
+        kind.text = route.route.kind
+        sectorTextView.text = route.sector_name
     }
 
     private fun initAscentsRecyclerView() {
