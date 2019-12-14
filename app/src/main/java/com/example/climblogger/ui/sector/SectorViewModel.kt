@@ -12,17 +12,25 @@ class SectorViewModel(application: Application, sector_id: String) : AndroidView
 
     private val sectorRepository: SectorRepository
     private val routeRepository: RouteWithAscentsRepository
+    private val sectorWithAreaRepository: SectorWithAreaRepository
 
     val sector: LiveData<Sector>
+    val sectorWithArea: LiveData<SectorWithArea>
     val sectorRoutes: LiveData<List<RouteWithAscents>>
 
     init {
         val sectorDao: SectorDao = RouteRoomDatabase.getDatabase(application).sectorDao()
-        val routeDao: RouteWithAscentsDoa = RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
+        val routeDao: RouteWithAscentsDoa =
+            RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
+        val sectorWithAreaDao: SectorWithAreaDao =
+            RouteRoomDatabase.getDatabase(application).sectorWithAreaDao()
+
         sectorRepository = SectorRepository(sectorDao)
         routeRepository = RouteWithAscentsRepository(routeDao)
+        sectorWithAreaRepository = SectorWithAreaRepository(sectorWithAreaDao)
 
         sector = sectorRepository.getSector(sector_id)
+        sectorWithArea = sectorWithAreaDao.getSectorWithArea(sector_id)
         sectorRoutes = routeRepository.routesWithAscents(sector_id, true)
 
     }

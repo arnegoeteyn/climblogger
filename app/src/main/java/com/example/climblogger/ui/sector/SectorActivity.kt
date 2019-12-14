@@ -16,6 +16,7 @@ import com.example.climblogger.R
 import com.example.climblogger.adapters.RouteWithAscentsAdapter
 import com.example.climblogger.data.Route
 import com.example.climblogger.data.Sector
+import com.example.climblogger.data.SectorWithArea
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.AddRouteActivity.Companion.EXTRA_SECTOR_ID
 import com.example.climblogger.ui.route.RouteActivity
@@ -31,7 +32,7 @@ class SectorActivity : AppCompatActivity() {
 
     private lateinit var sectorViewModel: SectorViewModel
 
-    private lateinit var sector: Sector
+    private lateinit var sector: SectorWithArea
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +44,9 @@ class SectorActivity : AppCompatActivity() {
             .get(SectorViewModel::class.java)
 
 
-        sectorViewModel.sector.observe(this, Observer { sector ->
+        sectorViewModel.sectorWithArea.observe(this, Observer { sector ->
             this.sector = sector
-            updateSectorUi()
+            setSectorViews(sector)
         })
 
         initRoutesRecyclerView()
@@ -55,9 +56,10 @@ class SectorActivity : AppCompatActivity() {
 
     }
 
-    fun updateSectorUi() {
-        nameText.text = sector.name
-        commentText.text = sector.comment
+    fun setSectorViews(sector: SectorWithArea) {
+        nameText.text = sector.sector.name
+        commentText.text = sector.sector.comment
+        areaText.text = sector.area_name
     }
 
     fun initRoutesRecyclerView() {
@@ -87,7 +89,7 @@ class SectorActivity : AppCompatActivity() {
     }
 
     private fun deleteSector() {
-        sectorViewModel.deleteSector(this.sector)
+        sectorViewModel.deleteSector(this.sector.sector)
         finish()
     }
 
