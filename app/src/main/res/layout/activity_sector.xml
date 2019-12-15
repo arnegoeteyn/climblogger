@@ -46,6 +46,13 @@
                 android:text="@string/add_route"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/add_route_button"/>
+
+        <Button
+                android:id="@+id/edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_sector" />
+
         <com.example.climblogger.util.ConfirmationButton
                 android:text="@string/delete_sector"
                 android:layout_width="wrap_content"

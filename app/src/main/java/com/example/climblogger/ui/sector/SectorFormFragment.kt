@@ -23,7 +23,7 @@ private const val ARG_PARAM_AREA_ID = "AREA_ID_PARAM"
 
 class SectorFormFragment : Fragment() {
     private var sector_id: String = ""
-    private var area_id: String = ""
+    private var area_id: String? = ""
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -69,12 +69,15 @@ class SectorFormFragment : Fragment() {
             sector?.let {
                 nameTextInput.editText?.setText(it.name)
                 commentTextInput.editText?.setText(it.comment)
+                area_id = it.areaId
             }
             // load the spinners and update them with the already selected info
-            initAreaSpinner(sector?.areaId)
+//            initAreaSpinner(sector?.areaId)
 
             area_id?.let {
                 initAreaSpinner(it)
+            } ?: run {
+                initAreaSpinner(null)
             }
         })
     }
@@ -99,8 +102,8 @@ class SectorFormFragment : Fragment() {
     }
 
     private fun initAreaSpinner(selectedAreaId: String?) {
-        addSectorViewModel.allAreas.observe(this, androidx.lifecycle.Observer { sectors ->
-            this.spinner.setData(sectors)
+        addSectorViewModel.allAreas.observe(this, androidx.lifecycle.Observer { areas ->
+            this.spinner.setData(areas)
             selectedAreaId?.let { selectAreaInSpinner(it) }
         })
     }

@@ -7,20 +7,14 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface SectorDao {
+abstract class SectorDao : BaseDao<Sector>() {
 
     @Query("SELECT * FROM sectors ORDER BY name")
-    fun getAllSectors(): LiveData<List<Sector>>
-
-    @Insert
-    fun insertSector(sector: Sector)
+    abstract fun getAllSectors(): LiveData<List<Sector>>
 
     @Query("SELECT * FROM sectors WHERE sector_uuid = :sector_id")
-    fun getSector(sector_id: String): LiveData<Sector>
-
-    @Delete
-    fun deleteSector(sector: Sector)
+    abstract fun getSector(sector_id: String): LiveData<Sector>
 
     @Query(" SELECT * FROM sectors WHERE area_uuid == :area_id ORDER BY name")
-    fun sectorsFromArea(area_id: String): LiveData<List<Sector>>
+    abstract fun sectorsFromArea(area_id: String): LiveData<List<Sector>>
 }

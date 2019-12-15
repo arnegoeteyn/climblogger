@@ -11,6 +11,7 @@
             android:theme="@style/AppTheme">
         <activity android:name=".ui.route.EditRouteActivity"></activity>
         <activity android:name=".ui.area.EditAreaActivity"></activity>
+        <activity android:name=".ui.sector.EditSectorActivity"></activity>
         <activity android:name=".ui.stats.StatsActivity"></activity>
         <activity android:name=".ui.area.AreaActivity"></activity>
         <activity android:name=".ui.sector.SectorActivity"></activity>

@@ -7,7 +7,7 @@ class SectorRepository(private val sectorDao: SectorDao) {
 
     @WorkerThread
     fun insert(sector: Sector) {
-        sectorDao.insertSector(sector)
+        sectorDao.insert(sector)
     }
 
     fun getSector(sector_id: String): LiveData<Sector> {
@@ -16,8 +16,14 @@ class SectorRepository(private val sectorDao: SectorDao) {
 
     @WorkerThread
     fun deleteSector(sector: Sector) {
-        sectorDao.deleteSector(sector)
+        sectorDao.delete(sector)
     }
+
+    @WorkerThread
+    fun updateSector(sector: Sector) {
+        return sectorDao.update(sector)
+    }
+
 
     fun sectorsFromArea(areaId: String): LiveData<List<Sector>> {
         return sectorDao.sectorsFromArea(areaId)

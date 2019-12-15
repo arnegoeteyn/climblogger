@@ -53,10 +53,20 @@ class SectorActivity : AppCompatActivity() {
 
         initRoutesRecyclerView()
 
+        edit_button.setOnClickListener { editSector(sectorId) }
         add_route_button.setOnClickListener { addRoute(sectorId) }
         delete_button.setOnPositiveClickListener { deleteSector() }
 
     }
+
+    private fun editSector(sector_id: String) {
+        intent = Intent(this, EditSectorActivity::class.java)
+        val bundle: Bundle = Bundle()
+        bundle.putString(EditSectorActivity.EXTRA_SECTOR_ID, sector_id)
+        intent.putExtras(bundle)
+        startActivity(intent)
+    }
+
 
     fun setSectorViews(sector: SectorWithArea) {
         nameText.text = sector.sector.name
