@@ -33,5 +33,9 @@ class AddAscentViewModel(application: Application, route_id: String) : AndroidVi
     fun insertAscent(ascent: Ascent) = viewModelScope.launch(Dispatchers.IO) {
         ascentRepository.insertAscent(ascent)
     }
+
+    fun getAscent(ascent_id: String): LiveData<Ascent> {
+        return ascentRepository.getAscent(ascent_id)
+    }
 }
 
