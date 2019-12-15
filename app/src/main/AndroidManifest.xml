@@ -19,6 +19,7 @@
         <activity android:name=".ui.sector.AddSectorActivity"></activity>
         <activity android:name=".ui.route.AddRouteActivity"></activity>
         <activity android:name=".ui.ascent.AscentActivity"></activity>
+        <activity android:name=".ui.ascent.EditAscentActivity"></activity>
         <activity android:name=".ui.ascent.AddAscentActivity"></activity>
         <activity android:name=".ui.route.RouteActivity"></activity>
         <activity

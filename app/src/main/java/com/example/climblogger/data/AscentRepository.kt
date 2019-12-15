@@ -17,13 +17,18 @@ class AscentRepository(private val ascentDao: AscentDao, private val ascentWithR
     }
 
     @WorkerThread
-    suspend fun insertAscent(ascent: Ascent) {
-        return ascentDao.insertAscents(ascent)
+    fun update(ascent: Ascent) {
+        return ascentDao.update(ascent)
+    }
+
+    @WorkerThread
+    suspend fun insertAscent(ascent: Ascent): Long {
+        return ascentDao.insert(ascent)
     }
 
     @WorkerThread
     suspend fun deleteAscent(ascent: Ascent) {
-        return ascentDao.deleteAscent(ascent)
+        return ascentDao.delete(ascent)
     }
 
     fun getAscentsWithRoute(ascent_id: String): LiveData<AscentWithRoute> {

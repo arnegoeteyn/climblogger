@@ -28,6 +28,7 @@
     <string name="edit_route">Edit Route</string>
     <string name="edit_area">Edit Area</string>
     <string name="edit_sector">Edit Sector</string>
+    <string name="edit_ascent">Edit Ascent</string>
 
 
     <string-array name="ascent_kind">

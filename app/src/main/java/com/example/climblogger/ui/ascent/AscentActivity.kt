@@ -2,6 +2,7 @@ package com.example.climblogger.ui.ascent
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -39,7 +40,17 @@ class AscentActivity : AppCompatActivity() {
         })
 
         delete_button.setOnPositiveClickListener { deleteAscent() }
+        editAscentButton.setOnClickListener { editAscent(ascent_id) }
+
         routeName.setOnClickListener { goToRoute() }
+    }
+
+    private fun editAscent(ascent_id: String) {
+        intent = Intent(this, EditAscentActivity::class.java)
+        val bundle = Bundle()
+        bundle.putString(EditAscentActivity.EXTRA_ASCENT_ID, ascent_id)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     private fun deleteAscent() {

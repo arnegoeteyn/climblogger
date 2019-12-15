@@ -18,6 +18,8 @@ import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
 import com.example.climblogger.util.ItemSpinner
 import kotlinx.android.synthetic.main.fragment_ascent_form.*
+import kotlinx.android.synthetic.main.fragment_ascent_form.date
+import kotlinx.android.synthetic.main.list_item_ascent.*
 import java.util.*
 
 private const val ARG_PARAM_ASCENT_ID = "ASCENT_ID_param"
@@ -72,18 +74,20 @@ class AscentFormFragment : Fragment() {
     }
 
     private fun loadForm() {
+        date.text = getStringDate()
         addAscentViewModel.getAscent(ascent_id).observe(this, Observer { ascent ->
             ascent?.let {
                 commentTextInput.editText?.setText(it.comment)
+                date.setText(it.date)
             }
 
             initKindSpinner(ascent?.kind)
 
+            initRouteSpinner(route_id)
 
-            route_id?.let {
-                initRouteSpinner(it)
-            } ?: run {
-                initRouteSpinner(null)
+
+            ascent?.let {
+                initRouteSpinner(it.route_id)
             }
         })
     }
