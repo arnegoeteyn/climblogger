@@ -5,44 +5,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.sector.AddSectorActivity">
-
-    <LinearLayout
-            android:orientation="vertical"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent">
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/nameTextInput">
+            android:layout_height="0dp"
+            android:id="@+id/fragmentPlace"
+            app:layout_constraintBottom_toTopOf="@id/addSectorButton"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/name"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/commentTextInput">
+    </FrameLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/comment"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+
     <Button
             android:text="@string/add_sector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/addSectorButton" android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-    <com.example.climblogger.util.ItemSpinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/areaSpinner"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/linearLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

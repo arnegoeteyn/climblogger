@@ -45,8 +45,10 @@ class SectorActivity : AppCompatActivity() {
 
 
         sectorViewModel.sectorWithArea.observe(this, Observer { sector ->
-            this.sector = sector
-            setSectorViews(sector)
+            sector?.let {
+                setSectorViews(it)
+                this.sector = it
+            }
         })
 
         initRoutesRecyclerView()
@@ -78,7 +80,8 @@ class SectorActivity : AppCompatActivity() {
         routesRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                sectorViewModel.sectorRoutes.value?.get(position)?.let { onRouteClicked(it.route_id) }
+                sectorViewModel.sectorRoutes.value?.get(position)
+                    ?.let { onRouteClicked(it.route_id) }
             }
         })
 

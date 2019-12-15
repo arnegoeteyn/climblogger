@@ -30,4 +30,8 @@ class AddSectorViewModel(application: Application) : AndroidViewModel(applicatio
     fun getArea(areaId: String): LiveData<Area> {
         return areaRepository.getArea(areaId)
     }
+
+    fun getRoute(sector_id: String): LiveData<Sector> {
+        return sectorRepository.getSector(sector_id)
+    }
 }

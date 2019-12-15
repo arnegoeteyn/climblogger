@@ -25,7 +25,10 @@ class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentIntera
         addRouteViewModel = ViewModelProviders.of(this).get(AddRouteViewModel::class.java)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentPlace, RouteFormFragment.newInstance(UUID.randomUUID().toString(), sector_id))
+            .add(
+                R.id.fragmentPlace,
+                RouteFormFragment.newInstance(UUID.randomUUID().toString(), sector_id)
+            )
             .commit()
 
         addRouteButton.setOnClickListener { addRoute() }
@@ -41,6 +44,7 @@ class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentIntera
 
 
     companion object {
-        const val EXTRA_SECTOR_ID = "EXTRA_SECTOR_ID" // pass route id to already select route in spinner
+        const val EXTRA_SECTOR_ID =
+            "EXTRA_SECTOR_ID" // pass route id to already select route in spinner
     }
 }

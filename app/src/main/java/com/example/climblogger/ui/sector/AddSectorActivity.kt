@@ -15,58 +15,46 @@ import com.example.climblogger.util.ItemSpinner
 import kotlinx.android.synthetic.main.activity_add_sector.*
 import java.util.*
 
-class AddSectorActivity : AppCompatActivity() {
+class AddSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInteractionListener {
 
     private lateinit var addSectorViewModel: AddSectorViewModel
 
     private lateinit var spinner: ItemSpinner<Area>
 
+    private var area_id: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_sector)
 
+        intent.extras?.let {
+            // a sector_id has been passed along
+            area_id = intent.extras?.get(EXTRA_AREA_ID) as String
+        }
+
         addSectorViewModel = ViewModelProviders.of(this).get(AddSectorViewModel::class.java)
 
-        this.spinner = findViewById(R.id.areaSpinner)
-
-
-        // check if an areaId is passed along and selct that area
-        intent.extras?.let {
-            val areaId = intent.extras?.get(EXTRA_AREA_ID) as String
-            addSectorViewModel.getArea(areaId).observe(this, Observer {
-                initAreaSpinner(it)
-            })
-        } ?: initAreaSpinner(null)
+        supportFragmentManager.beginTransaction()
+            .add(
+                R.id.fragmentPlace,
+                SectorFormFragment.newInstance(UUID.randomUUID().toString(), area_id)
+            )
+            .commit()
 
 
         addSectorButton.setOnClickListener { addSector() }
 
     }
 
-    private fun initAreaSpinner(selectedArea: Area?) {
-        addSectorViewModel.allAreas.observe(this, Observer { sectors ->
-            this.spinner.setData(sectors)
-            selectedArea?.let { selectAreaInSpinner(it) }
-        })
-    }
-
-    private fun selectAreaInSpinner(area: Area) {
-        spinner.selectItemInSpinner(area)
-    }
-
     private fun addSector() {
-        val commentText = commentTextInput.editText!!.text.toString()
-        val sector = Sector(
-            nameTextInput.editText!!.text.toString(),
-            (areaSpinner.selectedItem as Area).areaId,
-            if (commentText.isEmpty()) null else commentText,
-            UUID.randomUUID().toString()
+        addSectorViewModel.insertSector(
+            (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as SectorFormFragment).createSector()
         )
-        addSectorViewModel.insertSector(sector)
         finish()
     }
 
     companion object {
-        const val EXTRA_AREA_ID = "EXTRA_AREA_ID" // area ID can be passed to already select the area
+        const val EXTRA_AREA_ID =
+            "EXTRA_AREA_ID" // area ID can be passed to already select the area
     }
 }
