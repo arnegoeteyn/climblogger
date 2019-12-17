@@ -1,28 +1,28 @@
-package com.example.climblogger.ui.main
+package com.example.climblogger.ui.main.fragments
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
-import com.example.climblogger.data.AscentWithRoute
-import com.example.climblogger.util.LiveDataAdapter
+import com.example.climblogger.adapters.RouteWithAscentsAdapter
+import com.example.climblogger.ui.main.MainActivityTabFragment
 import com.example.climblogger.util.RecyclerViewOnItemClickListener
 import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
-class AscentsFragment() : Fragment() {
+
+class RoutesFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var ascentViewModel: AscentsViewModel
+    private lateinit var routesViewModel: RoutesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,30 +34,38 @@ class AscentsFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
-        ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
-        ascentViewModel.allAscentsWithRoute.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
-        })
+        // communication with the routesViewModel
+        routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
+
+        initRecyclerView()
     }
+
 
     private fun initRecyclerView() {
         // Setting the recyclerview
         val linearLayoutManager = LinearLayoutManager(this.context)
+
         recyclerView.setHasFixedSize(true)
+
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = AscentsAdapter()
+
+        recyclerView.adapter = RouteWithAscentsAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                ascentViewModel.allAscentsWithRoute.value?.get(position)
-                    ?.let { listener?.onAscentClicked(it.ascent.ascent_id) }
+                routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it.route_id) }
             }
         })
+
+        // listen for changes in the data
+        routesViewModel.allRoutes.observe(this, Observer {
+            recyclerView.setRecyclerViewProperties(it)
+        })
+
 
     }
 
@@ -77,32 +85,32 @@ class AscentsFragment() : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onAscentClicked(ascent_id: String)
+        fun onRouteClicked(route_id: String)
     }
 
 
-    class AscentsAdapter : LiveDataAdapter<AscentWithRoute>() {
+//    class RoutesAdapter : LiveDataAdapter<RouteWithAscents>() {
+//
+//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteHolder {
+//            val inflater = LayoutInflater.from(parent.context)
+//            return RouteHolder(inflater.inflate(R.layout.route_list_item, parent, false))
+//        }
+//
+//        class RouteHolder(itemView: View) : LiveDataViewHolder<RouteWithAscents>(itemView) {
+//
+//            override fun bind(item: RouteWithAscents) {
+//                itemView.routeText.text = item.name
+//                itemView.gradeText.text = item.grade
+//                itemView.kindText.text = item.kind
+//                itemView.sendText.text = item.amount.toString()
+//            }
+//        }
+//    }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AscentHolder {
-            val inflater = LayoutInflater.from(parent.context)
-            return AscentHolder(inflater.inflate(R.layout.list_item_ascent, parent, false))
-        }
-
-        class AscentHolder(itemView: View) : LiveDataViewHolder<AscentWithRoute>(itemView) {
-
-            override fun bind(item: AscentWithRoute) {
-                itemView.findViewById<TextView>(R.id.date).text = item.ascent.date
-                itemView.findViewById<TextView>(R.id.route).text = item.route.toString()
-            }
-        }
-    }
-
-    companion object : MainActivityTabFragment {
-
+    companion object: MainActivityTabFragment {
         @JvmStatic
-        override fun newInstance() = AscentsFragment()
+        override fun newInstance() = RoutesFragment()
 
-        override val TAG = AscentsFragment::class.qualifiedName!!
+        override val TAG = RoutesFragment::class.qualifiedName!!
     }
-
 }

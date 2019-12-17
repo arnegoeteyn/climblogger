@@ -12,6 +12,10 @@ import com.example.climblogger.ui.area.AreaActivity.Companion.EXTRA_AREA
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
+import com.example.climblogger.ui.main.fragments.AreasFragment
+import com.example.climblogger.ui.main.fragments.AscentsFragment
+import com.example.climblogger.ui.main.fragments.RoutesFragment
+import com.example.climblogger.ui.main.fragments.SectorsFragment
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
@@ -28,28 +32,30 @@ class MainActivity : AppCompatActivity(),
     SectorsFragment.OnFragmentInteractionListener,
     AreasFragment.OnFragmentInteractionListener {
 
+    // tag indicating the current fragment, needed to make the + button work
     private var currentFragmentTag: String = RoutesFragment.TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         initBottomNavigation()
-
         switchToRoutes()
 
         floatingActionButton.setOnClickListener { floatingButtonClicked() }
     }
 
+    /*
+        Stuff for the menu (3 dots)
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
         when (item?.itemId) {
             R.id.action_stats -> {
                 startActivity(Intent(this, StatsActivity::class.java))
@@ -59,6 +65,10 @@ class MainActivity : AppCompatActivity(),
         return super.onOptionsItemSelected(item)
     }
 
+    /*
+        Stuff for the floating plus button
+        and launching new activities from this
+     */
     private fun floatingButtonClicked() {
         when (currentFragmentTag) {
             RoutesFragment.TAG -> newRouteActivity()
@@ -88,14 +98,13 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
-    /**
-     * Handle what happens when a route gets selected
+    /*
+      Handle what happens when an item gets selected
      */
     override fun onRouteClicked(route_id: String) {
         val intent = Intent(this, RouteActivity::class.java)
         intent.putExtra(EXTRA_ROUTE, route_id)
         startActivity(intent)
-
     }
 
     override fun onAscentClicked(ascent_id: String) {
@@ -116,6 +125,9 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
+    /*
+        Stuff for bottom navigation
+     */
     private fun initBottomNavigation() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -167,6 +179,5 @@ class MainActivity : AppCompatActivity(),
 
     companion object {
         public val TAG = MainActivity::class.qualifiedName
-
     }
 }

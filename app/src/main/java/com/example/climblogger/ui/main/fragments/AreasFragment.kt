@@ -1,33 +1,34 @@
-package com.example.climblogger.ui.main
+package com.example.climblogger.ui.main.fragments
 
 import android.content.Context
-import android.nfc.Tag
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
-import com.example.climblogger.adapters.RouteWithAscentsAdapter
-import com.example.climblogger.data.Route
-import com.example.climblogger.data.RouteWithAscents
+import com.example.climblogger.data.Area
+import com.example.climblogger.ui.main.MainActivityTabFragment
 import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RecyclerViewOnItemClickListener
 import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
-import kotlinx.android.synthetic.main.route_list_item.view.*
 
-
-class RoutesFragment : Fragment() {
+class AreasFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var routesViewModel: RoutesViewModel
+    private lateinit var areasViewModel: AreasViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        areasViewModel = ViewModelProviders.of(this).get(AreasViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,41 +40,31 @@ class RoutesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // communication with the routesViewModel
-        routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
-
         initRecyclerView()
-    }
 
+        areasViewModel.allAreas.observe(this, Observer {
+            recyclerView.setRecyclerViewProperties(it)
+        })
+    }
 
     private fun initRecyclerView() {
         // Setting the recyclerview
         val linearLayoutManager = LinearLayoutManager(this.context)
-
         recyclerView.setHasFixedSize(true)
-
         recyclerView.layoutManager = linearLayoutManager
-
-        recyclerView.adapter = RouteWithAscentsAdapter()
+        recyclerView.adapter =
+            AreasAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it.route_id) }
+                areasViewModel.allAreas.value?.get(position)
+                    ?.let { listener?.onAreaClicked(it.areaId) }
             }
         })
-
-        // listen for changes in the data
-        routesViewModel.allRoutes.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
-        })
-
-
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -90,32 +81,30 @@ class RoutesFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onRouteClicked(route_id: String)
+        fun onAreaClicked(areaId: String)
     }
 
+    class AreasAdapter : LiveDataAdapter<Area>() {
 
-//    class RoutesAdapter : LiveDataAdapter<RouteWithAscents>() {
-//
-//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteHolder {
-//            val inflater = LayoutInflater.from(parent.context)
-//            return RouteHolder(inflater.inflate(R.layout.route_list_item, parent, false))
-//        }
-//
-//        class RouteHolder(itemView: View) : LiveDataViewHolder<RouteWithAscents>(itemView) {
-//
-//            override fun bind(item: RouteWithAscents) {
-//                itemView.routeText.text = item.name
-//                itemView.gradeText.text = item.grade
-//                itemView.kindText.text = item.kind
-//                itemView.sendText.text = item.amount.toString()
-//            }
-//        }
-//    }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreaHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            return AreaHolder(
+                inflater.inflate(R.layout.list_item_area, parent, false)
+            )
+        }
 
-    companion object: MainActivityTabFragment {
+        class AreaHolder(itemView: View) : LiveDataViewHolder<Area>(itemView) {
+
+            override fun bind(item: Area) {
+                itemView.findViewById<TextView>(R.id.area_name).text = item.name
+            }
+        }
+    }
+
+    companion object : MainActivityTabFragment {
+        override val TAG: String = AreasFragment::class.qualifiedName!!
+
         @JvmStatic
-        override fun newInstance() = RoutesFragment()
-
-        override val TAG = RoutesFragment::class.qualifiedName!!
+        override fun newInstance() = AreasFragment()
     }
 }
