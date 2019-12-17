@@ -13,17 +13,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.climblogger.R
+import com.example.climblogger.adapters.SectorsAdapter
 import com.example.climblogger.data.Sector
 import com.example.climblogger.ui.main.MainActivityTabFragment
-import com.example.climblogger.util.LiveDataAdapter
-import com.example.climblogger.util.RecyclerViewOnItemClickListener
-import com.example.climblogger.util.addOnItemClickListener
-import com.example.climblogger.util.setRecyclerViewProperties
+import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
 class SectorsFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
+    private lateinit var sectorsAdapter: LiveDataAdapter<Sector>
     private lateinit var sectorsViewModel: SectorsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,13 +48,8 @@ class SectorsFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        // Setting the recyclerview
-        val linearLayoutManager = LinearLayoutManager(this.context)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter =
-            SectorsAdapter()
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+        sectorsAdapter = SectorsAdapter()
+        recyclerView.standardInit(sectorsAdapter)
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
@@ -86,20 +80,6 @@ class SectorsFragment : Fragment() {
         fun onSectorClicked(sector_id: String)
     }
 
-    class SectorsAdapter : LiveDataAdapter<Sector>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LiveDataViewHolder<Sector> {
-            val inflater = LayoutInflater.from(parent.context)
-            return SectorHolder(
-                inflater.inflate(R.layout.list_item_sector, parent, false)
-            )
-        }
-
-        class SectorHolder(itemView: View) : LiveDataViewHolder<Sector>(itemView) {
-            override fun bind(item: Sector) {
-                itemView.findViewById<TextView>(R.id.sector_name).text = item.name
-            }
-        }
-    }
 
     companion object : MainActivityTabFragment {
         override val TAG: String = SectorsFragment::class.qualifiedName!!

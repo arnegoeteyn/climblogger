@@ -12,16 +12,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
 import com.example.climblogger.adapters.RouteWithAscentsAdapter
+import com.example.climblogger.data.RouteWithAscents
 import com.example.climblogger.ui.main.MainActivityTabFragment
-import com.example.climblogger.util.RecyclerViewOnItemClickListener
-import com.example.climblogger.util.addOnItemClickListener
-import com.example.climblogger.util.setRecyclerViewProperties
+import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
 
 class RoutesFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
+    private lateinit var routesAdapter: LiveDataAdapter<RouteWithAscents>
     private lateinit var routesViewModel: RoutesViewModel
 
     override fun onCreateView(
@@ -34,39 +34,30 @@ class RoutesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // communication with the routesViewModel
+        initRecyclerView()
         routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
 
-        initRecyclerView()
+
+        // listen for changes in the data
+        routesViewModel.allRoutes.observe(this, Observer {
+            routesAdapter.setData(it)
+        })
+
     }
 
 
     private fun initRecyclerView() {
-        // Setting the recyclerview
-        val linearLayoutManager = LinearLayoutManager(this.context)
-
-        recyclerView.setHasFixedSize(true)
-
-        recyclerView.layoutManager = linearLayoutManager
-
-        recyclerView.adapter = RouteWithAscentsAdapter()
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+        routesAdapter = RouteWithAscentsAdapter()
+        recyclerView.standardInit(routesAdapter)
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                routesViewModel.allRoutes.value?.get(position)?.let { listener?.onRouteClicked(it.route_id) }
+                routesViewModel.allRoutes.value?.get(position)
+                    ?.let { listener?.onRouteClicked(it.route_id) }
             }
         })
-
-        // listen for changes in the data
-        routesViewModel.allRoutes.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
-        })
-
-
     }
 
 
@@ -88,26 +79,7 @@ class RoutesFragment : Fragment() {
         fun onRouteClicked(route_id: String)
     }
 
-
-//    class RoutesAdapter : LiveDataAdapter<RouteWithAscents>() {
-//
-//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteHolder {
-//            val inflater = LayoutInflater.from(parent.context)
-//            return RouteHolder(inflater.inflate(R.layout.route_list_item, parent, false))
-//        }
-//
-//        class RouteHolder(itemView: View) : LiveDataViewHolder<RouteWithAscents>(itemView) {
-//
-//            override fun bind(item: RouteWithAscents) {
-//                itemView.routeText.text = item.name
-//                itemView.gradeText.text = item.grade
-//                itemView.kindText.text = item.kind
-//                itemView.sendText.text = item.amount.toString()
-//            }
-//        }
-//    }
-
-    companion object: MainActivityTabFragment {
+    companion object : MainActivityTabFragment {
         @JvmStatic
         override fun newInstance() = RoutesFragment()
 

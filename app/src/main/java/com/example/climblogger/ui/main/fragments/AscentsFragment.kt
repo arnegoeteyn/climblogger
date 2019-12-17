@@ -12,17 +12,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
+import com.example.climblogger.adapters.AscentWithRoutesAdapter
+import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.ui.main.MainActivityTabFragment
-import com.example.climblogger.util.LiveDataAdapter
-import com.example.climblogger.util.RecyclerViewOnItemClickListener
-import com.example.climblogger.util.addOnItemClickListener
-import com.example.climblogger.util.setRecyclerViewProperties
+import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
-class AscentsFragment() : Fragment() {
+class AscentsFragment : Fragment() {
+
     private var listener: OnFragmentInteractionListener? = null
 
+    private lateinit var ascentsAdapter: LiveDataAdapter<AscentWithRoute>
     private lateinit var ascentViewModel: AscentsViewModel
 
     override fun onCreateView(
@@ -39,18 +40,13 @@ class AscentsFragment() : Fragment() {
         ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
         ascentViewModel.allAscentsWithRoute.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
+            ascentsAdapter.setData(it)
         })
     }
 
     private fun initRecyclerView() {
-        // Setting the recyclerview
-        val linearLayoutManager = LinearLayoutManager(this.context)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter =
-            AscentsAdapter()
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+        ascentsAdapter = AscentWithRoutesAdapter()
+        recyclerView.standardInit(ascentsAdapter)
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
@@ -63,6 +59,9 @@ class AscentsFragment() : Fragment() {
 
     }
 
+    interface OnFragmentInteractionListener {
+        fun onAscentClicked(ascent_id: String)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -78,28 +77,6 @@ class AscentsFragment() : Fragment() {
         listener = null
     }
 
-    interface OnFragmentInteractionListener {
-        fun onAscentClicked(ascent_id: String)
-    }
-
-
-    class AscentsAdapter : LiveDataAdapter<AscentWithRoute>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AscentHolder {
-            val inflater = LayoutInflater.from(parent.context)
-            return AscentHolder(
-                inflater.inflate(R.layout.list_item_ascent, parent, false)
-            )
-        }
-
-        class AscentHolder(itemView: View) : LiveDataViewHolder<AscentWithRoute>(itemView) {
-
-            override fun bind(item: AscentWithRoute) {
-                itemView.findViewById<TextView>(R.id.date).text = item.ascent.date
-                itemView.findViewById<TextView>(R.id.route).text = item.route.toString()
-            }
-        }
-    }
 
     companion object : MainActivityTabFragment {
 

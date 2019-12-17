@@ -1,18 +1,18 @@
 package com.example.climblogger.util
 
-import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.climblogger.ui.route.RouteActivity
 
 interface RecyclerViewOnItemClickListener {
     fun onItemClicked(position: Int, view: View)
 }
 
 fun RecyclerView.addOnItemClickListener(onClickListener: RecyclerViewOnItemClickListener) {
-    this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
+    this.addOnChildAttachStateChangeListener(object :
+        RecyclerView.OnChildAttachStateChangeListener {
         override fun onChildViewDetachedFromWindow(view: View) {
             view.setOnClickListener(null)
         }
@@ -33,6 +33,28 @@ fun <T> RecyclerView.setRecyclerViewProperties(items: List<T>) {
     }
 }
 
+/**
+ * Standard init for most recyclerviews we use
+ */
+fun <T : RecyclerView.ViewHolder> RecyclerView.standardInit(adapter: RecyclerView.Adapter<T>) {
+    val linearLayoutManager = LinearLayoutManager(this.context)
+    setHasFixedSize(true)
+    layoutManager = linearLayoutManager
+
+    this.adapter = adapter
+
+    addItemDecoration(
+        DividerItemDecoration(
+            context,
+            linearLayoutManager.orientation
+        )
+    )
+}
+
+/**
+ * LiveDataAdapter class that can handle updates
+ * This can be extended and used as a normal adapter, ony the function setData has to be used
+ */
 abstract class LiveDataAdapter<T> : RecyclerView.Adapter<LiveDataAdapter.LiveDataViewHolder<T>>() {
     var items = emptyList<T>()
 

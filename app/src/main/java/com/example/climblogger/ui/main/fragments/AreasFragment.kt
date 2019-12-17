@@ -5,25 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
-import com.example.climblogger.data.Area
+import com.example.climblogger.adapters.AreasAdapter
 import com.example.climblogger.ui.main.MainActivityTabFragment
-import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RecyclerViewOnItemClickListener
 import com.example.climblogger.util.addOnItemClickListener
-import com.example.climblogger.util.setRecyclerViewProperties
+import com.example.climblogger.util.standardInit
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
 class AreasFragment : Fragment() {
-    private var listener: OnFragmentInteractionListener? = null
 
+    private var listener: OnFragmentInteractionListener? = null
     private lateinit var areasViewModel: AreasViewModel
+
+    // LiveDataAdapter showing our areas
+    private lateinit var areasAdapter: AreasAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +33,6 @@ class AreasFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_recyclerview, container, false)
     }
 
@@ -43,18 +41,13 @@ class AreasFragment : Fragment() {
         initRecyclerView()
 
         areasViewModel.allAreas.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
+            areasAdapter.setData(it)
         })
     }
 
     private fun initRecyclerView() {
-        // Setting the recyclerview
-        val linearLayoutManager = LinearLayoutManager(this.context)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter =
-            AreasAdapter()
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+        areasAdapter = AreasAdapter()
+        recyclerView.standardInit(areasAdapter)
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
@@ -64,6 +57,10 @@ class AreasFragment : Fragment() {
                     ?.let { listener?.onAreaClicked(it.areaId) }
             }
         })
+    }
+
+    interface OnFragmentInteractionListener {
+        fun onAreaClicked(areaId: String)
     }
 
     override fun onAttach(context: Context) {
@@ -80,26 +77,6 @@ class AreasFragment : Fragment() {
         listener = null
     }
 
-    interface OnFragmentInteractionListener {
-        fun onAreaClicked(areaId: String)
-    }
-
-    class AreasAdapter : LiveDataAdapter<Area>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreaHolder {
-            val inflater = LayoutInflater.from(parent.context)
-            return AreaHolder(
-                inflater.inflate(R.layout.list_item_area, parent, false)
-            )
-        }
-
-        class AreaHolder(itemView: View) : LiveDataViewHolder<Area>(itemView) {
-
-            override fun bind(item: Area) {
-                itemView.findViewById<TextView>(R.id.area_name).text = item.name
-            }
-        }
-    }
 
     companion object : MainActivityTabFragment {
         override val TAG: String = AreasFragment::class.qualifiedName!!
