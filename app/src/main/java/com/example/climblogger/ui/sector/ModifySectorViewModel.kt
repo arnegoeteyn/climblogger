@@ -8,7 +8,7 @@ import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddSectorViewModel(application: Application) : AndroidViewModel(application) {
+class ModifySectorViewModel(application: Application) : AndroidViewModel(application) {
     private val sectorRepository: SectorRepository
     private val areaRepository: AreaRepository
 
@@ -27,11 +27,15 @@ class AddSectorViewModel(application: Application) : AndroidViewModel(applicatio
         sectorRepository.insert(sector)
     }
 
-    fun getArea(areaId: String): LiveData<Area> {
-        return areaRepository.getArea(areaId)
+    fun getSector(sector_id: String): LiveData<Sector> {
+        return sectorRepository.getSector(sector_id)
     }
 
-    fun getRoute(sector_id: String): LiveData<Sector> {
-        return sectorRepository.getSector(sector_id)
+    fun editSector(sector: Sector) = viewModelScope.launch(Dispatchers.IO) {
+        sectorRepository.updateSector(sector)
+    }
+
+    fun getArea(areaId: String): LiveData<Area?> {
+        return areaRepository.getArea(areaId)
     }
 }

@@ -28,11 +28,12 @@ class AreaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_area)
 
-        initSectorsRecyclerView()
 
         val areaId = intent.extras?.get(EXTRA_AREA) as String
         areaViewModel = ViewModelProviders.of(this, AreaViewModelFactory(application, areaId))
             .get(AreaViewModel::class.java)
+
+        initSectorsRecyclerView()
 
 
         // if an area is passed we can show it
@@ -55,7 +56,7 @@ class AreaActivity : AppCompatActivity() {
 
     private fun initSectorsRecyclerView() {
         sectorsAdapter = SectorsAdapter()
-        recyclerView.standardInit(sectorsAdapter)
+        sectorsRecyclerView.standardInit(sectorsAdapter)
 
         // clicking brings you to the sectorDetail
         sectorsRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {

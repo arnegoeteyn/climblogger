@@ -20,13 +20,13 @@ interface SectorWithAreaDao {
                 ORDER BY name asc
             """
     )
-    abstract fun getSectorWithArea(sector_uuid: String): LiveData<SectorWithArea>
+    abstract fun getSectorWithArea(sector_uuid: String): LiveData<SectorWithArea?>
 }
 
 
 class SectorWithAreaRepository(private val sectorWithAreaDao: SectorWithAreaDao) {
 
-    fun getSector(sector_id: String): LiveData<SectorWithArea> {
+    fun getSector(sector_id: String): LiveData<SectorWithArea?> {
         return sectorWithAreaDao.getSectorWithArea(sector_id)
     }
 }

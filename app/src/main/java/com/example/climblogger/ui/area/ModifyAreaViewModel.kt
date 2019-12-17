@@ -26,7 +26,7 @@ class ModifyAreaViewModel(application: Application) : AndroidViewModel(applicati
         areaRepository.insert(area)
     }
 
-    fun getArea(area_id: String): LiveData<Area> {
+    fun getArea(area_id: String): LiveData<Area?> {
         return areaRepository.getArea(area_id)
     }
 

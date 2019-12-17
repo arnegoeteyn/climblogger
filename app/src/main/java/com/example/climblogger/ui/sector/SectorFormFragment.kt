@@ -2,18 +2,14 @@ package com.example.climblogger.ui.sector
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.data.Area
-import com.example.climblogger.data.Route
 import com.example.climblogger.data.Sector
 import com.example.climblogger.util.ItemSpinner
 import kotlinx.android.synthetic.main.fragment_route_form.*
@@ -23,14 +19,13 @@ private const val ARG_PARAM_AREA_ID = "AREA_ID_PARAM"
 
 class SectorFormFragment : Fragment() {
     private var sector_id: String = ""
-    private var area_id: String? = ""
+    private var areaId: String? = ""
 
     private var listener: OnFragmentInteractionListener? = null
 
-
     private lateinit var spinner: ItemSpinner<Area> // pass generic type here for easier
 
-    private lateinit var addSectorViewModel: AddSectorViewModel
+    private lateinit var modifySectorViewModel: ModifySectorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,54 +38,45 @@ class SectorFormFragment : Fragment() {
 
             // get area if it's passed along
             bundle.getString(ARG_PARAM_AREA_ID)?.let {
-                area_id = it
+                areaId = it
             }
         }
 
-
-        addSectorViewModel = ViewModelProviders.of(this).get(AddSectorViewModel::class.java)
-
+        modifySectorViewModel = ViewModelProviders.of(this).get(ModifySectorViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_sector_form, container, false)
         this.spinner = view.findViewById(R.id.areaSpinner)
-
         return view
-    }
-
-    private fun loadForm() {
-        // if route already exists load it
-        addSectorViewModel.getRoute(sector_id).observe(this, Observer { sector ->
-            sector?.let {
-                nameTextInput.editText?.setText(it.name)
-                commentTextInput.editText?.setText(it.comment)
-                area_id = it.areaId
-            }
-            // load the spinners and update them with the already selected info
-//            initAreaSpinner(sector?.areaId)
-
-            area_id?.let {
-                initAreaSpinner(it)
-            } ?: run {
-                initAreaSpinner(null)
-            }
-        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // if route exists already fill in details
         loadForm()
     }
 
+    private fun loadForm() {
+        // if route already exists load it
+        modifySectorViewModel.getSector(sector_id).observe(this, Observer { sector ->
+            sector?.let {
+                nameTextInput.editText?.setText(it.name)
+                commentTextInput.editText?.setText(it.comment)
 
-    public fun createSector(): Sector {
+                // if sector already has areaId
+                this.areaId = it.areaId
+            }
+
+            // init the areaSpinner
+            initAreaSpinner(this.areaId)
+        })
+    }
+
+
+    fun createSector(): Sector {
         val commentText = commentTextInput.editText!!.text.toString()
 
         return Sector(
@@ -102,19 +88,16 @@ class SectorFormFragment : Fragment() {
     }
 
     private fun initAreaSpinner(selectedAreaId: String?) {
-        addSectorViewModel.allAreas.observe(this, androidx.lifecycle.Observer { areas ->
+        modifySectorViewModel.allAreas.observe(this, Observer { areas ->
             this.spinner.setData(areas)
-            selectedAreaId?.let { selectAreaInSpinner(it) }
-        })
-    }
 
-    private fun selectAreaInSpinner(area_id: String) {
-        // ugly
-        for (i in 0 until spinner.count) {
-            if ((spinner.getItemAtPosition(i) as Area).areaId == area_id) {
-                spinner.setSelection(i)
+            // if an areaId is passed along we should select it
+            selectedAreaId?.let {
+                modifySectorViewModel.getArea(it).observe(this, Observer { area: Area? ->
+                    spinner.selectItemInSpinner(area)
+                })
             }
-        }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -131,8 +114,7 @@ class SectorFormFragment : Fragment() {
         listener = null
     }
 
-    interface OnFragmentInteractionListener {
-    }
+    interface OnFragmentInteractionListener
 
     companion object {
         @JvmStatic

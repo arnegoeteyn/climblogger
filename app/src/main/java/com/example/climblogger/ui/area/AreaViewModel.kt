@@ -14,7 +14,7 @@ class AreaViewModel(application: Application, areaId: String) : AndroidViewModel
     private val areaRepository: AreaRepository
     private val sectorRepository: SectorRepository
 
-    val area: LiveData<Area>
+    val area: LiveData<Area?>
     val areaSectors: LiveData<List<Sector>>
 
     init {

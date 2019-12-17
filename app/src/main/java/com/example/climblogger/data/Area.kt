@@ -24,7 +24,7 @@ abstract class AreaDao : BaseDao<Area>() {
     abstract fun getAllAreas(): LiveData<List<Area>>
 
     @Query("SELECT * FROM areas WHERE area_uuid == :areaId")
-    abstract fun getArea(areaId: String): LiveData<Area>
+    abstract fun getArea(areaId: String): LiveData<Area?>
 }
 
 
@@ -34,7 +34,7 @@ class AreaRepository(private val areaDao: AreaDao) {
         areaDao.insert(area)
     }
 
-    fun getArea(areaId: String): LiveData<Area> = areaDao.getArea(areaId)
+    fun getArea(areaId: String): LiveData<Area?> = areaDao.getArea(areaId)
 
     @WorkerThread
     fun deleteArea(area: Area) {

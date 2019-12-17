@@ -15,7 +15,7 @@ class SectorViewModel(application: Application, sector_id: String) : AndroidView
     private val sectorWithAreaRepository: SectorWithAreaRepository
 
     val sector: LiveData<Sector>
-    val sectorWithArea: LiveData<SectorWithArea>
+    val sectorWithArea: LiveData<SectorWithArea?>
     val sectorRoutes: LiveData<List<RouteWithAscents>>
 
     init {

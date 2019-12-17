@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onAreaClicked(areaId: String) {
         val intent = Intent(this, AreaActivity::class.java)
-        intent.putExtra(EXTRA_AREA, areaId)
+        intent.putExtra(AreaActivity.EXTRA_AREA, areaId)
         startActivity(intent)
     }
 
