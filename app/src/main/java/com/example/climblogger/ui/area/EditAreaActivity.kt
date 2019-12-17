@@ -9,23 +9,22 @@ import java.util.*
 
 class EditAreaActivity : AppCompatActivity(), AreaFormFragment.OnFragmentInteractionListener {
 
-    private lateinit var editAreaViewModel: EditAreaViewModel
+    private lateinit var editAreaViewModel: ModifyAreaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_route)
 
-
         // unpack bundle
-        var area_id: String = UUID.randomUUID().toString()
+        var areaId: String = UUID.randomUUID().toString()
         intent.extras?.let {
-            area_id = it.getString(EXTRA_AREA_ID, UUID.randomUUID().toString())
+            areaId = it.getString(EXTRA_AREA_ID, UUID.randomUUID().toString())
         }
 
-        editAreaViewModel = ViewModelProviders.of(this).get(EditAreaViewModel::class.java)
+        editAreaViewModel = ViewModelProviders.of(this).get(ModifyAreaViewModel::class.java)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentPlace, AreaFormFragment.newInstance(area_id))
+            .add(R.id.fragmentPlace, AreaFormFragment.newInstance(areaId))
             .commit()
 
         editRouteButton.setOnClickListener { editArea() }
@@ -39,7 +38,7 @@ class EditAreaActivity : AppCompatActivity(), AreaFormFragment.OnFragmentInterac
     }
 
     companion object {
-        public const val EXTRA_AREA_ID = "AREA_ID_EDIT_ROUTE_ACTIVITY"
+        const val EXTRA_AREA_ID = "AREA_ID_EDIT_ROUTE_ACTIVITY"
     }
 
 }

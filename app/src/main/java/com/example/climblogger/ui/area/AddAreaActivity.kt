@@ -10,13 +10,13 @@ import java.util.*
 
 class AddAreaActivity : AppCompatActivity(), AreaFormFragment.OnFragmentInteractionListener {
 
-    private lateinit var addAreaViewModel: AddAreaViewModel
+    private lateinit var addAreaViewModel: ModifyAreaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_area)
 
-        addAreaViewModel = ViewModelProviders.of(this).get(AddAreaViewModel::class.java)
+        addAreaViewModel = ViewModelProviders.of(this).get(ModifyAreaViewModel::class.java)
 
         // attaching the areaFormFragment
         supportFragmentManager.beginTransaction()
