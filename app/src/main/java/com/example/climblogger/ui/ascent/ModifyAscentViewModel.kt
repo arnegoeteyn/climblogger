@@ -8,12 +8,11 @@ import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddAscentViewModel(application: Application, route_id: String) : AndroidViewModel(application) {
+class ModifyAscentViewModel(application: Application) :
+    AndroidViewModel(application) {
 
     private val ascentRepository: AscentRepository
     private val routeRepository: RouteRepository
-
-    val route: LiveData<Route?>
 
     val allRoutes: LiveData<List<Route>>
 
@@ -24,7 +23,6 @@ class AddAscentViewModel(application: Application, route_id: String) : AndroidVi
         val ascentWithRouteDao = RouteRoomDatabase.getDatabase(application).ascentWithRouteDao()
         ascentRepository = AscentRepository(ascentDao, ascentWithRouteDao)
         routeRepository = RouteRepository(routeDao)
-        route = routeRepository.getRoute(route_id)
 
         allRoutes = routeRepository.allRoutes
     }
@@ -36,6 +34,14 @@ class AddAscentViewModel(application: Application, route_id: String) : AndroidVi
 
     fun getAscent(ascent_id: String): LiveData<Ascent> {
         return ascentRepository.getAscent(ascent_id)
+    }
+
+    fun getRoute(routeId: String): LiveData<Route?> {
+        return routeRepository.getRoute(routeId)
+    }
+
+    fun editAscent(ascent: Ascent) = viewModelScope.launch(Dispatchers.IO) {
+        ascentRepository.update(ascent)
     }
 }
 

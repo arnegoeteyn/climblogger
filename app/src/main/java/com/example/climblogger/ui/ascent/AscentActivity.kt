@@ -2,11 +2,11 @@ package com.example.climblogger.ui.ascent
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
+import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
@@ -15,34 +15,38 @@ import kotlinx.android.synthetic.main.activity_ascent.*
 class AscentActivity : AppCompatActivity() {
 
     private lateinit var ascentViewModel: AscentViewModel
-    private var ascentWithRoute: AscentWithRoute? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ascent)
 
         // get ascent from intent
-        val ascent_id = intent.extras?.get(EXTRA_ASCENT) as String
-
+        val ascentId = intent.extras?.get(EXTRA_ASCENT) as String
         ascentViewModel =
-            ViewModelProviders.of(this, AscentViewModelFactory(application, ascent_id))
+            ViewModelProviders.of(this, AscentViewModelFactory(application, ascentId))
                 .get(AscentViewModel::class.java)
 
         ascentViewModel.ascentWithRoute.observe(this, Observer { ascentWithRoute ->
             ascentWithRoute?.let {
-                this.ascentWithRoute = it
-                ascentDate.text = it.ascent.date
-                routeName.text = it.route.name
-                kind.text = it.ascent.kind
-                comment.text = it.ascent.comment
+                updateAscentUi(it)
+                delete_button.setOnPositiveClickListener { deleteAscent(it.ascent) }
+                routeName.setOnClickListener { _ ->
+                    goToRoute(it.ascent.route_id)
+                }
             }
         })
 
-        delete_button.setOnPositiveClickListener { deleteAscent() }
-        editAscentButton.setOnClickListener { editAscent(ascent_id) }
+        editAscentButton.setOnClickListener { editAscent(ascentId) }
 
-        routeName.setOnClickListener { goToRoute() }
+    }
+
+    private fun updateAscentUi(ascentWithRoute: AscentWithRoute?) {
+        ascentWithRoute?.let {
+            ascentDate.text = it.ascent.date
+            routeName.text = it.route.name
+            kind.text = it.ascent.kind
+            comment.text = it.ascent.comment
+        }
     }
 
     private fun editAscent(ascent_id: String) {
@@ -53,22 +57,18 @@ class AscentActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun deleteAscent() {
-        // ascent will never be null here, ascent is only null when deleted and by then the activity is closed
-        assert(ascentWithRoute != null)
-        ascentViewModel.deleteAscent(this.ascentWithRoute!!.ascent)
+    private fun deleteAscent(ascent: Ascent) {
+        ascentViewModel.deleteAscent(ascent)
         finish()
     }
 
-    private fun goToRoute() {
-        // ascent will never be null here, ascent is only null when deleted and by then the activity is closed
-        assert(ascentWithRoute != null)
+    private fun goToRoute(routeId: String) {
         val intent = Intent(this, RouteActivity::class.java)
-        intent.putExtra(EXTRA_ROUTE, ascentWithRoute!!.ascent.route_id)
+        intent.putExtra(EXTRA_ROUTE, routeId)
         startActivity(intent)
     }
 
     companion object {
-        public const val EXTRA_ASCENT = "EXTRA_ASCENT"
+        const val EXTRA_ASCENT = "EXTRA_ASCENT"
     }
 }

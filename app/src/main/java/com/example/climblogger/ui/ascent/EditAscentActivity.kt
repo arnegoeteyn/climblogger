@@ -9,23 +9,22 @@ import java.util.*
 
 class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInteractionListener {
 
-    private lateinit var editAscentViewModel: EditAscentViewModel
+    private lateinit var editAscentViewModel: ModifyAscentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_ascent)
 
-
         // unpack bundle
-        var ascent_id: String = UUID.randomUUID().toString()
+        var ascentId: String = UUID.randomUUID().toString()
         intent.extras?.let {
-            ascent_id = it.getString(EXTRA_ASCENT_ID, UUID.randomUUID().toString())
+            ascentId = it.getString(EXTRA_ASCENT_ID, UUID.randomUUID().toString())
         }
 
-        editAscentViewModel = ViewModelProviders.of(this).get(EditAscentViewModel::class.java)
+        editAscentViewModel = ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentPlace, AscentFormFragment.newInstance(ascent_id))
+            .add(R.id.fragmentPlace, AscentFormFragment.newInstance(ascentId))
             .commit()
 
         editAscentButton.setOnClickListener { editArea() }
