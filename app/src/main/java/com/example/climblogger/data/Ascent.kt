@@ -1,10 +1,9 @@
 package com.example.climblogger.data
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "ascents",
@@ -26,5 +25,52 @@ data class Ascent(
 ) {
     override fun toString(): String {
         return "$route_id - $date"
+    }
+}
+
+@Dao
+abstract class AscentDao: BaseDao<Ascent>() {
+
+    @Query("SELECT * from ascents ORDER BY date DESC")
+    abstract fun getAllAscents(): LiveData<List<Ascent>>
+
+    @Query("SELECT * from ascents where route_uuid == :route_id ORDER BY date DESC")
+    abstract fun ascentsFromRoute(route_id: String): LiveData<List<Ascent>>
+
+    @Query("SELECT * FROM ascents WHERE ascent_uuid == :ascent_id")
+    abstract fun getAscent(ascent_id: String): LiveData<Ascent>
+}
+
+
+class AscentRepository(private val ascentDao: AscentDao, private val ascentWithRouteDao: AscentWithRouteDao) {
+
+    val allAscents: LiveData<List<Ascent>> = ascentDao.getAllAscents()
+    val allAscentsWithRoute: LiveData<List<AscentWithRoute>> = ascentWithRouteDao.getAllAscentsWithRoute()
+
+    fun loadAscentsFromRoute(route_id: String): LiveData<List<Ascent>> {
+        return ascentDao.ascentsFromRoute(route_id)
+    }
+
+    fun getAscent(ascent_id: String): LiveData<Ascent> {
+        return ascentDao.getAscent(ascent_id)
+    }
+
+    @WorkerThread
+    fun update(ascent: Ascent) {
+        return ascentDao.update(ascent)
+    }
+
+    @WorkerThread
+    suspend fun insertAscent(ascent: Ascent): Long {
+        return ascentDao.insert(ascent)
+    }
+
+    @WorkerThread
+    suspend fun deleteAscent(ascent: Ascent) {
+        return ascentDao.delete(ascent)
+    }
+
+    fun getAscentsWithRoute(ascent_id: String): LiveData<AscentWithRoute> {
+        return ascentWithRouteDao.getAscentWithRoute(ascent_id)
     }
 }
