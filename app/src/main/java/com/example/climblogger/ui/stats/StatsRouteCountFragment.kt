@@ -16,7 +16,6 @@ import com.example.climblogger.data.Route
 import com.example.climblogger.data.RouteAmount
 import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RouteKind
-import com.example.climblogger.util.setRecyclerViewProperties
 import kotlinx.android.synthetic.main.fragment_stats_route_count.*
 import kotlinx.android.synthetic.main.route_amount_list_item.view.*
 
@@ -47,7 +46,8 @@ class StatsRouteCountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        stasRouteCountViewModel = ViewModelProviders.of(this).get(StatsRouteCountViewModel::class.java)
+        stasRouteCountViewModel =
+            ViewModelProviders.of(this).get(StatsRouteCountViewModel::class.java)
 
         initRecyclerView()
     }
@@ -60,8 +60,14 @@ class StatsRouteCountFragment : Fragment() {
 
         recyclerView.layoutManager = linearLayoutManager
 
-        recyclerView.adapter = RouteCountAdapter()
-        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, linearLayoutManager.orientation))
+        val ada = RouteCountAdapter()
+        recyclerView.adapter = ada
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                recyclerView.context,
+                linearLayoutManager.orientation
+            )
+        )
 
         var toObserve: LiveData<List<RouteAmount>> = stasRouteCountViewModel.sportAmounts
         when (kind) {
@@ -70,7 +76,7 @@ class StatsRouteCountFragment : Fragment() {
         }
         // listen for changes in the data
         toObserve.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
+            ada.setData(it)
         })
 
     }
@@ -95,7 +101,13 @@ class StatsRouteCountFragment : Fragment() {
     class RouteCountAdapter : LiveDataAdapter<RouteAmount>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteAmountHolder {
             val inflater = LayoutInflater.from(parent.context)
-            return RouteAmountHolder(inflater.inflate(R.layout.route_amount_list_item, parent, false))
+            return RouteAmountHolder(
+                inflater.inflate(
+                    R.layout.route_amount_list_item,
+                    parent,
+                    false
+                )
+            )
         }
 
         class RouteAmountHolder(itemView: View) : LiveDataViewHolder<RouteAmount>(itemView) {

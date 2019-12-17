@@ -43,7 +43,7 @@ class SectorsFragment : Fragment() {
         initRecyclerView()
 
         sectorsViewModel.allSectors.observe(this, Observer {
-            recyclerView.setRecyclerViewProperties(it)
+            sectorsAdapter.setData(it)
         })
     }
 

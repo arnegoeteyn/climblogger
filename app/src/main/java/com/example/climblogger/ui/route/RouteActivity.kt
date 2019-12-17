@@ -39,6 +39,10 @@ class RouteActivity : AppCompatActivity() {
             }
         })
 
+        routeViewModel.routeAscents.observe(this, Observer {
+            ascentsAdapter.setData(it)
+        })
+
         addAscentButton.setOnClickListener { addAscent(routeId) }
         edit_button.setOnClickListener { editRoute(routeId) }
     }
@@ -90,10 +94,6 @@ class RouteActivity : AppCompatActivity() {
             }
         })
 
-        // loading the data
-        routeViewModel.routeAscents.observe(this, Observer {
-            ascentsRecyclerView.setRecyclerViewProperties(it)
-        })
     }
 
 
