@@ -23,7 +23,7 @@ class SectorFormFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var spinner: ItemSpinner<Area> // pass generic type here for easier
+    private lateinit var spinner: ItemSpinner<Area> // pass generic type here for so we can modify more
 
     private lateinit var modifySectorViewModel: ModifySectorViewModel
 

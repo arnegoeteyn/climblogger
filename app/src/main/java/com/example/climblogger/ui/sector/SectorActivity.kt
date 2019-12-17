@@ -31,7 +31,7 @@ class SectorActivity : AppCompatActivity() {
         sectorViewModel = ViewModelProviders.of(this, SectorViewModelFactory(application, sectorId))
             .get(SectorViewModel::class.java)
 
-        initRoutesRecyclerView()
+        initRecyclerView()
 
         sectorViewModel.sectorWithArea.observe(this, Observer {
             it?.let { sector: SectorWithArea ->
@@ -59,7 +59,7 @@ class SectorActivity : AppCompatActivity() {
         areaText.text = sector.area_name
     }
 
-    private fun initRoutesRecyclerView() {
+    private fun initRecyclerView() {
         routeAdapter = RouteWithAscentsAdapter()
         routesRecyclerView.standardInit(routeAdapter)
 

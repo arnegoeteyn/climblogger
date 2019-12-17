@@ -2,34 +2,29 @@ package com.example.climblogger.ui.route
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_edit_route.*
-import kotlinx.android.synthetic.main.list_item_ascent.*
 import java.util.*
 
 class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInteractionListener {
 
-    private lateinit var editRouteViewModel: EditRouteViewModel
+    private lateinit var editRouteViewModel: ModifyRouteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_route)
 
-
-
         // unpack bundle
-        var route_id: String = UUID.randomUUID().toString()
+        var routeId: String = UUID.randomUUID().toString()
         intent.extras?.let {
-            route_id = it.getString(EXTRA_ROUTE_ID, UUID.randomUUID().toString())
+            routeId = it.getString(EXTRA_ROUTE_ID, UUID.randomUUID().toString())
         }
 
-        editRouteViewModel = ViewModelProviders.of(this).get(EditRouteViewModel::class.java)
+        editRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentPlace, RouteFormFragment.newInstance(route_id))
+            .add(R.id.fragmentPlace, RouteFormFragment.newInstance(routeId))
             .commit()
 
         editRouteButton.setOnClickListener { editRoute() }
@@ -43,7 +38,7 @@ class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInter
     }
 
     companion object {
-        public const val EXTRA_ROUTE_ID = "ROUTE_ID_EDIT_ROUTE_ACTIVITY"
+        const val EXTRA_ROUTE_ID = "ROUTE_ID_EDIT_ROUTE_ACTIVITY"
     }
 
 }

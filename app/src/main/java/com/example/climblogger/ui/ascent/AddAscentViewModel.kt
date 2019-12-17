@@ -13,7 +13,7 @@ class AddAscentViewModel(application: Application, route_id: String) : AndroidVi
     private val ascentRepository: AscentRepository
     private val routeRepository: RouteRepository
 
-    val route: LiveData<Route>
+    val route: LiveData<Route?>
 
     val allRoutes: LiveData<List<Route>>
 

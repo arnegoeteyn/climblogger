@@ -8,7 +8,7 @@ import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddRouteViewModel(application: Application) : AndroidViewModel(application) {
+class ModifyRouteViewModel(application: Application) : AndroidViewModel(application) {
     private val routeRepository: RouteRepository
     private val sectorRepository: SectorRepository
 
@@ -31,8 +31,11 @@ class AddRouteViewModel(application: Application) : AndroidViewModel(application
         return sectorRepository.getSector(sector_id)
     }
 
-    fun getRoute(route_id: String): LiveData<Route> {
+    fun getRoute(route_id: String): LiveData<Route?> {
         return routeRepository.getRoute(route_id)
     }
 
+    fun editRoute(route: Route) = viewModelScope.launch(Dispatchers.IO) {
+        routeRepository.updateRoute(route)
+    }
 }

@@ -1,73 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   tools:context=".ui.route.RouteFormFragment"
-                                                   android:id="@+id/constraintLayout">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.route.RouteFormFragment">
 
     <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/linearLayout"
-            android:layout_marginTop="16dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/nameTextInput">
+                android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/name"/>
+                    android:hint="@string/name" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/gradeTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/gradeTextInput">
+                android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/grade"/>
+                    android:hint="@string/grade" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/commentTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/commentTextInput">
+                android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/comment"/>
+                    android:hint="@string/comment" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/linkTextInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/linkTextInput">
+                android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/link"/>
+                    android:hint="@string/link" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
 
-    <Spinner
+    <com.example.climblogger.util.ItemSpinner
+            android:id="@+id/kindSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/kindSpinner"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="60dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <com.example.climblogger.util.ItemSpinner
+            android:id="@+id/sectorSpinner"
             android:layout_width="395dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/sectorSpinner" android:layout_marginTop="51dp"
-            app:layout_constraintTop_toBottomOf="@+id/kindSpinner"/>
+            android:layout_marginTop="51dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kindSpinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>

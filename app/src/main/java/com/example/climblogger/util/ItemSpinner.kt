@@ -7,6 +7,7 @@ import android.widget.Spinner
 
 /**
  * Class used to get data from spinner so it's possible to select an item without to much fuss
+ * Big differnce here is that we specify the adapter has to be an arrayadapter
  */
 class ItemSpinner<T>(context: Context, attributeSet: AttributeSet) :
     Spinner(context, attributeSet) {
@@ -25,3 +26,4 @@ class ItemSpinner<T>(context: Context, attributeSet: AttributeSet) :
         adapter?.getPosition(item)?.let { super.setSelection(it) }
     }
 }
+

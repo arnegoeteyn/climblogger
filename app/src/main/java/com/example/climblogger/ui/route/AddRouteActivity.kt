@@ -9,30 +9,27 @@ import java.util.*
 
 class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInteractionListener {
 
-    private lateinit var addRouteViewModel: AddRouteViewModel
-    private var sector_id: String? = null
+    private lateinit var addRouteViewModel: ModifyRouteViewModel
+    private var sectorId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_route)
 
+        addRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
+
         intent.extras?.let {
-            // a sector_id has been passed along
-            sector_id = intent.extras?.get(EXTRA_SECTOR_ID) as String
+            sectorId = intent.extras?.get(EXTRA_SECTOR_ID) as String
         }
-
-
-        addRouteViewModel = ViewModelProviders.of(this).get(AddRouteViewModel::class.java)
 
         supportFragmentManager.beginTransaction()
             .add(
                 R.id.fragmentPlace,
-                RouteFormFragment.newInstance(UUID.randomUUID().toString(), sector_id)
+                RouteFormFragment.newInstance(UUID.randomUUID().toString(), sectorId)
             )
             .commit()
 
         addRouteButton.setOnClickListener { addRoute() }
-
     }
 
     private fun addRoute() {
