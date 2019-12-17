@@ -26,13 +26,6 @@ fun RecyclerView.addOnItemClickListener(onClickListener: RecyclerViewOnItemClick
     })
 }
 
-@BindingAdapter("data")
-fun <T> RecyclerView.setRecyclerViewProperties(items: List<T>) {
-    if (adapter is LiveDataAdapter<*>) {
-        (adapter as LiveDataAdapter<T>).setData(items)
-    }
-}
-
 /**
  * Standard init for most recyclerviews we use
  */
