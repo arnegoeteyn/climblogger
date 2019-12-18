@@ -7,11 +7,34 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--    Some defaults -->
+    <style name="DefaultTextAppearance" parent="TextAppearance.AppCompat">
+        <!--Text should always have some margin-->
+        <item name="android:layout_marginHorizontal">8dp</item>
+    </style>
+
+    <!-- Styles for an identifiers, for example [Name] name_of_route, where [Name] is the identifier -->
+    <style name="IdentifierText" parent="DefaultTextAppearance">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="IdentifierValue" parent="TextAppearance.AppCompat">
+        <item name="android:layout_weight">3</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="IdentifierLinearLayout" />
 
 </resources>

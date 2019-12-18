@@ -1,48 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.area.AreaActivity">
 
     <LinearLayout
             android:id="@+id/linearLayout3"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-        <TextView
-                android:text=""
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/nameText"/>
-        <TextView
-                android:text=""
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/countryText"/>
-    </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <LinearLayout
+                style="@style/IdentifierLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    style="@style/IdentifierText"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_identifier" />
+
+            <TextView
+                    style="@style/IdentifierValue"
+                    android:id="@+id/nameText"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    style="@style/IdentifierText"
+                    android:layout_height="wrap_content"
+                    android:text="@string/country_identifier" />
+
+            <TextView
+                    style="@style/IdentifierValue"
+                    android:id="@+id/countryText"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sectorsRecyclerView"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout3"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout4"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     <LinearLayout
             android:id="@+id/linearLayout4"
-            android:orientation="horizontal"
-            android:layout_height="0dp"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_width="match_parent">
+            android:gravity="center"
+            android:orientation="horizontal">
+
         <Button
-                android:text="@string/add_sector"
+                android:id="@+id/add_sector_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/add_sector_button"/>
+                android:layout_height="wrap_content"
+                android:text="@string/add_sector" />
 
         <Button
                 android:id="@+id/edit_button"
@@ -51,8 +72,9 @@
                 android:text="@string/edit_area" />
 
         <com.example.climblogger.util.ConfirmationButton
-                android:text="@string/delete_area"
+                android:id="@+id/delete_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/delete_button"/>
+                android:layout_height="wrap_content"
+                android:text="@string/delete_area" />
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
