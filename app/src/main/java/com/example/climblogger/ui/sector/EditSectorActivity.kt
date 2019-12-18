@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import kotlinx.android.synthetic.main.activity_edit_sector.*
+import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
 class EditSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInteractionListener {
@@ -13,7 +13,7 @@ class EditSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_sector)
+        setContentView(R.layout.activity_fragment_single_button)
 
         // unpack bundle
         var sectorId: String = UUID.randomUUID().toString()
@@ -27,7 +27,8 @@ class EditSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInt
             .add(R.id.fragmentPlace, SectorFormFragment.newInstance(sectorId))
             .commit()
 
-        editSectorButton.setOnClickListener { editSector() }
+        confirmationButton.setOnClickListener { editSector() }
+        confirmationButton.text = resources.getString(R.string.edit_sector)
     }
 
     private fun editSector() {

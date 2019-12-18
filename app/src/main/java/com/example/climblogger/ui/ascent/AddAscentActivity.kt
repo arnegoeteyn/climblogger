@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import kotlinx.android.synthetic.main.activity_add_ascent.*
+import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
 class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInteractionListener {
@@ -15,7 +15,7 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_ascent)
+        setContentView(R.layout.activity_fragment_single_button)
 
         intent.extras?.let {
             routeId = intent.extras?.get(EXTRA_ROUTE_ID) as String
@@ -32,7 +32,8 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
             .commit()
 
 
-        addAscentButton.setOnClickListener { addAscent() }
+        confirmationButton.setOnClickListener { addAscent() }
+        confirmationButton.text = resources.getString(R.string.add_ascent)
     }
 
     private fun addAscent() {

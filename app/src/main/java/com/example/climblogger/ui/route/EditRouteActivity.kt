@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import kotlinx.android.synthetic.main.activity_edit_route.*
+import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
 class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInteractionListener {
@@ -13,7 +13,7 @@ class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_route)
+        setContentView(R.layout.activity_fragment_single_button)
 
         // unpack bundle
         var routeId: String = UUID.randomUUID().toString()
@@ -27,7 +27,8 @@ class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInter
             .add(R.id.fragmentPlace, RouteFormFragment.newInstance(routeId))
             .commit()
 
-        editRouteButton.setOnClickListener { editRoute() }
+        confirmationButton.setOnClickListener { editRoute() }
+        confirmationButton.text = resources.getString(R.string.edit_route)
     }
 
     private fun editRoute() {

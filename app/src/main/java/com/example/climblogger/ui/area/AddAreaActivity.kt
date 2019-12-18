@@ -1,11 +1,10 @@
 package com.example.climblogger.ui.area
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import com.example.climblogger.data.Area
-import kotlinx.android.synthetic.main.activity_add_area.*
+import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
 class AddAreaActivity : AppCompatActivity(), AreaFormFragment.OnFragmentInteractionListener {
@@ -14,7 +13,7 @@ class AddAreaActivity : AppCompatActivity(), AreaFormFragment.OnFragmentInteract
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_area)
+        setContentView(R.layout.activity_fragment_single_button)
 
         addAreaViewModel = ViewModelProviders.of(this).get(ModifyAreaViewModel::class.java)
 
@@ -23,8 +22,10 @@ class AddAreaActivity : AppCompatActivity(), AreaFormFragment.OnFragmentInteract
             .add(R.id.fragmentPlace, AreaFormFragment.newInstance(UUID.randomUUID().toString()))
             .commit()
 
-        addAreaButton.setOnClickListener { addArea() }
+        confirmationButton.setOnClickListener { addArea() }
+        confirmationButton.text = resources.getText(R.string.add_area)
     }
+
 
     private fun addArea() {
         addAreaViewModel.insertArea(

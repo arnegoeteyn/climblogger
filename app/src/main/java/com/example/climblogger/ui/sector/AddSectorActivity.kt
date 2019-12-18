@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import kotlinx.android.synthetic.main.activity_add_route.*
-import kotlinx.android.synthetic.main.activity_add_sector.*
+import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
 class AddSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInteractionListener {
@@ -16,7 +15,7 @@ class AddSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_route)
+        setContentView(R.layout.activity_fragment_single_button)
 
         modifySectorViewModel = ViewModelProviders.of(this).get(ModifySectorViewModel::class.java)
 
@@ -32,7 +31,8 @@ class AddSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInte
             )
             .commit()
 
-        addRouteButton.setOnClickListener { addSector() }
+        confirmationButton.setOnClickListener { addSector() }
+        confirmationButton.text = resources.getString(R.string.add_sector)
     }
 
     private fun addSector() {

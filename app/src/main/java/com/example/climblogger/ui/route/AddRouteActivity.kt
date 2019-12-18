@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import kotlinx.android.synthetic.main.activity_add_route.*
+import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
 class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInteractionListener {
@@ -14,7 +14,7 @@ class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentIntera
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_route)
+        setContentView(R.layout.activity_fragment_single_button)
 
         addRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
 
@@ -29,7 +29,8 @@ class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentIntera
             )
             .commit()
 
-        addRouteButton.setOnClickListener { addRoute() }
+        confirmationButton.setOnClickListener { addRoute() }
+        confirmationButton.text = resources.getString(R.string.add_route)
     }
 
     private fun addRoute() {

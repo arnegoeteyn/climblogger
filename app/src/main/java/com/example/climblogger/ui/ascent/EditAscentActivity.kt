@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import kotlinx.android.synthetic.main.activity_edit_ascent.*
+import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
 class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInteractionListener {
@@ -13,7 +13,7 @@ class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_ascent)
+        setContentView(R.layout.activity_fragment_single_button)
 
         // unpack bundle
         var ascentId: String = UUID.randomUUID().toString()
@@ -27,7 +27,8 @@ class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInt
             .add(R.id.fragmentPlace, AscentFormFragment.newInstance(ascentId))
             .commit()
 
-        editAscentButton.setOnClickListener { editArea() }
+        confirmationButton.setOnClickListener { editArea() }
+        confirmationButton.text = resources.getString(R.string.edit_ascent)
     }
 
     private fun editArea() {
