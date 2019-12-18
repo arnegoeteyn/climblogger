@@ -104,7 +104,7 @@ class AscentFormFragment : Fragment() {
     }
 
     private fun initKindSpinner(kind: String?) {
-        kindSpinner.setData(resources.getStringArray(R.array.route_kind).toList())
+        kindSpinner.setData(resources.getStringArray(R.array.ascent_kind).toList())
         kind?.let {
             kindSpinner.selectItemInSpinner(it)
         }
