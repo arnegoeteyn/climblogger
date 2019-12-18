@@ -30,7 +30,8 @@ class AscentActivity : AppCompatActivity() {
             ascentWithRoute?.let {
                 updateAscentUi(it)
                 delete_button.setOnPositiveClickListener { deleteAscent(it.ascent) }
-                routeName.setOnClickListener { _ ->
+
+                routeContainer.setOnClickListener { _ ->
                     goToRoute(it.ascent.route_id)
                 }
             }

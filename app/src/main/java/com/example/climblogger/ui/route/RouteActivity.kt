@@ -13,6 +13,7 @@ import com.example.climblogger.data.Route
 import com.example.climblogger.data.RouteWithSector
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
+import com.example.climblogger.ui.sector.SectorActivity
 import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.activity_route.*
 
@@ -36,6 +37,10 @@ class RouteActivity : AppCompatActivity() {
             route?.let {
                 updateRouteUi(it)
                 delete_button.setOnPositiveClickListener { deleteRoute(it.route) }
+
+                sectorContainer.setOnClickListener { _ ->
+                    goToSector(it.route.sector_id)
+                }
             }
         })
 
@@ -45,6 +50,12 @@ class RouteActivity : AppCompatActivity() {
 
         addAscentButton.setOnClickListener { addAscent(routeId) }
         edit_button.setOnClickListener { editRoute(routeId) }
+    }
+
+    private fun goToSector(sectorId: String) {
+        val intent = Intent(this, SectorActivity::class.java)
+        intent.putExtra(SectorActivity.EXTRA_SECTOR, sectorId)
+        startActivity(intent)
     }
 
 

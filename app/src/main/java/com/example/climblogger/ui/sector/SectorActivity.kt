@@ -10,6 +10,7 @@ import com.example.climblogger.R
 import com.example.climblogger.adapters.RouteWithAscentsAdapter
 import com.example.climblogger.data.RouteWithAscents
 import com.example.climblogger.data.SectorWithArea
+import com.example.climblogger.ui.area.AreaActivity
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.util.LiveDataAdapter
@@ -37,12 +38,22 @@ class SectorActivity : AppCompatActivity() {
             it?.let { sector: SectorWithArea ->
                 updateSectorUI(sector)
                 delete_button.setOnPositiveClickListener { deleteSector(sector) }
+
+                areaContainer.setOnClickListener { _ ->
+                    goToArea(it.sector.areaId)
+                }
             }
         })
 
         edit_button.setOnClickListener { editSector(sectorId) }
         add_route_button.setOnClickListener { addRoute(sectorId) }
 
+    }
+
+    private fun goToArea(areaId: String) {
+        val intent = Intent(this, AreaActivity::class.java)
+        intent.putExtra(AreaActivity.EXTRA_AREA, areaId)
+        startActivity(intent)
     }
 
     private fun editSector(sector_id: String) {
