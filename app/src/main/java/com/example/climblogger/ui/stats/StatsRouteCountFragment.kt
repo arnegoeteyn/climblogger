@@ -12,12 +12,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
-import com.example.climblogger.data.Route
 import com.example.climblogger.data.RouteAmount
 import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RouteKind
 import kotlinx.android.synthetic.main.fragment_stats_route_count.*
-import kotlinx.android.synthetic.main.route_amount_list_item.view.*
+import kotlinx.android.synthetic.main.list_item_route_amount.view.*
 
 private const val ARG_KIND = "kind"
 
@@ -103,7 +102,7 @@ class StatsRouteCountFragment : Fragment() {
             val inflater = LayoutInflater.from(parent.context)
             return RouteAmountHolder(
                 inflater.inflate(
-                    R.layout.route_amount_list_item,
+                    R.layout.list_item_route_amount,
                     parent,
                     false
                 )
