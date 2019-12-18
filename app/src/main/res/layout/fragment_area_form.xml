@@ -10,7 +10,7 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/linearLayout"
+            android:layout_height="wrap_content" android:id="@+id/ascentAttributesLinearLayout"
             android:layout_marginTop="16dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent">
         <com.google.android.material.textfield.TextInputLayout

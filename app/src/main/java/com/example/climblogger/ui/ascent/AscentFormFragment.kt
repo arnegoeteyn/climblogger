@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -44,6 +43,7 @@ class AscentFormFragment : Fragment() {
             }
         }
 
+
         modifyAscentViewModel = ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
     }
 
@@ -55,10 +55,9 @@ class AscentFormFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_ascent_form, container, false)
         this.spinner = view.findViewById(R.id.routeSpinner)
         this.kindSpinner = view.findViewById(R.id.kindSpinner)
-        val dateButton: Button = view.findViewById(R.id.dateButton)
-        dateButton.setOnClickListener { selectDate().toString() }
         return view
     }
+
 
     private fun loadForm() {
         date.text = getStringDate()
@@ -76,9 +75,9 @@ class AscentFormFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dateButton.setOnClickListener { selectDate().toString() }
         loadForm()
     }
-
 
     fun createAscent(): Ascent {
         val commentText = commentTextInput.editText!!.text.toString()
@@ -160,5 +159,7 @@ class AscentFormFragment : Fragment() {
                     putString(ARG_PARAM_ASCENT_ID, ascent_id)
                 }
             }
+
+        private val COMMENT_STRING = "COMMENT_STRING"
     }
 }
