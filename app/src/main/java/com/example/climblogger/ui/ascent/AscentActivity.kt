@@ -10,6 +10,7 @@ import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
+import com.example.climblogger.util.debugFragments
 import kotlinx.android.synthetic.main.activity_ascent.*
 
 class AscentActivity : AppCompatActivity() {
@@ -38,7 +39,6 @@ class AscentActivity : AppCompatActivity() {
         })
 
         editAscentButton.setOnClickListener { editAscent(ascentId) }
-
     }
 
     private fun updateAscentUi(ascentWithRoute: AscentWithRoute?) {
@@ -71,5 +71,6 @@ class AscentActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ASCENT = "EXTRA_ASCENT"
+        public val TAG = this::class.qualifiedName!!
     }
 }

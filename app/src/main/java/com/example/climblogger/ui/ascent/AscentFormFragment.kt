@@ -3,6 +3,7 @@ package com.example.climblogger.ui.ascent
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ class AscentFormFragment : Fragment() {
 
 
         modifyAscentViewModel = ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
+
     }
 
     override fun onCreateView(
@@ -58,10 +60,37 @@ class AscentFormFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        dateButton.setOnClickListener { selectDate().toString() }
+        loadForm()
+
+        savedInstanceState?.let {
+            commentTextEditText.setText(it.getString(COMMENT_STRING))
+            date.text = it.getString(DATE_STRING)
+            Log.d("KAKA", it.getInt(ROUTE_POSITION).toString())
+            routeSpinner.setSelection(it.getInt(ROUTE_POSITION))
+            kindSpinner.setSelection(it.getInt(KIND_POSITION))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString(COMMENT_STRING, commentTextEditText.text.toString())
+        outState.putString(DATE_STRING, date.text.toString())
+        outState.putInt(ROUTE_POSITION, spinner.selectedItemPosition)
+        outState.putInt(KIND_POSITION, kindSpinner.selectedItemPosition)
+    }
 
     private fun loadForm() {
         date.text = getStringDate()
-        modifyAscentViewModel.getAscent(ascentId).observe(this, Observer { ascent ->
+        modifyAscentViewModel.getAscent(ascentId).observe(viewLifecycleOwner, Observer { ascent ->
             ascent?.let {
                 commentTextInput.editText?.setText(it.comment)
                 date.text = it.date
@@ -73,11 +102,6 @@ class AscentFormFragment : Fragment() {
         })
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        dateButton.setOnClickListener { selectDate().toString() }
-        loadForm()
-    }
 
     fun createAscent(): Ascent {
         val commentText = commentTextInput.editText!!.text.toString()
@@ -92,14 +116,18 @@ class AscentFormFragment : Fragment() {
     }
 
     private fun initRouteSpinner(selectedAreaId: String?) {
-        modifyAscentViewModel.allRoutes.observe(this, androidx.lifecycle.Observer { routes ->
-            this.spinner.setData(routes)
-            selectedAreaId?.let {
-                modifyAscentViewModel.getRoute(it).observe(this, Observer { route ->
-                    this.spinner.selectItemInSpinner(route)
-                })
-            }
-        })
+        Log.d("KAKA", "setting spinner to position $selectedAreaId")
+        modifyAscentViewModel.allRoutes.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { routes ->
+                this.spinner.setData(routes)
+                selectedAreaId?.let {
+                    modifyAscentViewModel.getRoute(it)
+                        .observe(viewLifecycleOwner, Observer { route ->
+                            this.spinner.selectItemInSpinner(route)
+                        })
+                }
+            })
     }
 
     private fun initKindSpinner(kind: String?) {
@@ -160,6 +188,12 @@ class AscentFormFragment : Fragment() {
                 }
             }
 
-        private val COMMENT_STRING = "COMMENT_STRING"
+        val TAG = this::class.qualifiedName!!
+
+        private const val COMMENT_STRING = "COMMENT_STRING"
+        private const val DATE_STRING = "DATE_STRING"
+        private const val KIND_POSITION = "KIND_STRING"
+        private const val ROUTE_POSITION = "ROUTE_ID_STRING"
+
     }
 }

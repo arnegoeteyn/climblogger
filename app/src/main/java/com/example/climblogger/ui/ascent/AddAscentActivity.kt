@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
+import com.example.climblogger.util.addIfNotAlreadythere
 import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
@@ -24,12 +25,24 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
         addAscentViewModel =
             ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
 
-        supportFragmentManager.beginTransaction()
-            .add(
+        supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
+            replace(
                 R.id.fragmentPlace,
-                AscentFormFragment.newInstance(UUID.randomUUID().toString(), routeId)
+                AscentFormFragment.newInstance(UUID.randomUUID().toString(), routeId),
+                AscentFormFragment.TAG
             )
-            .commit()
+        }
+//        val f = supportFragmentManager.findFragmentByTag(AscentFormFragment.TAG)
+//
+//        if (f == null) {
+//            supportFragmentManager.beginTransaction()
+//                .replace(
+//                    R.id.fragmentPlace,
+//                    AscentFormFragment.newInstance(UUID.randomUUID().toString(), routeId),
+//                    AscentFormFragment.TAG
+//                )
+//                .commit()
+//        }
 
 
         confirmationButton.setOnClickListener { addAscent() }

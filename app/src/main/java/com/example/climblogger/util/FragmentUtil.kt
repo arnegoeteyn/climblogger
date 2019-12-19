@@ -11,3 +11,13 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
     fragmentTransaction.func()
     fragmentTransaction.commit()
 }
+
+inline fun FragmentManager.addIfNotAlreadythere(tag: String, func: FragmentTransaction.() -> Unit) {
+
+    val fragment = findFragmentByTag(tag)
+    if (fragment == null) {
+        inTransaction {
+            func()
+        }
+    }
+}
