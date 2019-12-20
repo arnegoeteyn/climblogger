@@ -4,6 +4,17 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import com.example.climblogger.util.getStringDate
+
+interface Draftable<Me : Draftable<Me>> {
+
+    fun toDraft(): Draft<Me>
+
+    interface Draft<Me : Draftable<Me>> {
+        fun fromDraft(): Draftable<Me>?
+    }
+
+}
 
 @Entity(
     tableName = "ascents",
@@ -22,14 +33,38 @@ data class Ascent(
     @PrimaryKey
     @ColumnInfo(name = "ascent_uuid")
     val ascent_id: String
-) {
+) : Draftable<Ascent> {
     override fun toString(): String {
         return "$route_id - $date"
     }
+
+    override fun toDraft(): AscentDraft {
+        return AscentDraft(
+            route_id, date, kind, comment, ascent_id
+        )
+    }
+
+    data class AscentDraft(
+        val route_id: String? = null,
+        val date: String? = getStringDate(),
+        val kind: String? = "redpoint",
+        val comment: String? = null,
+        val ascent_id: String? = null
+    ) : Draftable.Draft<Ascent> {
+        override fun fromDraft(): Ascent? {
+            if (route_id != null && date != null && kind != null && ascent_id != null)
+                return Ascent(
+                    route_id, date, kind, comment, ascent_id
+                )
+            return null
+        }
+
+    }
 }
 
+
 @Dao
-abstract class AscentDao: BaseDao<Ascent>() {
+abstract class AscentDao : BaseDao<Ascent>() {
 
     @Query("SELECT * from ascents ORDER BY date DESC")
     abstract fun getAllAscents(): LiveData<List<Ascent>>
@@ -38,20 +73,24 @@ abstract class AscentDao: BaseDao<Ascent>() {
     abstract fun ascentsFromRoute(route_id: String): LiveData<List<Ascent>>
 
     @Query("SELECT * FROM ascents WHERE ascent_uuid == :ascent_id")
-    abstract fun getAscent(ascent_id: String): LiveData<Ascent>
+    abstract fun getAscent(ascent_id: String): LiveData<Ascent?>
 }
 
 
-class AscentRepository(private val ascentDao: AscentDao, private val ascentWithRouteDao: AscentWithRouteDao) {
+class AscentRepository(
+    private val ascentDao: AscentDao,
+    private val ascentWithRouteDao: AscentWithRouteDao
+) {
 
     val allAscents: LiveData<List<Ascent>> = ascentDao.getAllAscents()
-    val allAscentsWithRoute: LiveData<List<AscentWithRoute>> = ascentWithRouteDao.getAllAscentsWithRoute()
+    val allAscentsWithRoute: LiveData<List<AscentWithRoute>> =
+        ascentWithRouteDao.getAllAscentsWithRoute()
 
     fun loadAscentsFromRoute(route_id: String): LiveData<List<Ascent>> {
         return ascentDao.ascentsFromRoute(route_id)
     }
 
-    fun getAscent(ascent_id: String): LiveData<Ascent> {
+    fun getAscent(ascent_id: String): LiveData<Ascent?> {
         return ascentDao.getAscent(ascent_id)
     }
 
@@ -61,12 +100,20 @@ class AscentRepository(private val ascentDao: AscentDao, private val ascentWithR
     }
 
     @WorkerThread
-    suspend fun insertAscent(ascent: Ascent): Long {
+    fun insertAscent(ascent: Ascent): Long {
         return ascentDao.insert(ascent)
     }
 
     @WorkerThread
-    suspend fun deleteAscent(ascent: Ascent) {
+    fun insertAscent(ascent: Ascent.AscentDraft): Long? {
+        ascent.fromDraft()?.let {
+            return ascentDao.insert(it)
+        }
+        return null
+    }
+
+    @WorkerThread
+    fun deleteAscent(ascent: Ascent) {
         return ascentDao.delete(ascent)
     }
 

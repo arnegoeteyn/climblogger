@@ -1,9 +1,8 @@
 package com.example.climblogger.ui.ascent
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +15,8 @@ class ModifyAscentViewModel(application: Application) :
 
     val allRoutes: LiveData<List<Route>>
 
+    private var draft: MutableLiveData<Ascent.AscentDraft> = MutableLiveData(Ascent.AscentDraft())
+
     init {
 
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
@@ -27,13 +28,55 @@ class ModifyAscentViewModel(application: Application) :
         allRoutes = routeRepository.allRoutes
     }
 
-    // wrapper function so it gets called on another thread
-    fun insertAscent(ascent: Ascent) = viewModelScope.launch(Dispatchers.IO) {
-        ascentRepository.insertAscent(ascent)
+    fun insertAscent() = viewModelScope.launch(Dispatchers.IO) {
+        draft.value?.let {
+            ascentRepository.insertAscent(it)
+        }
     }
 
-    fun getAscent(ascent_id: String): LiveData<Ascent> {
-        return ascentRepository.getAscent(ascent_id)
+    fun loadAscent(ascent_id: String): LiveData<Ascent.AscentDraft?> {
+        return Transformations.switchMap(
+            ascentRepository.getAscent(ascent_id),
+            this::initDraftAscent
+        )
+    }
+
+    fun getAscent(): LiveData<Ascent.AscentDraft?> {
+        return draft
+    }
+
+    private fun initDraftAscent(ascent: Ascent?): LiveData<Ascent.AscentDraft?> {
+        ascent?.let {
+            draft.value = it.toDraft()
+        }
+        return draft
+    }
+
+    fun setComment(comment: String?) {
+        if (draft.value?.comment != comment)
+            draft.value = draft.value?.copy(comment = comment)
+    }
+
+    fun setRouteUUID(uuid: String?) {
+        if (draft.value?.route_id != uuid) {
+            Log.d("Ascent", uuid)
+            draft.value = draft.value?.copy(route_id = uuid)
+        }
+    }
+
+    fun setKind(kind: String?) {
+        if (draft.value?.kind != kind)
+            draft.value = draft.value?.copy(kind = kind)
+    }
+
+    fun setDate(date: String?) {
+        if (draft.value?.date != date)
+            draft.value = draft.value?.copy(date = date)
+    }
+
+    fun setAscentUUID(uuid: String?) {
+        if (draft.value?.ascent_id != uuid)
+            draft.value = draft.value?.copy(ascent_id = uuid)
     }
 
     fun getRoute(routeId: String): LiveData<Route?> {

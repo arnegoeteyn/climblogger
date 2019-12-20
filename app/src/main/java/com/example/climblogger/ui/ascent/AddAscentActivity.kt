@@ -1,6 +1,7 @@
 package com.example.climblogger.ui.ascent
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
@@ -26,33 +27,24 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
             ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
 
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
+            Log.d("Ascent", "reloading fragmetn")
+            addAscentViewModel.setRouteUUID(routeId)
+            addAscentViewModel.setAscentUUID(UUID.randomUUID().toString())
             replace(
                 R.id.fragmentPlace,
                 AscentFormFragment.newInstance(UUID.randomUUID().toString(), routeId),
                 AscentFormFragment.TAG
             )
         }
-//        val f = supportFragmentManager.findFragmentByTag(AscentFormFragment.TAG)
-//
-//        if (f == null) {
-//            supportFragmentManager.beginTransaction()
-//                .replace(
-//                    R.id.fragmentPlace,
-//                    AscentFormFragment.newInstance(UUID.randomUUID().toString(), routeId),
-//                    AscentFormFragment.TAG
-//                )
-//                .commit()
-//        }
-
 
         confirmationButton.setOnClickListener { addAscent() }
         confirmationButton.text = resources.getString(R.string.add_ascent)
     }
 
     private fun addAscent() {
-        addAscentViewModel.insertAscent(
-            (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as AscentFormFragment).createAscent()
-        )
+//        addAscentViewModel.insertAscent(
+        (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as AscentFormFragment).createAscent()
+//        )
         finish()
     }
 

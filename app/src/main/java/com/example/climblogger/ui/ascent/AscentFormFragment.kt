@@ -14,39 +14,29 @@ import com.example.climblogger.R
 import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.Route
 import com.example.climblogger.util.ItemSpinner
+import com.example.climblogger.util.afterTextChanged
 import com.example.climblogger.util.getStringDate
+import com.example.climblogger.util.setTextIfNotFocused
 import kotlinx.android.synthetic.main.fragment_ascent_form.*
 import java.util.*
+
 
 private const val ARG_PARAM_ASCENT_ID = "ASCENT_ID_param"
 private const val ARG_PARAM_ROUTE_ID = "ROUTE_ID_PARAM"
 
 class AscentFormFragment : Fragment() {
-    private lateinit var ascentId: String
-    private var routeId: String? = null
-
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var spinner: ItemSpinner<Route> // pass generic type here for easier
+    private lateinit var spinner: ItemSpinner<Route>
     private lateinit var kindSpinner: ItemSpinner<CharSequence>
+
     private lateinit var modifyAscentViewModel: ModifyAscentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let { bundle ->
-            bundle.getString(ARG_PARAM_ASCENT_ID)?.let {
-                ascentId = it
-            }
-
-            bundle.getString(ARG_PARAM_ROUTE_ID)?.let {
-                routeId = it
-            }
-        }
-
-
-        modifyAscentViewModel = ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
-
+        modifyAscentViewModel =
+            ViewModelProviders.of(requireActivity()).get(ModifyAscentViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -60,74 +50,69 @@ class AscentFormFragment : Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        initRouteSpinner(null)
+        initKindSpinner(null)
+
         dateButton.setOnClickListener { selectDate().toString() }
-        loadForm()
 
-        savedInstanceState?.let {
-            commentTextEditText.setText(it.getString(COMMENT_STRING))
-            date.text = it.getString(DATE_STRING)
-            Log.d("KAKA", it.getInt(ROUTE_POSITION).toString())
-            routeSpinner.setSelection(it.getInt(ROUTE_POSITION))
-            kindSpinner.setSelection(it.getInt(KIND_POSITION))
-        }
+        setupViewListeners()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putString(COMMENT_STRING, commentTextEditText.text.toString())
-        outState.putString(DATE_STRING, date.text.toString())
-        outState.putInt(ROUTE_POSITION, spinner.selectedItemPosition)
-        outState.putInt(KIND_POSITION, kindSpinner.selectedItemPosition)
-    }
-
-    private fun loadForm() {
-        date.text = getStringDate()
-        modifyAscentViewModel.getAscent(ascentId).observe(viewLifecycleOwner, Observer { ascent ->
+    private fun setupViewListeners() {
+        modifyAscentViewModel.getAscent().observe(viewLifecycleOwner, Observer { ascent ->
             ascent?.let {
-                commentTextInput.editText?.setText(it.comment)
-                date.text = it.date
-                this.routeId = it.route_id
+                Log.d("Ascent", "reloading with " + it.route_id)
+                loadForm(it)
             }
-
-            initKindSpinner(ascent?.kind)
-            initRouteSpinner(this.routeId)
         })
+
+        date.afterTextChanged { modifyAscentViewModel.setDate(it) }
+        commentTextEditText.afterTextChanged { modifyAscentViewModel.setComment(it) }
+
+        routeSpinner.onItemChosen {
+            val route = routeSpinner.getItemAtPosition(it) as Route
+            Log.d("Ascent", "about to choose route: ${route.route_id} is in spinner at $it")
+            modifyAscentViewModel.setRouteUUID(route.route_id)
+        }
+
+        kindSpinner.onItemChosen {
+            modifyAscentViewModel.setKind(kindSpinner.getItemAtPosition(it) as String)
+        }
+
+    }
+
+    private fun loadForm(ascent: Ascent.AscentDraft) {
+        date.text = ascent.date
+        commentTextInput.editText?.setTextIfNotFocused(ascent.comment)
+
+        initKindSpinner(ascent.kind)
+//        initRouteSpinner(ascent.route_id)
+        selectItemInRouteSpinner(ascent.route_id)
     }
 
 
-    fun createAscent(): Ascent {
-        val commentText = commentTextInput.editText!!.text.toString()
-
-        return Ascent(
-            (spinner.selectedItem as Route).route_id,
-            date.text.toString(),
-            spinner.selectedItem.toString(),
-            if (commentText.isEmpty()) null else commentText,
-            UUID.randomUUID().toString()
-        )
+    fun createAscent() {
+        modifyAscentViewModel.insertAscent()
     }
 
-    private fun initRouteSpinner(selectedAreaId: String?) {
-        Log.d("KAKA", "setting spinner to position $selectedAreaId")
+    private fun initRouteSpinner(selectedRouteId: String?) {
         modifyAscentViewModel.allRoutes.observe(
-            viewLifecycleOwner,
-            androidx.lifecycle.Observer { routes ->
+            viewLifecycleOwner, androidx.lifecycle.Observer { routes ->
                 this.spinner.setData(routes)
-                selectedAreaId?.let {
-                    modifyAscentViewModel.getRoute(it)
-                        .observe(viewLifecycleOwner, Observer { route ->
-                            this.spinner.selectItemInSpinner(route)
-                        })
-                }
+                selectItemInRouteSpinner(selectedRouteId)
             })
+    }
+
+    private fun selectItemInRouteSpinner(selectedRouteId: String?) {
+        selectedRouteId?.let {
+            modifyAscentViewModel.getRoute(it)
+                .observe(viewLifecycleOwner, Observer { route ->
+                    this.spinner.selectItemInSpinner(route)
+                })
+        }
     }
 
     private fun initKindSpinner(kind: String?) {
@@ -189,11 +174,5 @@ class AscentFormFragment : Fragment() {
             }
 
         val TAG = this::class.qualifiedName!!
-
-        private const val COMMENT_STRING = "COMMENT_STRING"
-        private const val DATE_STRING = "DATE_STRING"
-        private const val KIND_POSITION = "KIND_STRING"
-        private const val ROUTE_POSITION = "ROUTE_ID_STRING"
-
     }
 }
