@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +18,7 @@ import com.example.climblogger.util.ItemSpinner
 import com.example.climblogger.util.afterTextChanged
 import com.example.climblogger.util.getStringDate
 import com.example.climblogger.util.setTextIfNotFocused
+import kotlinx.android.synthetic.main.activity_route.*
 import kotlinx.android.synthetic.main.fragment_ascent_form.*
 import java.util.*
 
@@ -34,34 +36,50 @@ class AscentFormFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("Lifecycle", "onCreate")
 
         modifyAscentViewModel =
             ViewModelProviders.of(requireActivity()).get(ModifyAscentViewModel::class.java)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("Lifecycle", "onCreateView")
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_ascent_form, container, false)
         this.spinner = view.findViewById(R.id.routeSpinner)
         this.kindSpinner = view.findViewById(R.id.kindSpinner)
+
+        Log.d("Ascent", "initing spinners")
+        initRouteSpinner()
+        initKindSpinner()
+
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        initRouteSpinner(null)
-        initKindSpinner(null)
-
-        dateButton.setOnClickListener { selectDate().toString() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("Lifecycle", "onViewCreated")
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.dateButton).setOnClickListener { selectDate().toString() }
 
         setupViewListeners()
+
     }
 
     private fun setupViewListeners() {
+
+        date.afterTextChanged { modifyAscentViewModel.setDate(it) }
+        commentTextEditText.afterTextChanged { modifyAscentViewModel.setComment(it) }
+
+
+        kindSpinner.onItemChosen {
+            modifyAscentViewModel.setKind(kindSpinner.getItemAtPosition(it) as String)
+        }
+
+
         modifyAscentViewModel.getAscent().observe(viewLifecycleOwner, Observer { ascent ->
             ascent?.let {
                 Log.d("Ascent", "reloading with " + it.route_id)
@@ -69,27 +87,14 @@ class AscentFormFragment : Fragment() {
             }
         })
 
-        date.afterTextChanged { modifyAscentViewModel.setDate(it) }
-        commentTextEditText.afterTextChanged { modifyAscentViewModel.setComment(it) }
-
-        routeSpinner.onItemChosen {
-            val route = routeSpinner.getItemAtPosition(it) as Route
-            Log.d("Ascent", "about to choose route: ${route.route_id} is in spinner at $it")
-            modifyAscentViewModel.setRouteUUID(route.route_id)
-        }
-
-        kindSpinner.onItemChosen {
-            modifyAscentViewModel.setKind(kindSpinner.getItemAtPosition(it) as String)
-        }
-
     }
 
     private fun loadForm(ascent: Ascent.AscentDraft) {
         date.text = ascent.date
         commentTextInput.editText?.setTextIfNotFocused(ascent.comment)
 
-        initKindSpinner(ascent.kind)
-//        initRouteSpinner(ascent.route_id)
+        selectItemInKindSpinner(ascent.kind)
+        Log.d("Ascent", "choosing in loadForm ${ascent.route_id}")
         selectItemInRouteSpinner(ascent.route_id)
     }
 
@@ -98,12 +103,33 @@ class AscentFormFragment : Fragment() {
         modifyAscentViewModel.insertAscent()
     }
 
-    private fun initRouteSpinner(selectedRouteId: String?) {
+    private fun initRouteSpinner() {
+        val id = modifyAscentViewModel.getAscent().value?.route_id
         modifyAscentViewModel.allRoutes.observe(
-            viewLifecycleOwner, androidx.lifecycle.Observer { routes ->
+            viewLifecycleOwner, Observer { routes ->
+
                 this.spinner.setData(routes)
-                selectItemInRouteSpinner(selectedRouteId)
+                Log.d("Ascent", "put routes in spinner")
+
+                selectItemInRouteSpinner(id)
+                Log.d("Ascent", "blabla was $id")
+                Log.d("Ascent", "routespinner" + routeSpinner.onItemSelectedListener?.toString())
+
+                routeSpinner.onItemChosen {
+                    val route = routeSpinner.getItemAtPosition(it) as Route
+                    Log.d(
+                        "Ascent",
+                        "about to choose route: ${route.route_id} is in spinner at $it out of ${routeSpinner.adapter?.count}"
+                    )
+                    modifyAscentViewModel.setRouteUUID(route.route_id)
+                }
+
+                selectItemInRouteSpinner(id)
             })
+    }
+
+    private fun initKindSpinner() {
+        kindSpinner.setData(resources.getStringArray(R.array.ascent_kind).toList())
     }
 
     private fun selectItemInRouteSpinner(selectedRouteId: String?) {
@@ -111,15 +137,13 @@ class AscentFormFragment : Fragment() {
             modifyAscentViewModel.getRoute(it)
                 .observe(viewLifecycleOwner, Observer { route ->
                     this.spinner.selectItemInSpinner(route)
+                    Log.d("Ascent", "chose ${this.routeSpinner.selectedItemPosition}")
                 })
         }
     }
 
-    private fun initKindSpinner(kind: String?) {
-        kindSpinner.setData(resources.getStringArray(R.array.ascent_kind).toList())
-        kind?.let {
-            kindSpinner.selectItemInSpinner(it)
-        }
+    private fun selectItemInKindSpinner(selectedKind: String?) {
+        this.kindSpinner.selectItemInSpinner(selectedKind)
     }
 
 

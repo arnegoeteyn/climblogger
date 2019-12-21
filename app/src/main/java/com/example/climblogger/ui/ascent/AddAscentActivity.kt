@@ -27,7 +27,6 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
             ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
 
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
-            Log.d("Ascent", "reloading fragmetn")
             addAscentViewModel.setRouteUUID(routeId)
             addAscentViewModel.setAscentUUID(UUID.randomUUID().toString())
             replace(
@@ -42,9 +41,7 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
     }
 
     private fun addAscent() {
-//        addAscentViewModel.insertAscent(
         (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as AscentFormFragment).createAscent()
-//        )
         finish()
     }
 

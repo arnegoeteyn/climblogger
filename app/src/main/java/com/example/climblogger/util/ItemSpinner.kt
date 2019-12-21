@@ -27,7 +27,9 @@ class ItemSpinner<T>(context: Context, attributeSet: AttributeSet) :
 
 
     fun selectItemInSpinner(item: T?) {
-        adapter?.getPosition(item)?.let { super.setSelection(it) }
+        item?.let {
+            adapter?.getPosition(item)?.let { super.setSelection(it) }
+        }
     }
 
     fun onItemChosen(onItemSelected: (Int) -> Unit) {
