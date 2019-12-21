@@ -52,6 +52,10 @@ class ModifyAscentViewModel(application: Application) :
         return draft
     }
 
+    fun invalidate(){
+        draft.value = draft.value?.copy()
+    }
+
     fun setComment(comment: String?) {
         if (draft.value?.comment != comment)
             draft.value = draft.value?.copy(comment = comment)
@@ -59,7 +63,7 @@ class ModifyAscentViewModel(application: Application) :
 
     fun setRouteUUID(uuid: String?) {
         if (draft.value?.route_id != uuid) {
-            Log.d("Ascent", uuid)
+            Log.d("Ascent", "set $uuid")
             draft.value = draft.value?.copy(route_id = uuid)
         }
     }
