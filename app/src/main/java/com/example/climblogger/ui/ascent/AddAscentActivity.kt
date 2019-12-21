@@ -41,7 +41,9 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
     }
 
     private fun addAscent() {
-        (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as AscentFormFragment).createAscent()
+        // the fragment itself doesn't know it can make ascents
+        // we do this trough the viewModel
+        addAscentViewModel.insertAscent()
         finish()
     }
 

@@ -3,7 +3,6 @@ package com.example.climblogger.ui.ascent
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +60,6 @@ class AscentFormFragment : Fragment() {
         view.findViewById<Button>(R.id.dateButton).setOnClickListener { selectDate().toString() }
 
         setupViewListeners()
-
     }
 
     private fun setupViewListeners() {
@@ -74,7 +72,6 @@ class AscentFormFragment : Fragment() {
         }
 
         routeSpinner.onItemChosen {
-            Log.d(TAG, "chosen $it")
             val route = spinner.getItemAtPosition(it) as Route
             modifyAscentViewModel.setRouteUUID(route.route_id)
         }
@@ -101,16 +98,15 @@ class AscentFormFragment : Fragment() {
         }
     }
 
-
-    fun createAscent() {
-        modifyAscentViewModel.insertAscent()
-    }
-
     private fun initRouteSpinner() {
         modifyAscentViewModel.allRoutes.observe(
             viewLifecycleOwner, Observer { routes ->
                 this.spinner.setData(routes)
-                modifyAscentViewModel.invalidate()
+
+                // we want to reload the form now because maybe the route was already selected
+                modifyAscentViewModel.getAscent().value?.let {
+                    loadForm(it)
+                }
             })
     }
 
@@ -119,7 +115,6 @@ class AscentFormFragment : Fragment() {
     }
 
     private fun selectItemInRouteSpinner(selectedRoute: Route?) {
-        Log.d(TAG, "selecting ${selectedRoute?.route_id}")
         this.spinner.selectItemInSpinner(selectedRoute)
     }
 

@@ -17,6 +17,8 @@ class ModifyAscentViewModel(application: Application) :
 
     private var draft: MutableLiveData<Ascent.AscentDraft> = MutableLiveData(Ascent.AscentDraft())
 
+    var loadAscentId: String? = null
+
     init {
 
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
@@ -34,26 +36,29 @@ class ModifyAscentViewModel(application: Application) :
         }
     }
 
-    fun loadAscent(ascent_id: String): LiveData<Ascent.AscentDraft?> {
+
+    fun getAscent(): LiveData<Ascent.AscentDraft?> {
+        loadAscentId?.let {
+            val ld = loadAscent(it)
+            loadAscentId = null
+            return ld
+        }
+        return draft
+    }
+
+    private fun loadAscent(ascent_id: String): LiveData<Ascent.AscentDraft?> {
         return Transformations.switchMap(
             ascentRepository.getAscent(ascent_id),
             this::initDraftAscent
         )
     }
 
-    fun getAscent(): LiveData<Ascent.AscentDraft?> {
-        return draft
-    }
-
     private fun initDraftAscent(ascent: Ascent?): LiveData<Ascent.AscentDraft?> {
         ascent?.let {
             draft.value = it.toDraft()
+            Log.d("Ascent", "set ascent to ${it.route_id}")
         }
         return draft
-    }
-
-    fun invalidate(){
-        draft.value = draft.value?.copy()
     }
 
     fun setComment(comment: String?) {
@@ -63,7 +68,6 @@ class ModifyAscentViewModel(application: Application) :
 
     fun setRouteUUID(uuid: String?) {
         if (draft.value?.route_id != uuid) {
-            Log.d("Ascent", "set $uuid")
             draft.value = draft.value?.copy(route_id = uuid)
         }
     }

@@ -2,14 +2,10 @@ package com.example.climblogger.util
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import com.example.climblogger.data.Route
-import kotlinx.android.synthetic.main.fragment_ascent_form.*
-import kotlinx.coroutines.selects.select
 
 /**
  * Class used to get data from spinner so it's possible to select an item without to much fuss
@@ -20,7 +16,11 @@ class ItemSpinner<T>(context: Context, attributeSet: AttributeSet) :
 
     var adapter: ArrayAdapter<T>? = null
 
-    // tag that indicates what has been set
+    /*
+        tag indicates what the last position was that's been set trough [selectItemInSpinner]
+        if this tag isn't the same as the selected item in the listener than it means a manual selection
+        has been made
+     */
     private var tag: Int = 0
 
     fun setData(items: List<T>) {
@@ -35,7 +35,6 @@ class ItemSpinner<T>(context: Context, attributeSet: AttributeSet) :
         item?.let {
             val position = adapter?.getPosition(item)
             position?.let {
-                Log.d("Ascent", "position was $it")
                 tag = it
                 super.setSelection(it)
             }
@@ -48,10 +47,7 @@ class ItemSpinner<T>(context: Context, attributeSet: AttributeSet) :
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 if (tag != p2) {
-                    Log.d("Ascent", "selection went")
                     onItemSelected.invoke(p2)
-                } else {
-                    Log.d("Ascent", "selection not went")
                 }
             }
         })
