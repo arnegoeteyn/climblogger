@@ -29,11 +29,7 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
             addAscentViewModel.setRouteUUID(routeId)
             addAscentViewModel.setAscentUUID(UUID.randomUUID().toString())
-            replace(
-                R.id.fragmentPlace,
-                AscentFormFragment.newInstance(UUID.randomUUID().toString(), routeId),
-                AscentFormFragment.TAG
-            )
+            replace(R.id.fragmentPlace, AscentFormFragment.newInstance(), AscentFormFragment.TAG)
         }
 
         confirmationButton.setOnClickListener { addAscent() }

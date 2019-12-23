@@ -20,10 +20,6 @@ import com.example.climblogger.util.setTextIfNotFocused
 import kotlinx.android.synthetic.main.fragment_ascent_form.*
 import java.util.*
 
-
-private const val ARG_PARAM_ASCENT_ID = "ASCENT_ID_param"
-private const val ARG_PARAM_ROUTE_ID = "ROUTE_ID_PARAM"
-
 class AscentFormFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
@@ -165,13 +161,7 @@ class AscentFormFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(ascent_id: String, route_id: String? = null) =
-            AscentFormFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM_ROUTE_ID, route_id)
-                    putString(ARG_PARAM_ASCENT_ID, ascent_id)
-                }
-            }
+        fun newInstance() = AscentFormFragment()
 
         val TAG = this::class.qualifiedName!!
     }

@@ -26,14 +26,7 @@ class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInt
 
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
             editAscentViewModel.loadAscentId = ascentId
-            replace(
-                R.id.fragmentPlace,
-                AscentFormFragment.newInstance(
-                    UUID.randomUUID().toString(),
-                    UUID.randomUUID().toString()
-                ),
-                AscentFormFragment.TAG
-            )
+            replace(R.id.fragmentPlace, AscentFormFragment.newInstance(), AscentFormFragment.TAG)
         }
 
         confirmationButton.setOnClickListener { editArea() }

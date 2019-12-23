@@ -1,6 +1,5 @@
 package com.example.climblogger.util
 
-import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
@@ -17,7 +16,6 @@ inline fun FragmentManager.addIfNotAlreadythere(tag: String, func: FragmentTrans
 
     val fragment = findFragmentByTag(tag)
     if (fragment == null) {
-        Log.d("Ascent", "no fragment found")
         inTransaction {
             func()
         }

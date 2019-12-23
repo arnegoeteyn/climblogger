@@ -30,13 +30,27 @@ class ModifyAscentViewModel(application: Application) :
         allRoutes = routeRepository.allRoutes
     }
 
+    /*
+        Communication with the repositories
+     */
+
+    /**
+     * Insert an ascent in the DB.
+     * This can be used to add a new ascent or update one that's already in the DB
+     */
     fun insertAscent() = viewModelScope.launch(Dispatchers.IO) {
         draft.value?.let {
+            Log.d("Ascent", "Inserted ${it.comment}")
             ascentRepository.insertAscent(it)
         }
     }
 
 
+    /**
+     * Get the current ascent.
+     * If a loadAscentId has been specified somewhere else that ascent will be returned
+     * and the [loadAscentId] will be put to null.
+     */
     fun getAscent(): LiveData<Ascent.AscentDraft?> {
         loadAscentId?.let {
             val ld = loadAscent(it)
@@ -46,6 +60,13 @@ class ModifyAscentViewModel(application: Application) :
         return draft
     }
 
+    fun getRoute(routeId: String): LiveData<Route?> {
+        return routeRepository.getRoute(routeId)
+    }
+
+    /**
+     * Load data from an ascent into the draft
+     */
     private fun loadAscent(ascent_id: String): LiveData<Ascent.AscentDraft?> {
         return Transformations.switchMap(
             ascentRepository.getAscent(ascent_id),
@@ -53,10 +74,20 @@ class ModifyAscentViewModel(application: Application) :
         )
     }
 
+
+    /*
+        Functions for mutating our draft Ascent
+     */
+
+    /**
+     * Init a draft. If an ascent is passed we use a draft version of that.
+     * Otherwise we create a new ascent
+     */
     private fun initDraftAscent(ascent: Ascent?): LiveData<Ascent.AscentDraft?> {
         ascent?.let {
             draft.value = it.toDraft()
-            Log.d("Ascent", "set ascent to ${it.route_id}")
+        } ?: run {
+            draft.value = Ascent.AscentDraft()
         }
         return draft
     }
@@ -87,12 +118,6 @@ class ModifyAscentViewModel(application: Application) :
             draft.value = draft.value?.copy(ascent_id = uuid)
     }
 
-    fun getRoute(routeId: String): LiveData<Route?> {
-        return routeRepository.getRoute(routeId)
-    }
 
-    fun editAscent(ascent: Ascent) = viewModelScope.launch(Dispatchers.IO) {
-        ascentRepository.update(ascent)
-    }
 }
 

@@ -105,11 +105,10 @@ class AscentRepository(
     }
 
     @WorkerThread
-    fun insertAscent(ascent: Ascent.AscentDraft): Long? {
+    fun insertAscent(ascent: Ascent.AscentDraft) {
         ascent.fromDraft()?.let {
-            return ascentDao.insert(it)
+            return ascentDao.upsert(it)
         }
-        return null
     }
 
     @WorkerThread
