@@ -46,9 +46,9 @@ data class Ascent(
         val ascent_id: String? = null
     ) : Draftable.Draft<Ascent> {
         override fun fromDraft(): Ascent? {
-            if (this::class.memberProperties.all {
+            if (this.javaClass.declaredFields.all {
                     // check that the value isn't null or that we allow it to be null
-                    it.getter.call(this) != null || it.getter.findAnnotation<NullableOutDraft>() != null
+                    it.get(this) != null || it.isAnnotationPresent(NullableOutDraft::class.java)
                 }) {
                 return Ascent(
                     route_id!!, date, kind, comment, ascent_id!!
