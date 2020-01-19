@@ -1,20 +1,14 @@
 package com.example.climblogger.data
 
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.example.climblogger.util.getStringDate
-
-interface Draftable<Me : Draftable<Me>> {
-
-    fun toDraft(): Draft<Me>
-
-    interface Draft<Me : Draftable<Me>> {
-        fun fromDraft(): Draftable<Me>?
-    }
-
-}
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.full.memberProperties
 
 @Entity(
     tableName = "ascents",
@@ -46,16 +40,20 @@ data class Ascent(
 
     data class AscentDraft(
         val route_id: String? = null,
-        val date: String? = getStringDate(),
-        val kind: String? = "redpoint",
-        val comment: String? = null,
+        val date: String = getStringDate(),
+        val kind: String = "redpoint",
+        @NullableOutDraft val comment: String? = null,
         val ascent_id: String? = null
     ) : Draftable.Draft<Ascent> {
         override fun fromDraft(): Ascent? {
-            if (route_id != null && date != null && kind != null && ascent_id != null)
+            if (this::class.memberProperties.all {
+                    // check that the value isn't null or that we allow it to be null
+                    it.getter.call(this) != null || it.getter.findAnnotation<NullableOutDraft>() != null
+                }) {
                 return Ascent(
-                    route_id, date, kind, comment, ascent_id
+                    route_id!!, date, kind, comment, ascent_id!!
                 )
+            }
             return null
         }
 

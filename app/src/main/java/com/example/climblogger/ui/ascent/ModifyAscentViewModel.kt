@@ -93,7 +93,7 @@ class ModifyAscentViewModel(application: Application) :
     }
 
     fun setComment(comment: String?) {
-        if (draft.value?.comment != comment)
+        if (draft.value?.comment != comment && !comment.equals(""))
             draft.value = draft.value?.copy(comment = comment)
     }
 
@@ -103,12 +103,12 @@ class ModifyAscentViewModel(application: Application) :
         }
     }
 
-    fun setKind(kind: String?) {
+    fun setKind(kind: String) {
         if (draft.value?.kind != kind)
             draft.value = draft.value?.copy(kind = kind)
     }
 
-    fun setDate(date: String?) {
+    fun setDate(date: String) {
         if (draft.value?.date != date)
             draft.value = draft.value?.copy(date = date)
     }
