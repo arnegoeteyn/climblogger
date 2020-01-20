@@ -26,11 +26,13 @@ data class Route(
     @PrimaryKey
     @ColumnInfo(name = "route_uuid")
     val route_id: String
+) : Draftable<Route>() {
 
-) {
-
-    fun toDraft(): RouteDraft {
-        TODO("not implemented")
+    override fun toDraft(): RouteDraft {
+        return RouteDraft(
+            sector_id, name, grade, kind, comment,
+            link, pitch, multipitch_id, route_id
+        )
     }
 
     override fun toString(): String {
@@ -42,17 +44,18 @@ data class Route(
         val name: String? = null,
         val grade: String? = null,
         val kind: String? = null,
-        val comment: String? = null,
-        val link: String? = null,
-        val pitch: Int? = null,
-        val multipitch_id: Int? = null,
+        @NullableOutDraft val comment: String? = null,
+        @NullableOutDraft val link: String? = null,
+        @NullableOutDraft val pitch: Int? = null,
+        @NullableOutDraft val multipitch_id: Int? = null,
         val route_id: String? = null
-    ) {
-
-        fun fromDraft(): Route? {
-            TODO("not implemented")
+    ) : Draftable.Draft<Route>() {
+        override fun unwrapDraft(): Route {
+            return Route(
+                sector_id!!, name!!, grade!!, kind!!, comment,
+                link, pitch, multipitch_id, route_id!!
+            )
         }
-
     }
 }
 
