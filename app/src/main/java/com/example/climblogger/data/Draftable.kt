@@ -11,12 +11,12 @@ abstract class Draftable<Me : Draftable<Me>> {
                     // check that the value isn't null or that we allow it to be null
                     it.get(this) != null || it.isAnnotationPresent(NullableOutDraft::class.java)
                 }) {
-                return this.createDraft()
+                return this.unwrapDraft()
             }
             return null
         }
 
-        protected abstract fun createDraft(): Me
+        protected abstract fun unwrapDraft(): Me
     }
 
 }

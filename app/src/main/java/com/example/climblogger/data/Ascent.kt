@@ -45,7 +45,7 @@ data class Ascent(
         @NullableOutDraft val comment: String? = null,
         val ascent_id: String? = null
     ) : Draftable.Draft<Ascent>() {
-        override fun createDraft(): Ascent {
+        override fun unwrapDraft(): Ascent {
             return Ascent(
                 route_id!!, date, kind, comment, ascent_id!!
             )
