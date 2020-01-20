@@ -27,9 +27,9 @@ data class Route(
     @ColumnInfo(name = "route_uuid")
     val route_id: String
 
-) : Draftable<Route> {
+) {
 
-    override fun toDraft(): RouteDraft {
+    fun toDraft(): RouteDraft {
         TODO("not implemented")
     }
 
@@ -47,9 +47,9 @@ data class Route(
         val pitch: Int? = null,
         val multipitch_id: Int? = null,
         val route_id: String? = null
-    ) : Draftable.Draft<Route> {
+    ) {
 
-        override fun fromDraft(): Route? {
+        fun fromDraft(): Route? {
             TODO("not implemented")
         }
 

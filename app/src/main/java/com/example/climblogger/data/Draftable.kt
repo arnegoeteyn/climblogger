@@ -1,12 +1,22 @@
 package com.example.climblogger.data
 
 
-interface Draftable<Me : Draftable<Me>> {
+abstract class Draftable<Me : Draftable<Me>> {
 
-    fun toDraft(): Draft<Me>
+    abstract fun toDraft(): Draft<Me>
 
-    interface Draft<Me : Draftable<Me>> {
-        fun fromDraft(): Draftable<Me>?
+    abstract class Draft<Me : Draftable<Me>> {
+        fun fromDraft(): Me? {
+            if (this.javaClass.declaredFields.all {
+                    // check that the value isn't null or that we allow it to be null
+                    it.get(this) != null || it.isAnnotationPresent(NullableOutDraft::class.java)
+                }) {
+                return this.createDraft()
+            }
+            return null
+        }
+
+        protected abstract fun createDraft(): Me
     }
 
 }

@@ -27,7 +27,7 @@ data class Ascent(
     @PrimaryKey
     @ColumnInfo(name = "ascent_uuid")
     val ascent_id: String
-) : Draftable<Ascent> {
+) : Draftable<Ascent>() {
     override fun toString(): String {
         return "$route_id - $date"
     }
@@ -44,19 +44,12 @@ data class Ascent(
         val kind: String = "redpoint",
         @NullableOutDraft val comment: String? = null,
         val ascent_id: String? = null
-    ) : Draftable.Draft<Ascent> {
-        override fun fromDraft(): Ascent? {
-            if (this.javaClass.declaredFields.all {
-                    // check that the value isn't null or that we allow it to be null
-                    it.get(this) != null || it.isAnnotationPresent(NullableOutDraft::class.java)
-                }) {
-                return Ascent(
-                    route_id!!, date, kind, comment, ascent_id!!
-                )
-            }
-            return null
+    ) : Draftable.Draft<Ascent>() {
+        override fun createDraft(): Ascent {
+            return Ascent(
+                route_id!!, date, kind, comment, ascent_id!!
+            )
         }
-
     }
 }
 
