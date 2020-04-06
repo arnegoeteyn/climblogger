@@ -110,5 +110,6 @@ class RouteActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ROUTE = "EXTRA_ROUTE"
+
     }
 }

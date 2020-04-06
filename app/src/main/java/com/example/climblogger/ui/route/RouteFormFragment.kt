@@ -2,6 +2,7 @@ package com.example.climblogger.ui.route
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import com.example.climblogger.R
 import com.example.climblogger.data.Route
 import com.example.climblogger.data.Sector
 import com.example.climblogger.util.ItemSpinner
+import com.example.climblogger.util.afterTextChanged
+import kotlinx.android.synthetic.main.activity_ascent.*
 import kotlinx.android.synthetic.main.fragment_route_form.*
 
 private const val ARG_PARAM_ROUTE_ID = "route_ID_PARAM"
@@ -61,15 +64,26 @@ class RouteFormFragment : Fragment() {
      * Will only do something if the route is already in the db
      */
     private fun loadForm() {
+        Log.d("debug", "loading form ${nameTextInput.editText}")
         // if route already exists load it
-        addRouteViewModel.getRoute(routeId).observe(this, Observer { route ->
+        addRouteViewModel.getRoute(routeId)?.observe(this, Observer { route ->
             route?.let {
-                nameTextInput.editText?.setText(it.name)
+
+                addRouteViewModel.routeName.let { routeName ->
+                    nameTextInput.editText?.setText(routeName)
+                } ?: run {
+                    nameTextInput.editText?.setText(it.name)
+                }
+
                 gradeTextInput.editText?.setText(it.grade)
                 commentTextInput.editText?.setText(it.comment)
                 linkTextInput.editText?.setText(it.link)
 
                 this.sectorId = it.sector_id
+            } ?: run {
+                addRouteViewModel.routeName.let { routeName ->
+                    nameTextInput.editText?.setText(routeName)
+                }
             }
 
             // load the spinners and update them with the already selected info
@@ -81,6 +95,14 @@ class RouteFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadForm()
+
+        setupViewListeners()
+    }
+
+    private fun setupViewListeners() {
+        nameTextInput.editText!!.afterTextChanged {
+            addRouteViewModel.routeName = it
+        }
     }
 
 
@@ -145,5 +167,7 @@ class RouteFormFragment : Fragment() {
                     putString(ARG_PARAM_SECTOR_ID, sector_id)
                 }
             }
+
+        val TAG = this::class.qualifiedName!!
     }
 }

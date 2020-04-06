@@ -1,9 +1,8 @@
 package com.example.climblogger.ui.route
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,6 +12,10 @@ class ModifyRouteViewModel(application: Application) : AndroidViewModel(applicat
     private val sectorRepository: SectorRepository
 
     val allSectors: LiveData<List<Sector>>
+
+    var route: LiveData<Route?>? = null
+
+    var routeName: String? = null
 
     init {
         val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
@@ -31,7 +34,11 @@ class ModifyRouteViewModel(application: Application) : AndroidViewModel(applicat
         return sectorRepository.getSector(sector_id)
     }
 
-    fun getRoute(route_id: String): LiveData<Route?> {
+    fun getRoute(route_id: String): LiveData<Route?>? {
+//        route?: run {
+//            this.route = routeRepository.getRoute(route_id)
+//        }
+//        return this.route
         return routeRepository.getRoute(route_id)
     }
 

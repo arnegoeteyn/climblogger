@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
+import com.example.climblogger.util.addIfNotAlreadythere
 import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
@@ -22,12 +23,22 @@ class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentIntera
             sectorId = intent.extras?.get(EXTRA_SECTOR_ID) as String
         }
 
-        supportFragmentManager.beginTransaction()
-            .add(
+        supportFragmentManager.addIfNotAlreadythere(RouteFormFragment.TAG) {
+            replace(
                 R.id.fragmentPlace,
-                RouteFormFragment.newInstance(UUID.randomUUID().toString(), sectorId)
+                RouteFormFragment.newInstance(UUID.randomUUID().toString(), sectorId),
+                RouteFormFragment.TAG
             )
-            .commit()
+
+        }
+
+//        supportFragmentManager.beginTransaction()
+//            .add(
+//                R.id.fragmentPlace,
+//                RouteFormFragment.newInstance(UUID.randomUUID().toString(), sectorId),
+//                RouteFormFragment.TAG
+//            )
+//            .commit()
 
         confirmationButton.setOnClickListener { addRoute() }
         confirmationButton.text = resources.getString(R.string.add_route)

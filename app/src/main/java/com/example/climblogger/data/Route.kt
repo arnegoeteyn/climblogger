@@ -16,7 +16,7 @@ import androidx.room.ForeignKey.CASCADE
 )
 data class Route(
     @ColumnInfo(name = "sector_uuid") val sector_id: String,
-    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "grade") val grade: String,
     @ColumnInfo(name = "kind") val kind: String,
     @ColumnInfo(name = "comment") val comment: String?,
