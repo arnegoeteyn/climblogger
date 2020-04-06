@@ -69,12 +69,7 @@ class RouteFormFragment : Fragment() {
         addRouteViewModel.getRoute(routeId)?.observe(this, Observer { route ->
             route?.let {
 
-                Log.d("debug", "reloading routeName")
-                addRouteViewModel.routeName?.let { routeName ->
-                    Log.d("debug", "set text of routeName")
-                    nameTextInput.editText?.setText(routeName)
-                } ?: run {
-                    Log.d("debug", "set text of route")
+                addRouteViewModel.routeName ?: run {
                     nameTextInput.editText?.setText(it.name)
                 }
                 gradeTextInput.editText?.setText(it.grade)
@@ -85,7 +80,6 @@ class RouteFormFragment : Fragment() {
             }
 
             addRouteViewModel.routeName?.let { routeName ->
-                Log.d("debug", "set text of routeName")
                 nameTextInput.editText?.setText(routeName)
             }
 
@@ -114,7 +108,7 @@ class RouteFormFragment : Fragment() {
         val commentText = commentTextInput.editText!!.text.toString()
         val linkText = linkTextInput.editText!!.text.toString()
 
-        Log.d("debug" , nameTextInput.editText!!.text.toString())
+        Log.d("debug", nameTextInput.editText!!.text.toString())
 
         return Route(
             (sectorSpinner.selectedItem as Sector).sectorId,

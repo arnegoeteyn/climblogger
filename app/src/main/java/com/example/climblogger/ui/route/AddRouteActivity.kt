@@ -29,16 +29,7 @@ class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentIntera
                 RouteFormFragment.newInstance(UUID.randomUUID().toString(), sectorId),
                 RouteFormFragment.TAG
             )
-
         }
-
-//        supportFragmentManager.beginTransaction()
-//            .add(
-//                R.id.fragmentPlace,
-//                RouteFormFragment.newInstance(UUID.randomUUID().toString(), sectorId),
-//                RouteFormFragment.TAG
-//            )
-//            .commit()
 
         confirmationButton.setOnClickListener { addRoute() }
         confirmationButton.text = resources.getString(R.string.add_route)
