@@ -2,8 +2,10 @@ package com.example.climblogger.ui.route
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils.replace
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
+import com.example.climblogger.util.addIfNotAlreadythere
 import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
@@ -23,9 +25,14 @@ class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInter
 
         editRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentPlace, RouteFormFragment.newInstance(routeId))
-            .commit()
+        supportFragmentManager.addIfNotAlreadythere(RouteFormFragment.TAG) {
+            replace(
+                R.id.fragmentPlace,
+                RouteFormFragment.newInstance(routeId),
+                RouteFormFragment.TAG
+            )
+
+        }
 
         confirmationButton.setOnClickListener { editRoute() }
         confirmationButton.text = resources.getString(R.string.edit_route)

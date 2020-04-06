@@ -14,6 +14,7 @@ import com.example.climblogger.data.Route
 import com.example.climblogger.data.Sector
 import com.example.climblogger.util.ItemSpinner
 import com.example.climblogger.util.afterTextChanged
+import com.example.climblogger.util.setTextIfNotFocused
 import kotlinx.android.synthetic.main.activity_ascent.*
 import kotlinx.android.synthetic.main.fragment_route_form.*
 
@@ -64,26 +65,28 @@ class RouteFormFragment : Fragment() {
      * Will only do something if the route is already in the db
      */
     private fun loadForm() {
-        Log.d("debug", "loading form ${nameTextInput.editText}")
         // if route already exists load it
         addRouteViewModel.getRoute(routeId)?.observe(this, Observer { route ->
             route?.let {
 
-                addRouteViewModel.routeName.let { routeName ->
+                Log.d("debug", "reloading routeName")
+                addRouteViewModel.routeName?.let { routeName ->
+                    Log.d("debug", "set text of routeName")
                     nameTextInput.editText?.setText(routeName)
                 } ?: run {
+                    Log.d("debug", "set text of route")
                     nameTextInput.editText?.setText(it.name)
                 }
-
                 gradeTextInput.editText?.setText(it.grade)
                 commentTextInput.editText?.setText(it.comment)
                 linkTextInput.editText?.setText(it.link)
 
                 this.sectorId = it.sector_id
-            } ?: run {
-                addRouteViewModel.routeName.let { routeName ->
-                    nameTextInput.editText?.setText(routeName)
-                }
+            }
+
+            addRouteViewModel.routeName?.let { routeName ->
+                Log.d("debug", "set text of routeName")
+                nameTextInput.editText?.setText(routeName)
             }
 
             // load the spinners and update them with the already selected info
@@ -101,6 +104,7 @@ class RouteFormFragment : Fragment() {
 
     private fun setupViewListeners() {
         nameTextInput.editText!!.afterTextChanged {
+            Log.d("debug", "Set text to $it")
             addRouteViewModel.routeName = it
         }
     }
@@ -109,6 +113,8 @@ class RouteFormFragment : Fragment() {
     fun createRoute(): Route {
         val commentText = commentTextInput.editText!!.text.toString()
         val linkText = linkTextInput.editText!!.text.toString()
+
+        Log.d("debug" , nameTextInput.editText!!.text.toString())
 
         return Route(
             (sectorSpinner.selectedItem as Sector).sectorId,

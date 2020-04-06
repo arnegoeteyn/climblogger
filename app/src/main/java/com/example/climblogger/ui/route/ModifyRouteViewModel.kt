@@ -35,10 +35,6 @@ class ModifyRouteViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun getRoute(route_id: String): LiveData<Route?>? {
-//        route?: run {
-//            this.route = routeRepository.getRoute(route_id)
-//        }
-//        return this.route
         return routeRepository.getRoute(route_id)
     }
 
