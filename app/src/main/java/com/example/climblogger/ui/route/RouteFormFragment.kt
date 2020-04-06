@@ -23,7 +23,7 @@ private const val ARG_PARAM_SECTOR_ID = "sector_id_param"
 
 class RouteFormFragment : Fragment() {
     private var routeId: String = ""
-    private var sectorId: String? = null
+//    private var sectorId: String? = null
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -34,6 +34,7 @@ class RouteFormFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        addRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
 
         // get the routeId
         arguments?.let { bundle ->
@@ -42,11 +43,9 @@ class RouteFormFragment : Fragment() {
             }
 
             bundle.getString(ARG_PARAM_SECTOR_ID)?.let {
-                sectorId = it
+                addRouteViewModel.sectorId = it
             }
         }
-
-        addRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -72,20 +71,40 @@ class RouteFormFragment : Fragment() {
                 addRouteViewModel.routeName ?: run {
                     nameTextInput.editText?.setText(it.name)
                 }
-                gradeTextInput.editText?.setText(it.grade)
-                commentTextInput.editText?.setText(it.comment)
-                linkTextInput.editText?.setText(it.link)
+                addRouteViewModel.routeGrade ?: run {
+                    gradeTextInput.editText?.setText(it.grade)
+                }
+                addRouteViewModel.routeComment ?: run {
+                    commentTextInput.editText?.setText(it.comment)
+                }
+                addRouteViewModel.routeLink ?: run {
+                    linkTextInput.editText?.setText(it.link)
+                }
 
-                this.sectorId = it.sector_id
+                addRouteViewModel.sectorId ?: run {
+                    addRouteViewModel.sectorId = it.sector_id
+                }
+                addRouteViewModel.routeKind ?: run {
+                    addRouteViewModel.routeKind = it.kind
+                }
             }
 
             addRouteViewModel.routeName?.let { routeName ->
                 nameTextInput.editText?.setText(routeName)
             }
+            addRouteViewModel.routeGrade?.let { routeGrade ->
+                gradeTextInput.editText?.setText(routeGrade)
+            }
+            addRouteViewModel.routeComment?.let { routeComment ->
+                commentTextInput.editText?.setText(routeComment)
+            }
+            addRouteViewModel.routeLink?.let { routeLink ->
+                linkTextInput.editText?.setText(routeLink)
+            }
 
             // load the spinners and update them with the already selected info
-            initSectorSpinner(this.sectorId)
-            initKindSpinner(route?.kind)
+            initSectorSpinner(addRouteViewModel.sectorId)
+            initKindSpinner(addRouteViewModel.routeKind)
         })
     }
 
@@ -98,8 +117,23 @@ class RouteFormFragment : Fragment() {
 
     private fun setupViewListeners() {
         nameTextInput.editText!!.afterTextChanged {
-            Log.d("debug", "Set text to $it")
             addRouteViewModel.routeName = it
+        }
+        gradeTextInput.editText!!.afterTextChanged {
+            addRouteViewModel.routeGrade = it
+        }
+        commentTextInput.editText!!.afterTextChanged {
+            addRouteViewModel.routeComment = it
+        }
+        linkTextInput.editText!!.afterTextChanged {
+            addRouteViewModel.routeLink = it
+        }
+
+        sectorSpinner.onItemChosen {
+            addRouteViewModel.sectorId = (sectorSpinner.selectedItem as Sector).sectorId
+        }
+        kindSpinner.onItemChosen {
+            addRouteViewModel.routeKind = kindSpinner.selectedItem.toString()
         }
     }
 

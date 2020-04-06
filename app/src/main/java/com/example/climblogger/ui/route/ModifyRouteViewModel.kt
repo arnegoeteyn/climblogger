@@ -1,11 +1,13 @@
 package com.example.climblogger.ui.route
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class ModifyRouteViewModel(application: Application) : AndroidViewModel(application) {
     private val routeRepository: RouteRepository
@@ -16,6 +18,11 @@ class ModifyRouteViewModel(application: Application) : AndroidViewModel(applicat
     var route: LiveData<Route?>? = null
 
     var routeName: String? = null
+    var routeGrade: String? = null
+    var routeLink: String? = null
+    var routeComment: String? = null
+    var sectorId: String? = null
+    var routeKind: String? = null
 
     init {
         val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
