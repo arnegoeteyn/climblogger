@@ -34,7 +34,6 @@ class AscentFormFragment : Fragment() {
 
         modifyAscentViewModel =
             ViewModelProviders.of(requireActivity()).get(ModifyAscentViewModel::class.java)
-        loadAscent()
     }
 
 
@@ -55,7 +54,7 @@ class AscentFormFragment : Fragment() {
 
         setupViewListeners()
 
-        Log.d("DEBUG", "View is create")
+        loadAscent()
         loadForm()
     }
 
@@ -79,6 +78,7 @@ class AscentFormFragment : Fragment() {
             ascent?.let {
                 modifyAscentViewModel.updateFromAscent(ascent)
             }
+            loadForm()
         })
     }
 

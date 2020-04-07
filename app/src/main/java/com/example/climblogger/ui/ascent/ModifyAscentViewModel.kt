@@ -1,6 +1,7 @@
 package com.example.climblogger.ui.ascent
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -26,6 +27,8 @@ class ModifyAscentViewModel(
     var ascentComment: String? = null
     var ascentKind: String = "redpoint"
 
+    var loaded = false
+
     init {
 
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
@@ -38,7 +41,13 @@ class ModifyAscentViewModel(
     }
 
     fun insertAscent() = viewModelScope.launch(Dispatchers.IO) {
-        ascentRepository.insertAscent(createAscent())
+        val l = ascentRepository.insertAscent(createAscent())
+        Log.d("DEBUG", "insert was $l")
+    }
+
+    fun updateAscent() = viewModelScope.launch(Dispatchers.IO) {
+        val l = ascentRepository.update(createAscent())
+        Log.d("DEBUG", "insert was $l")
     }
 
     fun createAscent(): Ascent {
@@ -59,11 +68,13 @@ class ModifyAscentViewModel(
     }
 
     fun updateFromAscent(ascent: Ascent) {
-        ascentDate = ascent.date
-        ascentKind = ascent.kind
-        ascentComment = ascent.comment
-        ascentRouteId = ascent.route_id
+        if (!loaded) {
+            ascentDate = ascent.date
+            ascentKind = ascent.kind
+            ascentComment = ascent.comment
+            ascentRouteId = ascent.route_id
+            loaded = true
+        }
     }
-
 }
 

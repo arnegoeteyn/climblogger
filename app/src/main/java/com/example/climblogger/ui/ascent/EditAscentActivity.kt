@@ -36,7 +36,7 @@ class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInt
     }
 
     private fun editArea() {
-        editAscentViewModel.insertAscent()
+        editAscentViewModel.updateAscent()
         finish()
     }
 
