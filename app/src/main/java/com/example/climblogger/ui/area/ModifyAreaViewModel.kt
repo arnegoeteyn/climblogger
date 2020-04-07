@@ -9,29 +9,49 @@ import com.example.climblogger.data.AreaRepository
 import com.example.climblogger.data.RouteRoomDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
-/**
- * Viewmodel for everything needed to modify an area. Adding is a special case of modifying
- * since that's just modifying an empty route
- */
-class ModifyAreaViewModel(application: Application) : AndroidViewModel(application) {
+class ModifyAreaViewModel(application: Application, var areaId: String?) :
+    AndroidViewModel(application) {
     private val areaRepository: AreaRepository
+
+    var areaCountry: String = "AreaCountry"
+    var areaName: String = "AreaName"
+
+    private var loaded = false
 
     init {
         val areaDao = RouteRoomDatabase.getDatabase(application).areaDao()
         areaRepository = AreaRepository(areaDao)
     }
 
-    fun insertArea(area: Area) = viewModelScope.launch(Dispatchers.IO) {
-        areaRepository.insert(area)
+    fun insertArea() = viewModelScope.launch(Dispatchers.IO) {
+        areaRepository.insert(createArea())
     }
 
-    fun getArea(area_id: String): LiveData<Area?> {
-        return areaRepository.getArea(area_id)
+    fun editArea() = viewModelScope.launch(Dispatchers.IO) {
+        areaRepository.update(createArea())
     }
 
-    fun editArea(area: Area) = viewModelScope.launch(Dispatchers.IO) {
-        areaRepository.update(area)
+    private fun createArea(): Area {
+        val createdAreaId = areaId ?: UUID.randomUUID().toString()
+        return Area(
+            areaCountry, areaName, createdAreaId
+        )
     }
+
+    fun getArea(): LiveData<Area?>? {
+        return areaId?.let { areaRepository.getArea(it) }
+    }
+
+    fun updateFromArea(area: Area) {
+        if (!loaded) {
+            areaName = area.name
+            areaCountry = area.country
+
+            loaded = true
+        }
+    }
+
 
 }

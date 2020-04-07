@@ -74,6 +74,7 @@ class ModifyRouteViewModel(application: Application, var routeId: String?, var s
             routeComment = route.comment
             routeLink = route.link
             sectorId = route.sector_id
+            routeGrade = route.grade
 
             loaded = true
         }

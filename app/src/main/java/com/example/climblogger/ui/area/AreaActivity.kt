@@ -29,7 +29,7 @@ class AreaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_area)
 
 
-        val areaId = intent.extras?.get(EXTRA_AREA) as String
+        val areaId = intent.extras?.getString(EXTRA_AREA) as String
         areaViewModel = ViewModelProviders.of(this, AreaViewModelFactory(application, areaId))
             .get(AreaViewModel::class.java)
 

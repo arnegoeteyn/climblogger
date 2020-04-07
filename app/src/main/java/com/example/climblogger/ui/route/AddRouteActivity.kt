@@ -47,7 +47,6 @@ class AddRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentIntera
 
 
     companion object {
-        const val EXTRA_SECTOR_ID =
-            "EXTRA_SECTOR_ID" // pass route id to already select route in spinner
+        const val EXTRA_SECTOR_ID = "EXTRA_SECTOR_ID"
     }
 }

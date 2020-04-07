@@ -19,8 +19,6 @@ import kotlinx.android.synthetic.main.activity_ascent.*
 import kotlinx.android.synthetic.main.fragment_route_form.*
 
 class RouteFormFragment : Fragment() {
-    private var routeId: String = ""
-
     private var listener: OnFragmentInteractionListener? = null
 
 
