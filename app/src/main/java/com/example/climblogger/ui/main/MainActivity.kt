@@ -2,14 +2,12 @@ package com.example.climblogger.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.climblogger.R
 import com.example.climblogger.ui.area.AddAreaActivity
 import com.example.climblogger.ui.area.AreaActivity
-import com.example.climblogger.ui.area.AreaActivity.Companion.EXTRA_AREA
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
@@ -24,7 +22,8 @@ import com.example.climblogger.ui.sector.AddSectorActivity
 import com.example.climblogger.ui.sector.SectorActivity
 import com.example.climblogger.ui.sector.SectorActivity.Companion.EXTRA_SECTOR
 import com.example.climblogger.ui.stats.StatsActivity
-import com.example.climblogger.util.inTransaction
+import com.example.climblogger.util.addIfNotAlreadythere
+import com.example.climblogger.util.detachSwitch
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
@@ -143,22 +142,39 @@ class MainActivity : AppCompatActivity(),
 
 
     private fun switchTo(tabFragment: MainActivityTabFragment) {
-        val currentFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
+//        val currentFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
+//        val newFragment = supportFragmentManager.findFragmentByTag(tabFragment.TAG)
+//        val fragment = newFragment ?: tabFragment.newInstance()
+
+
+        val oldFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
         val newFragment = supportFragmentManager.findFragmentByTag(tabFragment.TAG)
-        val fragment = newFragment ?: tabFragment.newInstance()
-        supportFragmentManager.inTransaction {
-            if (currentFragment != null) {
-                detach(currentFragment)
-                if (newFragment != null) {
-                    attach(fragment)
-                } else {
-                    replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
-                }
-            } else {
-                // no fragment has been added yet
-                replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
-            }
-        }
+
+
+        detachSwitch(R.id.fragmentPlace, currentFragmentTag, tabFragment)
+
+//        supportFragmentManager.addIfNotAlreadythere(tabFragment.TAG) {
+//            oldFragment?.let { detach(it) }
+//            newFragment?.let { attach(it) } ?: run {
+//                add(R.id.fragmentPlace, tabFragment.newInstance(), tabFragment.TAG)
+//            }
+//            replace(
+//                R.id.fragmentPlace, fragment, tabFragment.TAG
+//            )
+//    }
+//        supportFragmentManager.inTransaction {
+//            if (currentFragment != null) {
+//                detach(currentFragment)
+//                if (newFragment != null) {
+//                    attach(fragment)
+//                } else {
+//                    replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
+//                }
+//            } else {
+//                // no fragment has been added yet
+//                replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
+//            }
+//        }
         currentFragmentTag = tabFragment.TAG
     }
 

@@ -1,7 +1,9 @@
 package com.example.climblogger.util
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.climblogger.ui.main.MainActivityTabFragment
 
 /**
  * Extention to wrap calls to fragmentmanagers in commit functions and all that
@@ -21,3 +23,29 @@ inline fun FragmentManager.addIfNotAlreadythere(tag: String, func: FragmentTrans
         }
     }
 }
+
+fun AppCompatActivity.detachSwitch(
+    fragmentId: Int,
+    detachTag: String,
+    attachFragment: MainActivityTabFragment
+) {
+
+    val oldFragment = supportFragmentManager.findFragmentByTag(detachTag)
+    val newFragment = supportFragmentManager.findFragmentByTag(attachFragment.TAG)
+
+    oldFragment?.let {
+        supportFragmentManager.inTransaction() {
+            detach(oldFragment)
+        }
+    }
+
+    supportFragmentManager.inTransaction {
+        newFragment?.let {
+            attach(it)
+        } ?: run {
+            add(fragmentId, attachFragment.newInstance(), attachFragment.TAG)
+        }
+    }
+
+}
+
