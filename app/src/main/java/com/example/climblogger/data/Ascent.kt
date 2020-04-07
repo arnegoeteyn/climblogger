@@ -27,29 +27,9 @@ data class Ascent(
     @PrimaryKey
     @ColumnInfo(name = "ascent_uuid")
     val ascent_id: String
-) : Draftable<Ascent>() {
+) {
     override fun toString(): String {
         return "$route_id - $date"
-    }
-
-    override fun toDraft(): AscentDraft {
-        return AscentDraft(
-            route_id, date, kind, comment, ascent_id
-        )
-    }
-
-    data class AscentDraft(
-        val route_id: String? = null,
-        val date: String = getStringDate(),
-        val kind: String = "redpoint",
-        @NullableOutDraft val comment: String? = null,
-        val ascent_id: String? = null
-    ) : Draftable.Draft<Ascent>() {
-        override fun unwrapDraft(): Ascent {
-            return Ascent(
-                route_id!!, date, kind, comment, ascent_id!!
-            )
-        }
     }
 }
 
@@ -93,13 +73,6 @@ class AscentRepository(
     @WorkerThread
     fun insertAscent(ascent: Ascent): Long {
         return ascentDao.insert(ascent)
-    }
-
-    @WorkerThread
-    fun insertAscent(ascent: Ascent.AscentDraft) {
-        ascent.fromDraft()?.let {
-            return ascentDao.upsert(it)
-        }
     }
 
     @WorkerThread

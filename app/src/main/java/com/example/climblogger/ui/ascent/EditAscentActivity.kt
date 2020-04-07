@@ -6,26 +6,28 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.util.addIfNotAlreadythere
 import kotlinx.android.synthetic.main.activity_fragment_single_button.*
-import java.util.*
 
 class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInteractionListener {
 
     private lateinit var editAscentViewModel: ModifyAscentViewModel
+    private lateinit var ascentId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_single_button)
 
-        // unpack bundle
-        var ascentId: String = UUID.randomUUID().toString()
-        intent.extras?.let {
-            ascentId = it.getString(EXTRA_ASCENT_ID, UUID.randomUUID().toString())
-        }
+        intent.extras?.let { extras ->
+            extras.getString(EXTRA_ASCENT_ID)?.let { ascentId ->
+                this.ascentId = ascentId
+            } ?: run { finish(); return }
+        } ?: run { finish(); return }
 
-        editAscentViewModel = ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
+        editAscentViewModel =
+            ViewModelProviders.of(this, AddAscentViewModelFactory(application, null, ascentId))
+                .get(ModifyAscentViewModel::class.java)
 
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
-            editAscentViewModel.loadAscentId = ascentId
+            editAscentViewModel.ascentId = ascentId
             replace(R.id.fragmentPlace, AscentFormFragment.newInstance(), AscentFormFragment.TAG)
         }
 

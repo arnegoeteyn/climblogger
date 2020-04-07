@@ -1,13 +1,11 @@
 package com.example.climblogger.ui.ascent
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.util.addIfNotAlreadythere
 import kotlinx.android.synthetic.main.activity_fragment_single_button.*
-import java.util.*
 
 class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInteractionListener {
 
@@ -19,16 +17,19 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_single_button)
 
-        intent.extras?.let {
-            routeId = intent.extras?.get(EXTRA_ROUTE_ID) as String
-        }
+        intent.extras?.let { extras ->
+            extras.get(EXTRA_ROUTE_ID)?.let { routeId ->
+                this.routeId = routeId as String
+            } ?: run { finish(); return }
+        } ?: run { finish(); return }
+
 
         addAscentViewModel =
-            ViewModelProviders.of(this).get(ModifyAscentViewModel::class.java)
+            ViewModelProviders.of(this, AddAscentViewModelFactory(application, routeId, null))
+                .get(ModifyAscentViewModel::class.java)
 
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
-            addAscentViewModel.setRouteUUID(routeId)
-            addAscentViewModel.setAscentUUID(UUID.randomUUID().toString())
+            addAscentViewModel.ascentRouteId = routeId
             replace(R.id.fragmentPlace, AscentFormFragment.newInstance(), AscentFormFragment.TAG)
         }
 
@@ -37,8 +38,6 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
     }
 
     private fun addAscent() {
-        // the fragment itself doesn't know it can make ascents
-        // we do this trough the viewModel
         addAscentViewModel.insertAscent()
         finish()
     }

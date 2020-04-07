@@ -3,6 +3,7 @@ package com.example.climblogger.ui.ascent
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ class AscentFormFragment : Fragment() {
 
         modifyAscentViewModel =
             ViewModelProviders.of(requireActivity()).get(ModifyAscentViewModel::class.java)
+        loadAscent()
     }
 
 
@@ -44,10 +46,6 @@ class AscentFormFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_ascent_form, container, false)
         this.spinner = view.findViewById(R.id.routeSpinner)
         this.kindSpinner = view.findViewById(R.id.kindSpinner)
-
-        initRouteSpinner()
-        initKindSpinner()
-
         return view
     }
 
@@ -56,66 +54,57 @@ class AscentFormFragment : Fragment() {
         view.findViewById<Button>(R.id.dateButton).setOnClickListener { selectDate().toString() }
 
         setupViewListeners()
+
+        Log.d("DEBUG", "View is create")
+        loadForm()
     }
 
     private fun setupViewListeners() {
 
-        date.afterTextChanged { modifyAscentViewModel.setDate(it) }
-        commentTextEditText.afterTextChanged { modifyAscentViewModel.setComment(it) }
+        date.afterTextChanged { modifyAscentViewModel.ascentDate = it }
+        commentTextEditText.afterTextChanged { modifyAscentViewModel.ascentComment = it }
 
         kindSpinner.onItemChosen {
-            modifyAscentViewModel.setKind(kindSpinner.getItemAtPosition(it) as String)
+            modifyAscentViewModel.ascentKind = kindSpinner.getItemAtPosition(it) as String
         }
 
         routeSpinner.onItemChosen {
             val route = spinner.getItemAtPosition(it) as Route
-            modifyAscentViewModel.setRouteUUID(route.route_id)
+            modifyAscentViewModel.ascentRouteId = route.route_id
         }
+    }
 
-        modifyAscentViewModel.getAscent().observe(viewLifecycleOwner, Observer { ascent ->
+    private fun loadAscent() {
+        modifyAscentViewModel.getAscent()?.observe(this, Observer { ascent ->
             ascent?.let {
-                loadForm(it)
+                modifyAscentViewModel.updateFromAscent(ascent)
             }
         })
-
     }
 
-    private fun loadForm(ascent: Ascent.AscentDraft) {
-        date.text = ascent.date
-        commentTextInput.editText?.setTextIfNotFocused(ascent.comment)
-
-        selectItemInKindSpinner(ascent.kind)
-
-        ascent.route_id?.let {
-            modifyAscentViewModel.getRoute(it)
-                .observe(viewLifecycleOwner, Observer { route ->
-                    selectItemInRouteSpinner(route)
-                })
-        }
+    private fun loadForm() {
+        date.text = modifyAscentViewModel.ascentDate
+        commentTextEditText.setText(modifyAscentViewModel.ascentComment)
+        initRouteSpinner(modifyAscentViewModel.ascentRouteId)
+        initKindSpinner(modifyAscentViewModel.ascentKind)
     }
 
-    private fun initRouteSpinner() {
+    private fun initRouteSpinner(selectedRouteId: String?) {
         modifyAscentViewModel.allRoutes.observe(
             viewLifecycleOwner, Observer { routes ->
                 this.spinner.setData(routes)
 
-                // we want to reload the form now because maybe the route was already selected
-                modifyAscentViewModel.getAscent().value?.let {
-                    loadForm(it)
+                selectedRouteId?.let {
+                    modifyAscentViewModel.getRoute(selectedRouteId).observe(this, Observer {
+                        spinner.selectItemInSpinner(it)
+                    })
                 }
             })
     }
 
-    private fun initKindSpinner() {
+    private fun initKindSpinner(selectedKind: String?) {
         kindSpinner.setData(resources.getStringArray(R.array.ascent_kind).toList())
-    }
-
-    private fun selectItemInRouteSpinner(selectedRoute: Route?) {
-        this.spinner.selectItemInSpinner(selectedRoute)
-    }
-
-    private fun selectItemInKindSpinner(selectedKind: String?) {
-        this.kindSpinner.selectItemInSpinner(selectedKind)
+        kindSpinner.selectItemInSpinner(selectedKind)
     }
 
 
@@ -129,7 +118,7 @@ class AscentFormFragment : Fragment() {
     }
 
 
-    fun selectDate() {
+    private fun selectDate() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)

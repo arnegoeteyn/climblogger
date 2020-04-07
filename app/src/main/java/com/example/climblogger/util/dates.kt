@@ -20,6 +20,6 @@ fun getStringDate(
         newMonth = c.get(Calendar.MONTH) + 1
         newDay = c.get(Calendar.DAY_OF_MONTH)
     }
-    return "$newYear-$newMonth-$newDay"
+    return "$newYear-${newMonth.toString().padStart(2, '0')}-${newDay.toString().padStart(2, '0')}"
 }
 

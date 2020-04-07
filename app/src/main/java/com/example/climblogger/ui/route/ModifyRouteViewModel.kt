@@ -7,15 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class ModifyRouteViewModel(application: Application) : AndroidViewModel(application) {
     private val routeRepository: RouteRepository
     private val sectorRepository: SectorRepository
 
     val allSectors: LiveData<List<Sector>>
-
-    var route: LiveData<Route?>? = null
 
     var routeName: String? = null
     var routeGrade: String? = null

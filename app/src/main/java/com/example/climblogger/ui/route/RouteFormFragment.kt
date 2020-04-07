@@ -23,7 +23,6 @@ private const val ARG_PARAM_SECTOR_ID = "sector_id_param"
 
 class RouteFormFragment : Fragment() {
     private var routeId: String = ""
-//    private var sectorId: String? = null
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -141,8 +140,6 @@ class RouteFormFragment : Fragment() {
     fun createRoute(): Route {
         val commentText = commentTextInput.editText!!.text.toString()
         val linkText = linkTextInput.editText!!.text.toString()
-
-        Log.d("debug", nameTextInput.editText!!.text.toString())
 
         return Route(
             (sectorSpinner.selectedItem as Sector).sectorId,

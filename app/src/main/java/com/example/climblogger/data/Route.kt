@@ -26,36 +26,10 @@ data class Route(
     @PrimaryKey
     @ColumnInfo(name = "route_uuid")
     val route_id: String
-) : Draftable<Route>() {
-
-    override fun toDraft(): RouteDraft {
-        return RouteDraft(
-            sector_id, name, grade, kind, comment,
-            link, pitch, multipitch_id, route_id
-        )
-    }
+) {
 
     override fun toString(): String {
         return "$name - $grade"
-    }
-
-    data class RouteDraft(
-        val sector_id: String? = null,
-        val name: String? = null,
-        val grade: String? = null,
-        val kind: String? = null,
-        @NullableOutDraft val comment: String? = null,
-        @NullableOutDraft val link: String? = null,
-        @NullableOutDraft val pitch: Int? = null,
-        @NullableOutDraft val multipitch_id: Int? = null,
-        val route_id: String? = null
-    ) : Draftable.Draft<Route>() {
-        override fun unwrapDraft(): Route {
-            return Route(
-                sector_id!!, name!!, grade!!, kind!!, comment,
-                link, pitch, multipitch_id, route_id!!
-            )
-        }
     }
 }
 
