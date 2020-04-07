@@ -18,9 +18,6 @@ import com.example.climblogger.util.setTextIfNotFocused
 import kotlinx.android.synthetic.main.activity_ascent.*
 import kotlinx.android.synthetic.main.fragment_route_form.*
 
-private const val ARG_PARAM_ROUTE_ID = "route_ID_PARAM"
-private const val ARG_PARAM_SECTOR_ID = "sector_id_param"
-
 class RouteFormFragment : Fragment() {
     private var routeId: String = ""
 
@@ -33,18 +30,8 @@ class RouteFormFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
-
-        // get the routeId
-        arguments?.let { bundle ->
-            bundle.getString(ARG_PARAM_ROUTE_ID)?.let {
-                routeId = it
-            }
-
-            bundle.getString(ARG_PARAM_SECTOR_ID)?.let {
-                addRouteViewModel.sectorId = it
-            }
-        }
+        addRouteViewModel =
+            ViewModelProviders.of(requireActivity()).get(ModifyRouteViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -58,75 +45,40 @@ class RouteFormFragment : Fragment() {
         return view
     }
 
-    /**
-     * Load the form with data that is already in the route
-     * Will only do something if the route is already in the db
-     */
     private fun loadForm() {
-        // if route already exists load it
-        addRouteViewModel.getRoute(routeId)?.observe(this, Observer { route ->
-            route?.let {
+        nameTextInput.editText?.setText(addRouteViewModel.routeName)
+        gradeTextInput.editText?.setText(addRouteViewModel.routeGrade)
+        commentTextInput.editText?.setText(addRouteViewModel.routeComment)
+        linkTextInput.editText?.setText(addRouteViewModel.routeLink)
 
-                addRouteViewModel.routeName ?: run {
-                    nameTextInput.editText?.setText(it.name)
-                }
-                addRouteViewModel.routeGrade ?: run {
-                    gradeTextInput.editText?.setText(it.grade)
-                }
-                addRouteViewModel.routeComment ?: run {
-                    commentTextInput.editText?.setText(it.comment)
-                }
-                addRouteViewModel.routeLink ?: run {
-                    linkTextInput.editText?.setText(it.link)
-                }
-
-                addRouteViewModel.sectorId ?: run {
-                    addRouteViewModel.sectorId = it.sector_id
-                }
-                addRouteViewModel.routeKind ?: run {
-                    addRouteViewModel.routeKind = it.kind
-                }
-            }
-
-            addRouteViewModel.routeName?.let { routeName ->
-                nameTextInput.editText?.setText(routeName)
-            }
-            addRouteViewModel.routeGrade?.let { routeGrade ->
-                gradeTextInput.editText?.setText(routeGrade)
-            }
-            addRouteViewModel.routeComment?.let { routeComment ->
-                commentTextInput.editText?.setText(routeComment)
-            }
-            addRouteViewModel.routeLink?.let { routeLink ->
-                linkTextInput.editText?.setText(routeLink)
-            }
-
-            // load the spinners and update them with the already selected info
-            initSectorSpinner(addRouteViewModel.sectorId)
-            initKindSpinner(addRouteViewModel.routeKind)
-        })
+        initSectorSpinner(addRouteViewModel.sectorId)
+        initKindSpinner(addRouteViewModel.routeKind)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadForm()
 
         setupViewListeners()
+
+        loadRoute()
+        loadForm()
+
+    }
+
+    private fun loadRoute() {
+        addRouteViewModel.getRoute()?.observe(this, Observer { route ->
+            route?.let {
+                addRouteViewModel.updateFromRoute(it)
+            }
+            loadForm()
+        })
     }
 
     private fun setupViewListeners() {
-        nameTextInput.editText!!.afterTextChanged {
-            addRouteViewModel.routeName = it
-        }
-        gradeTextInput.editText!!.afterTextChanged {
-            addRouteViewModel.routeGrade = it
-        }
-        commentTextInput.editText!!.afterTextChanged {
-            addRouteViewModel.routeComment = it
-        }
-        linkTextInput.editText!!.afterTextChanged {
-            addRouteViewModel.routeLink = it
-        }
+        nameTextInput.editText!!.afterTextChanged { addRouteViewModel.routeName = it }
+        gradeTextInput.editText!!.afterTextChanged { addRouteViewModel.routeGrade = it }
+        commentTextInput.editText!!.afterTextChanged { addRouteViewModel.routeComment = it }
+        linkTextInput.editText!!.afterTextChanged { addRouteViewModel.routeLink = it }
 
         sectorSpinner.onItemChosen {
             addRouteViewModel.sectorId = (sectorSpinner.selectedItem as Sector).sectorId
@@ -136,28 +88,9 @@ class RouteFormFragment : Fragment() {
         }
     }
 
-
-    fun createRoute(): Route {
-        val commentText = commentTextInput.editText!!.text.toString()
-        val linkText = linkTextInput.editText!!.text.toString()
-
-        return Route(
-            (sectorSpinner.selectedItem as Sector).sectorId,
-            nameTextInput.editText!!.text.toString(),
-            gradeTextInput.editText!!.text.toString(),
-            kindSpinner.selectedItem as String,
-            if (commentText.isEmpty()) null else commentText,
-            if (linkText.isEmpty()) null else linkText,
-            null, null,
-            routeId
-        )
-    }
-
     private fun initKindSpinner(kind: String?) {
         kindSpinner.setData(resources.getStringArray(R.array.route_kind).toList())
-        kind?.let {
-            kindSpinner.selectItemInSpinner(it)
-        }
+        kindSpinner.selectItemInSpinner(kind)
     }
 
 
@@ -191,13 +124,7 @@ class RouteFormFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(route_id: String, sector_id: String? = null) =
-            RouteFormFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM_ROUTE_ID, route_id)
-                    putString(ARG_PARAM_SECTOR_ID, sector_id)
-                }
-            }
+        fun newInstance() = RouteFormFragment()
 
         val TAG = this::class.qualifiedName!!
     }

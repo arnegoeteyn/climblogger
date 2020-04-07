@@ -25,7 +25,7 @@ class AddAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInte
 
 
         addAscentViewModel =
-            ViewModelProviders.of(this, AddAscentViewModelFactory(application, routeId, null))
+            ViewModelProviders.of(this, ModifyAscentViewModelFactory(application, routeId, null))
                 .get(ModifyAscentViewModel::class.java)
 
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {

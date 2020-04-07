@@ -41,13 +41,11 @@ class ModifyAscentViewModel(
     }
 
     fun insertAscent() = viewModelScope.launch(Dispatchers.IO) {
-        val l = ascentRepository.insertAscent(createAscent())
-        Log.d("DEBUG", "insert was $l")
+        ascentRepository.insertAscent(createAscent())
     }
 
     fun updateAscent() = viewModelScope.launch(Dispatchers.IO) {
-        val l = ascentRepository.update(createAscent())
-        Log.d("DEBUG", "insert was $l")
+        ascentRepository.update(createAscent())
     }
 
     fun createAscent(): Ascent {

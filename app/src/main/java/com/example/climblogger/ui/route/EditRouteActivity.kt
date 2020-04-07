@@ -3,6 +3,7 @@ package com.example.climblogger.ui.route
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils.replace
+import android.util.Log
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.util.addIfNotAlreadythere
@@ -13,22 +14,28 @@ class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInter
 
     private lateinit var editRouteViewModel: ModifyRouteViewModel
 
+    private lateinit var routeId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_single_button)
 
-        // unpack bundle
-        var routeId: String = UUID.randomUUID().toString()
-        intent.extras?.let {
-            routeId = it.getString(EXTRA_ROUTE_ID, UUID.randomUUID().toString())
-        }
 
-        editRouteViewModel = ViewModelProviders.of(this).get(ModifyRouteViewModel::class.java)
+        intent.extras?.let { extras ->
+            extras.getString(EXTRA_ROUTE_ID)?.let { routeId ->
+                this.routeId = routeId
+                Log.d("DEBUG", "Set routeId to $routeId")
+            } ?: run { finish(); return }
+        } ?: run { finish(); return }
+
+        editRouteViewModel =
+            ViewModelProviders.of(this, ModifyRouteViewModelFactory(application, null, routeId))
+                .get(ModifyRouteViewModel::class.java)
 
         supportFragmentManager.addIfNotAlreadythere(RouteFormFragment.TAG) {
             replace(
                 R.id.fragmentPlace,
-                RouteFormFragment.newInstance(routeId),
+                RouteFormFragment.newInstance(),
                 RouteFormFragment.TAG
             )
 
@@ -39,9 +46,7 @@ class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInter
     }
 
     private fun editRoute() {
-        editRouteViewModel.editRoute(
-            (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as RouteFormFragment).createRoute()
-        )
+        editRouteViewModel.updateRoute()
         finish()
     }
 

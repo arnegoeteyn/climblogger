@@ -23,11 +23,10 @@ class EditAscentActivity : AppCompatActivity(), AscentFormFragment.OnFragmentInt
         } ?: run { finish(); return }
 
         editAscentViewModel =
-            ViewModelProviders.of(this, AddAscentViewModelFactory(application, null, ascentId))
+            ViewModelProviders.of(this, ModifyAscentViewModelFactory(application, null, ascentId))
                 .get(ModifyAscentViewModel::class.java)
 
         supportFragmentManager.addIfNotAlreadythere(AscentFormFragment.TAG) {
-            editAscentViewModel.ascentId = ascentId
             replace(R.id.fragmentPlace, AscentFormFragment.newInstance(), AscentFormFragment.TAG)
         }
 
