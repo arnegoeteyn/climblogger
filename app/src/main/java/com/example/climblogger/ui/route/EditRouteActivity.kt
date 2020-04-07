@@ -24,7 +24,6 @@ class EditRouteActivity : AppCompatActivity(), RouteFormFragment.OnFragmentInter
         intent.extras?.let { extras ->
             extras.getString(EXTRA_ROUTE_ID)?.let { routeId ->
                 this.routeId = routeId
-                Log.d("DEBUG", "Set routeId to $routeId")
             } ?: run { finish(); return }
         } ?: run { finish(); return }
 

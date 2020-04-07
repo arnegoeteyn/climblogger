@@ -7,12 +7,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.climblogger.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
-class ModifySectorViewModel(application: Application) : AndroidViewModel(application) {
+class ModifySectorViewModel(application: Application, var sectorId: String?, var areaId: String?) :
+    AndroidViewModel(application) {
     private val sectorRepository: SectorRepository
     private val areaRepository: AreaRepository
 
     val allAreas: LiveData<List<Area>>
+
+    var sectorName: String = "SectorName"
+    var sectorComment: String? = null
+
+    var loaded = false
 
     init {
         val sectorDao = RouteRoomDatabase.getDatabase(application).sectorDao()
@@ -23,19 +30,37 @@ class ModifySectorViewModel(application: Application) : AndroidViewModel(applica
         allAreas = areaDao.getAllAreas()
     }
 
-    fun insertSector(sector: Sector) = viewModelScope.launch(Dispatchers.IO) {
-        sectorRepository.insert(sector)
+    fun insertSector() = viewModelScope.launch(Dispatchers.IO) {
+        sectorRepository.insert(createSector())
     }
 
-    fun getSector(sector_id: String): LiveData<Sector> {
-        return sectorRepository.getSector(sector_id)
+    fun editSector() = viewModelScope.launch(Dispatchers.IO) {
+        sectorRepository.updateSector(createSector())
     }
 
-    fun editSector(sector: Sector) = viewModelScope.launch(Dispatchers.IO) {
-        sectorRepository.updateSector(sector)
+    private fun createSector(): Sector {
+        val createdSectorId = sectorId ?: UUID.randomUUID().toString()
+
+        return Sector(
+            sectorName, areaId!!, sectorComment, createdSectorId
+        )
+    }
+
+    fun getSector(): LiveData<Sector?>? {
+        return sectorId?.let { sectorRepository.getSector(it) }
     }
 
     fun getArea(areaId: String): LiveData<Area?> {
         return areaRepository.getArea(areaId)
+    }
+
+    fun updateFromSector(sector: Sector) {
+        if (!loaded) {
+            sectorName = sector.name
+            sectorComment = sector.comment
+            areaId = sector.areaId
+
+            loaded = true
+        }
     }
 }

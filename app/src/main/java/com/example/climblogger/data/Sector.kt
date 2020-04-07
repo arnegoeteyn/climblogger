@@ -34,7 +34,7 @@ abstract class SectorDao : BaseDao<Sector>() {
     abstract fun getAllSectors(): LiveData<List<Sector>>
 
     @Query("SELECT * FROM sectors WHERE sector_uuid = :sector_id")
-    abstract fun getSector(sector_id: String): LiveData<Sector>
+    abstract fun getSector(sector_id: String): LiveData<Sector?>
 
     @Query(" SELECT * FROM sectors WHERE area_uuid == :area_id ORDER BY name")
     abstract fun sectorsFromArea(area_id: String): LiveData<List<Sector>>
@@ -47,7 +47,7 @@ class SectorRepository(private val sectorDao: SectorDao) {
         sectorDao.insert(sector)
     }
 
-    fun getSector(sector_id: String): LiveData<Sector> {
+    fun getSector(sector_id: String): LiveData<Sector?> {
         return sectorDao.getSector(sector_id)
     }
 

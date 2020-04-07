@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
+import com.example.climblogger.util.addIfNotAlreadythere
 import kotlinx.android.synthetic.main.activity_fragment_single_button.*
 import java.util.*
 
@@ -11,34 +12,37 @@ class AddSectorActivity : AppCompatActivity(), SectorFormFragment.OnFragmentInte
 
     private lateinit var modifySectorViewModel: ModifySectorViewModel
 
-    private var areaId: String? = null
+    private lateinit var areaId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_single_button)
 
-        modifySectorViewModel = ViewModelProviders.of(this).get(ModifySectorViewModel::class.java)
 
-        // check if areaId has been passed along
-        intent.extras?.let {
-            areaId = intent.extras?.get(EXTRA_AREA_ID) as String
-        }
+        intent.extras?.let { extras ->
+            extras.getString(EXTRA_AREA_ID)?.let { areaId ->
+                this.areaId = areaId
+            } ?: run { finish(); return }
+        } ?: run { finish(); return }
 
-        supportFragmentManager.beginTransaction()
-            .add(
+        modifySectorViewModel =
+            ViewModelProviders.of(this, ModifySectorViewModelFactory(application, null, areaId))
+                .get(ModifySectorViewModel::class.java)
+
+        supportFragmentManager.addIfNotAlreadythere(SectorFormFragment.TAG) {
+            replace(
                 R.id.fragmentPlace,
-                SectorFormFragment.newInstance(UUID.randomUUID().toString(), areaId)
+                SectorFormFragment.newInstance(),
+                SectorFormFragment.TAG
             )
-            .commit()
+        }
 
         confirmationButton.setOnClickListener { addSector() }
         confirmationButton.text = resources.getString(R.string.add_sector)
     }
 
     private fun addSector() {
-        modifySectorViewModel.insertSector(
-            (supportFragmentManager.findFragmentById(R.id.fragmentPlace) as SectorFormFragment).createSector()
-        )
+        modifySectorViewModel.insertSector()
         finish()
     }
 

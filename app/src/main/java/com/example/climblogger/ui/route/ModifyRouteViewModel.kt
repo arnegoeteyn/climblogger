@@ -33,7 +33,6 @@ class ModifyRouteViewModel(application: Application, var routeId: String?, var s
 
         allSectors = sectorRepository.allSectors
 
-        Log.d("DEBUG", "routeId now is $routeId")
     }
 
     fun insertRoute() = viewModelScope.launch(Dispatchers.IO) {
@@ -60,12 +59,11 @@ class ModifyRouteViewModel(application: Application, var routeId: String?, var s
         )
     }
 
-    fun getSector(sector_id: String): LiveData<Sector> {
+    fun getSector(sector_id: String): LiveData<Sector?> {
         return sectorRepository.getSector(sector_id)
     }
 
     fun getRoute(): LiveData<Route?>? {
-        Log.d("DEBUG", "requested route with $routeId")
         return routeId?.let { routeRepository.getRoute(it) }
     }
 
