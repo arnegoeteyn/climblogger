@@ -9,23 +9,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import com.example.climblogger.adapters.AreasAdapter
+import com.example.climblogger.adapters.MultipitchesAdapter
 import com.example.climblogger.ui.main.MainActivityTabFragment
 import com.example.climblogger.util.RecyclerViewOnItemClickListener
 import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.standardInit
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
-class AreasFragment : Fragment() {
+class MultipitchesFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
-    private lateinit var areasViewModel: AreasViewModel
+    private lateinit var multipitchesViewModel: MultipitchesViewModel
 
-    private lateinit var areasAdapter: AreasAdapter
+    private lateinit var multipitchesAdapter: MultipitchesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        areasViewModel = ViewModelProviders.of(this).get(AreasViewModel::class.java)
+        multipitchesViewModel = ViewModelProviders.of(this).get(MultipitchesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -39,27 +39,26 @@ class AreasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
 
-        areasViewModel.allAreas.observe(this, Observer {
-            areasAdapter.setData(it)
+        multipitchesViewModel.allMultipitches.observe(this, Observer {
+            multipitchesAdapter.setData(it)
         })
     }
 
     private fun initRecyclerView() {
-        areasAdapter = AreasAdapter()
-        recyclerView.standardInit(areasAdapter)
+        multipitchesAdapter = MultipitchesAdapter()
+        recyclerView.standardInit(multipitchesAdapter)
 
-        // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                areasViewModel.allAreas.value?.get(position)
-                    ?.let { listener?.onAreaClicked(it.areaId) }
+                multipitchesViewModel.allMultipitches.value?.get(position)
+                    ?.let { listener?.onMultipitchClicked(it.multipitch_uuid) }
             }
         })
     }
 
     interface OnFragmentInteractionListener {
-        fun onAreaClicked(areaId: String)
+        fun onMultipitchClicked(multipitchId: String)
     }
 
     override fun onAttach(context: Context) {
@@ -76,11 +75,10 @@ class AreasFragment : Fragment() {
         listener = null
     }
 
-
     companion object : MainActivityTabFragment {
-        override val TAG: String = AreasFragment::class.qualifiedName!!
+        override val TAG: String = MultipitchesFragment::class.qualifiedName!!
 
         @JvmStatic
-        override fun newInstance() = AreasFragment()
+        override fun newInstance() = MultipitchesFragment()
     }
 }

@@ -8,12 +8,12 @@ import androidx.room.*
 )
 data class Multipitch(
     @PrimaryKey
-    @ColumnInfo(name = "multipitch_id") val multipitch_id: Int?,
+    @ColumnInfo(name = "multipitch_uuid") val multipitch_uuid: String,
     @ColumnInfo(name = "name") var name: String
 ) {
 
     override fun toString(): String {
-        return "$name - $multipitch_id"
+        return "$name - $multipitch_uuid"
     }
 }
 
@@ -22,8 +22,8 @@ abstract class MultipitchDao : BaseDao<Multipitch>() {
     @Query("SELECT * from multipitches ORDER BY name ASC")
     abstract fun getAllMultipitches(): LiveData<List<Multipitch>>
 
-    @Query("SELECT * FROM multipitches WHERE multipitch_id == :multipitch_id")
-    abstract fun getMultipitch(multipitch_id: String): LiveData<Multipitch?>
+    @Query("SELECT * FROM multipitches WHERE multipitch_uuid == :multipitch_uuid")
+    abstract fun getMultipitch(multipitch_uuid: String): LiveData<Multipitch?>
 }
 
 

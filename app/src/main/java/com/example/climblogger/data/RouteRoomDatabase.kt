@@ -10,7 +10,7 @@ import androidx.room.migration.Migration
 
 @Database(
     entities = [Route::class, Ascent::class, Sector::class, Area::class, Multipitch::class],
-    version = 3
+    version = 4
 )
 abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun routeDao(): RouteDao
@@ -40,6 +40,11 @@ abstract class RouteRoomDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_3_4: Migration = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+            }
+        }
+
         @Volatile
         private var INSTANCE: RouteRoomDatabase? = null
 
@@ -50,7 +55,7 @@ abstract class RouteRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     RouteRoomDatabase::class.java,
                     "climb.db"
-                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                     .build()
                 INSTANCE = instance
                 instance

@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "c502e1cdc6eeb4cd722d3d9297fed979",
+    "identityHash": "aacb7e2fff263c21f37f7f7bc7ed8435",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT NOT NULL, `link` TEXT, `sector_id` INTEGER NOT NULL, PRIMARY KEY(`route_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` TEXT NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_uuid` TEXT, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`), FOREIGN KEY(`sector_uuid`) REFERENCES `sectors`(`sector_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "route_id",
-            "columnName": "route_id",
-            "affinity": "INTEGER",
+            "fieldPath": "sector_id",
+            "columnName": "sector_uuid",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -36,7 +36,7 @@
             "fieldPath": "comment",
             "columnName": "comment",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "link",
@@ -45,15 +45,203 @@
             "notNull": false
           },
           {
-            "fieldPath": "sector_id",
-            "columnName": "sector_id",
+            "fieldPath": "pitch",
+            "columnName": "pitch",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "multipitch_uuid",
+            "columnName": "multipitch_uuid",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "route_id",
+            "columnName": "route_uuid",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "route_id"
+            "route_uuid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "sectors",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "sector_uuid"
+            ],
+            "referencedColumns": [
+              "sector_uuid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ascents",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route_uuid` TEXT NOT NULL, `date` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `ascent_uuid` TEXT NOT NULL, PRIMARY KEY(`ascent_uuid`), FOREIGN KEY(`route_uuid`) REFERENCES `routes`(`route_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "route_id",
+            "columnName": "route_uuid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kind",
+            "columnName": "kind",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comment",
+            "columnName": "comment",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ascent_id",
+            "columnName": "ascent_uuid",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ascent_uuid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "routes",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "route_uuid"
+            ],
+            "referencedColumns": [
+              "route_uuid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "sectors",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `area_uuid` TEXT NOT NULL, `comment` TEXT, `sector_uuid` TEXT NOT NULL, PRIMARY KEY(`sector_uuid`), FOREIGN KEY(`area_uuid`) REFERENCES `areas`(`area_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "areaId",
+            "columnName": "area_uuid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comment",
+            "columnName": "comment",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sectorId",
+            "columnName": "sector_uuid",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sector_uuid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "areas",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "area_uuid"
+            ],
+            "referencedColumns": [
+              "area_uuid"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "areas",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`country` TEXT NOT NULL, `name` TEXT NOT NULL, `area_uuid` TEXT NOT NULL, PRIMARY KEY(`area_uuid`))",
+        "fields": [
+          {
+            "fieldPath": "country",
+            "columnName": "country",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "areaId",
+            "columnName": "area_uuid",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "area_uuid"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "multipitches",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`multipitch_uuid` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`multipitch_uuid`))",
+        "fields": [
+          {
+            "fieldPath": "multipitch_uuid",
+            "columnName": "multipitch_uuid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "multipitch_uuid"
           ],
           "autoGenerate": false
         },
@@ -64,7 +252,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c502e1cdc6eeb4cd722d3d9297fed979\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"aacb7e2fff263c21f37f7f7bc7ed8435\")"
     ]
   }
 }

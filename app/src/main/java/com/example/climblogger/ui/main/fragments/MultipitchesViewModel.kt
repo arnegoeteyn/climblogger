@@ -1,4 +1,4 @@
-package com.example.climblogger.ui.multipitch
+package com.example.climblogger.ui.main.fragments
 
 import android.app.Application
 import android.util.Log

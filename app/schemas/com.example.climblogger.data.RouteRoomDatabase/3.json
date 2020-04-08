@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "46f1f14ab7ab9e4b7739d650ce8c93b1",
+    "identityHash": "8c79ec5269bfbb9013a04733254be9cd",
     "entities": [
       {
         "tableName": "routes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` TEXT NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_id` INTEGER, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`), FOREIGN KEY(`sector_uuid`) REFERENCES `sectors`(`sector_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sector_uuid` TEXT NOT NULL, `name` TEXT NOT NULL, `grade` TEXT NOT NULL, `kind` TEXT NOT NULL, `comment` TEXT, `link` TEXT, `pitch` INTEGER, `multipitch_uuid` TEXT, `route_uuid` TEXT NOT NULL, PRIMARY KEY(`route_uuid`), FOREIGN KEY(`sector_uuid`) REFERENCES `sectors`(`sector_uuid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "sector_id",
@@ -51,9 +51,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "multipitch_id",
-            "columnName": "multipitch_id",
-            "affinity": "INTEGER",
+            "fieldPath": "multipitch_uuid",
+            "columnName": "multipitch_uuid",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -224,13 +224,13 @@
       },
       {
         "tableName": "multipitches",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`multipitch_id` INTEGER, `name` TEXT NOT NULL, PRIMARY KEY(`multipitch_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`multipitch_id` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`multipitch_id`))",
         "fields": [
           {
             "fieldPath": "multipitch_id",
             "columnName": "multipitch_id",
-            "affinity": "INTEGER",
-            "notNull": false
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "name",
@@ -252,7 +252,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"46f1f14ab7ab9e4b7739d650ce8c93b1\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8c79ec5269bfbb9013a04733254be9cd\")"
     ]
   }
 }

@@ -22,7 +22,7 @@ data class Route(
     @ColumnInfo(name = "comment") val comment: String?,
     @ColumnInfo(name = "link") val link: String?,
     @ColumnInfo(name = "pitch") val pitch: Int?,
-    @ColumnInfo(name = "multipitch_id") val multipitch_id: Int?,
+    @ColumnInfo(name = "multipitch_uuid") val multipitch_uuid: String?,
     @PrimaryKey
     @ColumnInfo(name = "route_uuid")
     val route_id: String
