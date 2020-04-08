@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
@@ -17,7 +16,7 @@ import com.example.climblogger.ui.main.fragments.AreasFragment
 import com.example.climblogger.ui.main.fragments.AscentsFragment
 import com.example.climblogger.ui.main.fragments.RoutesFragment
 import com.example.climblogger.ui.main.fragments.SectorsFragment
-import com.example.climblogger.ui.multipitch.Multipitches
+import com.example.climblogger.ui.multipitch.MultipitchesActivity
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
@@ -25,7 +24,6 @@ import com.example.climblogger.ui.sector.AddSectorActivity
 import com.example.climblogger.ui.sector.SectorActivity
 import com.example.climblogger.ui.sector.SectorActivity.Companion.EXTRA_SECTOR
 import com.example.climblogger.ui.stats.StatsActivity
-import com.example.climblogger.util.addIfNotAlreadythere
 import com.example.climblogger.util.detachSwitch
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -63,7 +61,7 @@ class MainActivity : AppCompatActivity(),
                 return true
             }
             R.id.action_multipitches -> {
-                startActivity(Intent(this, Multipitches::class.java))
+                startActivity(Intent(this, MultipitchesActivity::class.java))
                 return true
             }
         }

@@ -10,7 +10,7 @@ data class Multipitch(
     @PrimaryKey
     @ColumnInfo(name = "multipitch_id") val multipitch_id: Int?,
     @ColumnInfo(name = "name") var name: String
-    ) {
+) {
 
     override fun toString(): String {
         return "$name - $multipitch_id"
