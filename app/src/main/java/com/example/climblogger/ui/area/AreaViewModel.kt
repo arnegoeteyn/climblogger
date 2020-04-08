@@ -1,6 +1,7 @@
 package com.example.climblogger.ui.area
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,7 @@ class AreaViewModel(application: Application, areaId: String) : AndroidViewModel
     val areaSectors: LiveData<List<Sector>>
 
     init {
+        Log.d("DEBUG", "ViewModel created")
         val areaDao = RouteRoomDatabase.getDatabase(application).areaDao()
         val sectorDao = RouteRoomDatabase.getDatabase(application).sectorDao()
         areaRepository = AreaRepository(areaDao)

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.ui.area.AddAreaActivity
 import com.example.climblogger.ui.area.AreaActivity
@@ -32,24 +33,23 @@ class MainActivity : AppCompatActivity(),
     SectorsFragment.OnFragmentInteractionListener,
     AreasFragment.OnFragmentInteractionListener {
 
-    // tag indicating the current fragment, needed to make the + button work
-    private var currentFragmentTag: String = RoutesFragment.TAG
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         initBottomNavigation()
-        switchToRoutes()
+//        switchToRoutes()
+        switchTo(mainViewModel.tabFragment)
 
         floatingActionButton.setOnClickListener { floatingButtonClicked() }
     }
 
-    /*
-        Stuff for the menu (3 dots)
-     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(),
         and launching new activities from this
      */
     private fun floatingButtonClicked() {
-        when (currentFragmentTag) {
+        when (mainViewModel.tabFragment.TAG) {
             RoutesFragment.TAG -> newRouteActivity()
             AscentsFragment.TAG -> newAscentActivity()
             SectorsFragment.TAG -> newSectorActivity()
@@ -142,40 +142,8 @@ class MainActivity : AppCompatActivity(),
 
 
     private fun switchTo(tabFragment: MainActivityTabFragment) {
-//        val currentFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
-//        val newFragment = supportFragmentManager.findFragmentByTag(tabFragment.TAG)
-//        val fragment = newFragment ?: tabFragment.newInstance()
-
-
-        val oldFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
-        val newFragment = supportFragmentManager.findFragmentByTag(tabFragment.TAG)
-
-
-        detachSwitch(R.id.fragmentPlace, currentFragmentTag, tabFragment)
-
-//        supportFragmentManager.addIfNotAlreadythere(tabFragment.TAG) {
-//            oldFragment?.let { detach(it) }
-//            newFragment?.let { attach(it) } ?: run {
-//                add(R.id.fragmentPlace, tabFragment.newInstance(), tabFragment.TAG)
-//            }
-//            replace(
-//                R.id.fragmentPlace, fragment, tabFragment.TAG
-//            )
-//    }
-//        supportFragmentManager.inTransaction {
-//            if (currentFragment != null) {
-//                detach(currentFragment)
-//                if (newFragment != null) {
-//                    attach(fragment)
-//                } else {
-//                    replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
-//                }
-//            } else {
-//                // no fragment has been added yet
-//                replace(R.id.fragmentPlace, fragment, tabFragment.TAG)
-//            }
-//        }
-        currentFragmentTag = tabFragment.TAG
+        detachSwitch(R.id.fragmentPlace, mainViewModel.tabFragment.TAG, tabFragment)
+        mainViewModel.tabFragment = tabFragment
     }
 
     private fun switchToRoutes() {

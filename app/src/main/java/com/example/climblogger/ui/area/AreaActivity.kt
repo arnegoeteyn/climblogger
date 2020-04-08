@@ -2,6 +2,7 @@ package com.example.climblogger.ui.area
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -34,7 +35,6 @@ class AreaActivity : AppCompatActivity() {
             .get(AreaViewModel::class.java)
 
         initSectorsRecyclerView()
-
 
         // if an area is passed we can show it
         areaViewModel.area.observe(this, Observer { area ->
