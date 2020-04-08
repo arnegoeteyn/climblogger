@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
@@ -44,7 +45,6 @@ class MainActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
 
         initBottomNavigation()
-//        switchToRoutes()
         switchTo(mainViewModel.tabFragment)
 
         floatingActionButton.setOnClickListener { floatingButtonClicked() }
@@ -144,6 +144,8 @@ class MainActivity : AppCompatActivity(),
     private fun switchTo(tabFragment: MainActivityTabFragment) {
         detachSwitch(R.id.fragmentPlace, mainViewModel.tabFragment.TAG, tabFragment)
         mainViewModel.tabFragment = tabFragment
+
+        if (tabFragment.TAG == AreasFragment.TAG) floatingActionButton.show() else floatingActionButton.hide()
     }
 
     private fun switchToRoutes() {
