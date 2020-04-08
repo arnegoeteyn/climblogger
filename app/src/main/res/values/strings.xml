@@ -37,6 +37,7 @@
     <string name="grade_identifier">Grade</string>
     <string name="sector_identifier">Sector</string>
     <string name="area_identifier">Area</string>
+    <string name="multipitches">Multipitches</string>
 
 
     <string-array name="ascent_kind">

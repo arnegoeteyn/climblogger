@@ -3,4 +3,7 @@
 
     <item android:title="@string/stats"
           android:id="@+id/action_stats"/>
+
+    <item android:title="@string/multipitches"
+            android:id="@+id/action_multipitches"/>
 </menu>

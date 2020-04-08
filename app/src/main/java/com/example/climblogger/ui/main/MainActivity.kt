@@ -17,6 +17,7 @@ import com.example.climblogger.ui.main.fragments.AreasFragment
 import com.example.climblogger.ui.main.fragments.AscentsFragment
 import com.example.climblogger.ui.main.fragments.RoutesFragment
 import com.example.climblogger.ui.main.fragments.SectorsFragment
+import com.example.climblogger.ui.multipitch.Multipitches
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
@@ -59,6 +60,10 @@ class MainActivity : AppCompatActivity(),
         when (item?.itemId) {
             R.id.action_stats -> {
                 startActivity(Intent(this, StatsActivity::class.java))
+                return true
+            }
+            R.id.action_multipitches -> {
+                startActivity(Intent(this, Multipitches::class.java))
                 return true
             }
         }
