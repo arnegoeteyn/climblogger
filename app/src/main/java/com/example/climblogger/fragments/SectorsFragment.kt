@@ -1,37 +1,37 @@
-package com.example.climblogger.ui.main.fragments
+package com.example.climblogger.fragments
 
 import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+
 import com.example.climblogger.R
-import com.example.climblogger.adapters.AreasAdapter
+import com.example.climblogger.adapters.SectorsAdapter
+import com.example.climblogger.data.Sector
 import com.example.climblogger.ui.main.MainActivityTabFragment
-import com.example.climblogger.util.RecyclerViewOnItemClickListener
-import com.example.climblogger.util.addOnItemClickListener
-import com.example.climblogger.util.standardInit
+import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
-class AreasFragment : Fragment() {
-
+class SectorsFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
-    private lateinit var areasViewModel: AreasViewModel
 
-    private lateinit var areasAdapter: AreasAdapter
+    private lateinit var sectorsAdapter: LiveDataAdapter<Sector>
+    private lateinit var sectorsViewModel: SectorsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        areasViewModel = ViewModelProviders.of(this).get(AreasViewModel::class.java)
+        sectorsViewModel = ViewModelProviders.of(this).get(SectorsViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_recyclerview, container, false)
     }
 
@@ -39,28 +39,25 @@ class AreasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
 
-        areasViewModel.allAreas.observe(this, Observer {
-            areasAdapter.setData(it)
+        sectorsViewModel.allSectors.observe(this, Observer {
+            sectorsAdapter.setData(it)
         })
     }
 
     private fun initRecyclerView() {
-        areasAdapter = AreasAdapter()
-        recyclerView.standardInit(areasAdapter)
+        sectorsAdapter = SectorsAdapter()
+        recyclerView.standardInit(sectorsAdapter)
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                areasViewModel.allAreas.value?.get(position)
-                    ?.let { listener?.onAreaClicked(it.areaId) }
+                sectorsViewModel.allSectors.value?.get(position)
+                    ?.let { listener?.onSectorClicked(it.sectorId) }
             }
         })
     }
 
-    interface OnFragmentInteractionListener {
-        fun onAreaClicked(areaId: String)
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,11 +73,15 @@ class AreasFragment : Fragment() {
         listener = null
     }
 
+    interface OnFragmentInteractionListener {
+        fun onSectorClicked(sector_id: String)
+    }
+
 
     companion object : MainActivityTabFragment {
-        override val TAG: String = AreasFragment::class.qualifiedName!!
+        override val TAG: String = SectorsFragment::class.qualifiedName!!
 
         @JvmStatic
-        override fun newInstance() = AreasFragment()
+        override fun newInstance() = SectorsFragment()
     }
 }

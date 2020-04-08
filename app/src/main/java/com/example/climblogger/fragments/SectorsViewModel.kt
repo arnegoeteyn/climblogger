@@ -1,4 +1,4 @@
-package com.example.climblogger.ui.main.fragments
+package com.example.climblogger.fragments
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

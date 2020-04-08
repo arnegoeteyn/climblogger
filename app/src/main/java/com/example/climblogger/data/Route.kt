@@ -44,6 +44,7 @@ abstract class RouteDao : BaseDao<Route>() {
 
     @Query(" SELECT * FROM routes WHERE sector_uuid == :sector_id ORDER BY grade DESC")
     abstract fun routesFromSector(sector_id: String): LiveData<List<Route>>
+
 }
 
 
@@ -70,9 +71,9 @@ class RouteRepository(private val routeDao: RouteDao) {
 
     val allRoutes: LiveData<List<Route>> = routeDao.getAllRoutes()
 
-
     fun routesFromSector(sector_id: String): LiveData<List<Route>> {
         return routeDao.routesFromSector(sector_id)
     }
+
 
 }

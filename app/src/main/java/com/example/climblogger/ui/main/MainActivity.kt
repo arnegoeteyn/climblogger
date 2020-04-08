@@ -12,10 +12,10 @@ import com.example.climblogger.ui.area.AreaActivity
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
-import com.example.climblogger.ui.main.fragments.AreasFragment
-import com.example.climblogger.ui.main.fragments.AscentsFragment
-import com.example.climblogger.ui.main.fragments.RoutesFragment
-import com.example.climblogger.ui.main.fragments.SectorsFragment
+import com.example.climblogger.fragments.AreasFragment
+import com.example.climblogger.fragments.AscentsFragment
+import com.example.climblogger.fragments.RoutesFragment
+import com.example.climblogger.fragments.SectorsFragment
 import com.example.climblogger.ui.multipitch.MultipitchesActivity
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
@@ -68,10 +68,6 @@ class MainActivity : AppCompatActivity(),
         return super.onOptionsItemSelected(item)
     }
 
-    /*
-        Stuff for the floating plus button
-        and launching new activities from this
-     */
     private fun floatingButtonClicked() {
         when (mainViewModel.tabFragment.TAG) {
             RoutesFragment.TAG -> newRouteActivity()
@@ -125,9 +121,6 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
-    /*
-        Stuff for bottom navigation
-     */
     private fun initBottomNavigation() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {

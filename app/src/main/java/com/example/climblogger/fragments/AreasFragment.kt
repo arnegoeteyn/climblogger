@@ -1,66 +1,65 @@
-package com.example.climblogger.ui.main.fragments
+package com.example.climblogger.fragments
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
-import com.example.climblogger.adapters.AscentWithRoutesAdapter
-import com.example.climblogger.data.Ascent
-import com.example.climblogger.data.AscentWithRoute
+import com.example.climblogger.adapters.AreasAdapter
 import com.example.climblogger.ui.main.MainActivityTabFragment
-import com.example.climblogger.util.*
+import com.example.climblogger.util.RecyclerViewOnItemClickListener
+import com.example.climblogger.util.addOnItemClickListener
+import com.example.climblogger.util.standardInit
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
-class AscentsFragment : Fragment() {
+class AreasFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var areasViewModel: AreasViewModel
 
-    private lateinit var ascentsAdapter: LiveDataAdapter<AscentWithRoute>
-    private lateinit var ascentViewModel: AscentsViewModel
+    private lateinit var areasAdapter: AreasAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        areasViewModel = ViewModelProviders.of(this).get(AreasViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_recyclerview, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
-        ascentViewModel.allAscentsWithRoute.observe(this, Observer {
-            ascentsAdapter.setData(it)
+        areasViewModel.allAreas.observe(this, Observer {
+            areasAdapter.setData(it)
         })
     }
 
     private fun initRecyclerView() {
-        ascentsAdapter = AscentWithRoutesAdapter()
-        recyclerView.standardInit(ascentsAdapter)
+        areasAdapter = AreasAdapter()
+        recyclerView.standardInit(areasAdapter)
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                ascentViewModel.allAscentsWithRoute.value?.get(position)
-                    ?.let { listener?.onAscentClicked(it.ascent.ascent_id) }
+                areasViewModel.allAreas.value?.get(position)
+                    ?.let { listener?.onAreaClicked(it.areaId) }
             }
         })
-
     }
 
     interface OnFragmentInteractionListener {
-        fun onAscentClicked(ascent_id: String)
+        fun onAreaClicked(areaId: String)
     }
 
     override fun onAttach(context: Context) {
@@ -79,11 +78,9 @@ class AscentsFragment : Fragment() {
 
 
     companion object : MainActivityTabFragment {
+        override val TAG: String = AreasFragment::class.qualifiedName!!
 
         @JvmStatic
-        override fun newInstance() = AscentsFragment()
-
-        override val TAG = AscentsFragment::class.qualifiedName!!
+        override fun newInstance() = AreasFragment()
     }
-
 }

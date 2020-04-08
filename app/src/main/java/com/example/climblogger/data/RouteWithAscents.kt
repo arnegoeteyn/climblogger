@@ -63,6 +63,18 @@ interface RouteWithAscentsDoa {
             """
     )
     fun getRoutesWithAscentsWithoutUnAscented(sector_id: String): LiveData<List<RouteWithAscents>>
+
+    @Query(
+        """
+                select name, grade, routes.kind, route_uuid, count(ascent_uuid) as amount from routes left join ascents USING(route_uuid)
+                where multipitch_uuid == :multipitchId 
+                group by name
+                ORDER BY pitch asc
+            """
+    )
+    fun routesFromMultipitch(multipitchId: String): LiveData<List<RouteWithAscents>>
+
+
 }
 
 
@@ -71,18 +83,25 @@ class RouteWithAscentsRepository(private val routeWithAscentsDoa: RouteWithAscen
     /**
      * showNotAscented: Wether to include the routes that are not yet ascented
      */
-    fun routesWithAscents(sector_id: String?=null, showNotAscented: Boolean = false): LiveData<List<RouteWithAscents>> {
+    fun routesWithAscents(
+        sector_id: String? = null,
+        showNotAscented: Boolean = false
+    ): LiveData<List<RouteWithAscents>> {
         sector_id?.let { id ->
-            return if(showNotAscented)
+            return if (showNotAscented)
                 routeWithAscentsDoa.getRoutesWithAscents(id)
             else
                 routeWithAscentsDoa.getRoutesWithAscentsWithoutUnAscented(id)
         } ?: run {
-            return if(showNotAscented)
+            return if (showNotAscented)
                 routeWithAscentsDoa.getRoutesWithAscents()
             else
                 routeWithAscentsDoa.getRoutesWithAscentsWithoutUnAscented()
         }
+    }
+
+    fun routesFromMultipitch(multipitchId: String): LiveData<List<RouteWithAscents>> {
+        return routeWithAscentsDoa.routesFromMultipitch(multipitchId)
     }
 
 }

@@ -1,14 +1,9 @@
-package com.example.climblogger.ui.main.fragments
+package com.example.climblogger.fragments
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
 import com.example.climblogger.data.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
 
 class MultipitchesViewModel(application: Application) :
     AndroidViewModel(application) {

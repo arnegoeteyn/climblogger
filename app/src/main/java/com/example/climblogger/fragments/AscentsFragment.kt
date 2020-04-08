@@ -1,4 +1,4 @@
-package com.example.climblogger.ui.main.fragments
+package com.example.climblogger.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -8,21 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
-import com.example.climblogger.adapters.RouteWithAscentsAdapter
-import com.example.climblogger.data.RouteWithAscents
+import com.example.climblogger.adapters.AscentWithRoutesAdapter
+import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.ui.main.MainActivityTabFragment
 import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
+class AscentsFragment : Fragment() {
 
-class RoutesFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var routesAdapter: LiveDataAdapter<RouteWithAscents>
-    private lateinit var routesViewModel: RoutesViewModel
+    private lateinit var ascentsAdapter: LiveDataAdapter<AscentWithRoute>
+    private lateinit var ascentViewModel: AscentsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,31 +33,31 @@ class RoutesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
+        ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
-
-        // listen for changes in the data
-        routesViewModel.allRoutes.observe(this, Observer {
-            routesAdapter.setData(it)
+        ascentViewModel.allAscentsWithRoute.observe(this, Observer {
+            ascentsAdapter.setData(it)
         })
-
     }
 
-
     private fun initRecyclerView() {
-        routesAdapter = RouteWithAscentsAdapter()
-        recyclerView.standardInit(routesAdapter)
+        ascentsAdapter = AscentWithRoutesAdapter()
+        recyclerView.standardInit(ascentsAdapter)
 
         // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                routesViewModel.allRoutes.value?.get(position)
-                    ?.let { listener?.onRouteClicked(it.route_id) }
+                ascentViewModel.allAscentsWithRoute.value?.get(position)
+                    ?.let { listener?.onAscentClicked(it.ascent.ascent_id) }
             }
         })
+
     }
 
+    interface OnFragmentInteractionListener {
+        fun onAscentClicked(ascent_id: String)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -75,14 +73,13 @@ class RoutesFragment : Fragment() {
         listener = null
     }
 
-    interface OnFragmentInteractionListener {
-        fun onRouteClicked(route_id: String)
-    }
 
     companion object : MainActivityTabFragment {
-        @JvmStatic
-        override fun newInstance() = RoutesFragment()
 
-        override val TAG = RoutesFragment::class.qualifiedName!!
+        @JvmStatic
+        override fun newInstance() = AscentsFragment()
+
+        override val TAG = AscentsFragment::class.qualifiedName!!
     }
+
 }
