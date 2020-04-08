@@ -8,8 +8,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.room.migration.Migration
 
 
-@Database(entities = [Route::class, Ascent::class, Sector::class, Area::class], version = 2)
-public abstract class RouteRoomDatabase : RoomDatabase() {
+@Database(
+    entities = [Route::class, Ascent::class, Sector::class, Area::class, Multipitch::class],
+    version = 3
+)
+abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun routeDao(): RouteDao
     abstract fun ascentDao(): AscentDao
     abstract fun sectorDao(): SectorDao
@@ -19,12 +22,21 @@ public abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun routeAmountDao(): RouteAmountDoa
     abstract fun routeWithAscentsDao(): RouteWithAscentsDoa
     abstract fun routeWithSectorDao(): RouteWithSectorDao
+    abstract fun multipitchDao(): MultipitchDao
 
     companion object {
 
         val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Since we didn't alter the table, there's nothing else to do here.
+            }
+        }
+
+        val MIGRATION_2_3: Migration = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS multipitches ( multipitch_id integer PRIMARY KEY, name text NOT NULL )"
+                )
             }
         }
 
@@ -38,7 +50,7 @@ public abstract class RouteRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     RouteRoomDatabase::class.java,
                     "climb.db"
-                ).addMigrations(MIGRATION_1_2)
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance

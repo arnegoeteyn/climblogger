@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "5e309ca187c696b10b18b85c76fe60b4",
+    "identityHash": "122a8025bc2d5746e748e0cb77c762e0",
     "entities": [
       {
         "tableName": "routes",
@@ -221,12 +221,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "multipitches",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `multipitch_id` INTEGER, `route_id` TEXT NOT NULL, PRIMARY KEY(`multipitch_id`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "multipitch_id",
+            "columnName": "multipitch_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "route_id",
+            "columnName": "route_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "multipitch_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5e309ca187c696b10b18b85c76fe60b4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"122a8025bc2d5746e748e0cb77c762e0\")"
     ]
   }
 }
