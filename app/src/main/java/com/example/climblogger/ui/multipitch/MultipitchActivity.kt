@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_multipitch.*
 class MultipitchActivity : AppCompatActivity() {
 
     private lateinit var multipitchViewModel: MultipitchViewModel
-    private lateinit var routesAdapter: RoutesAdapter
+    private lateinit var routesAdapter: RouteWithAscentsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class MultipitchActivity : AppCompatActivity() {
                 Log.d("DEBUG", "HALLO ${it}")
 //                delete_button.setOnPositiveClickListener { }
 
-                it.routes?.let { routesAdapter.setData(it) }
+                it.routes?.let { routes -> routesAdapter.setData(routes) }
             }
         })
 
@@ -52,7 +52,7 @@ class MultipitchActivity : AppCompatActivity() {
     }
 
     private fun initRoutesRecyclerView() {
-        routesAdapter = RoutesAdapter()
+        routesAdapter = RouteWithAscentsAdapter()
         routesRecyclerView.standardInit(routesAdapter)
 
 //        routesRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {

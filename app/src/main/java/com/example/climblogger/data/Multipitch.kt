@@ -22,9 +22,10 @@ data class MultipitchWithRoutes(
     @Embedded val multipitch: Multipitch?,
     @Relation(
         parentColumn = "multipitch_uuid",
-        entityColumn = "multipitch_uuid"
+        entityColumn = "multipitch_uuid",
+        entity = Route::class
     )
-    val routes: List<Route>?
+    val routes: List<RouteWithAscents>?
 ) {
     override fun toString(): String {
         return "${multipitch?.name} with ${routes?.size} routes"
