@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.adapters.RouteWithAscentsAdapter
-import com.example.climblogger.data.RouteWithAscents
 import com.example.climblogger.ui.main.MainActivityTabFragment
 import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
@@ -19,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 class RoutesFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var routesAdapter: LiveDataAdapter<RouteWithAscents>
+    private lateinit var routesAdapter: RouteWithAscentsAdapter
     private lateinit var routesViewModel: RoutesViewModel
 
     override fun onCreateView(
@@ -53,7 +52,7 @@ class RoutesFragment : Fragment() {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
                 routesViewModel.allRoutes.value?.get(position)
-                    ?.let { listener?.onRouteClicked(it.route_id) }
+                    ?.let { listener?.onRouteClicked(it.route.route_id) }
             }
         })
     }

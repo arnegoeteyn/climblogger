@@ -12,18 +12,18 @@ import kotlinx.coroutines.launch
 class MultipitchViewModel(application: Application, multipitchId: String) :
     AndroidViewModel(application) {
     private val multipitchRepository: MultipitchRepository
-    private val routeRepository: RouteWithAscentsRepository
+//    private val routeRepository: RouteWithAscentsRepository
 
     val multipitch: LiveData<MultipitchWithRoutes?>
-    val multipitchRoutes: LiveData<List<RouteWithAscents>>
+//    val multipitchRoutes: LiveData<List<RouteWithAscents>>
 
     init {
         val multipitchDao = RouteRoomDatabase.getDatabase(application).multipitchDao()
-        val routeDao = RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
+//        val routeDao = RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
         multipitchRepository = MultipitchRepository(multipitchDao)
-        routeRepository = RouteWithAscentsRepository(routeDao)
+//        routeRepository = RouteWithAscentsRepository(routeDao)
 
         multipitch = multipitchRepository.getMultipitchWithRoute(multipitchId)
-        multipitchRoutes = routeRepository.routesFromMultipitch(multipitchId)
+//        multipitchRoutes = routeRepository.routesFromMultipitch(multipitchId)
     }
 }

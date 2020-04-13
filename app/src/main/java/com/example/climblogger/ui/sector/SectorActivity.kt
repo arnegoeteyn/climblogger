@@ -78,7 +78,7 @@ class SectorActivity : AppCompatActivity() {
         routesRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 sectorViewModel.sectorRoutes.value?.get(position)
-                    ?.let { onRouteClicked(it.route_id) }
+                    ?.let { onRouteClicked(it.route.route_id) }
             }
         })
 

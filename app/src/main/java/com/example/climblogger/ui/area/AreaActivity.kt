@@ -2,7 +2,6 @@ package com.example.climblogger.ui.area
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -18,7 +17,6 @@ import com.example.climblogger.util.RecyclerViewOnItemClickListener
 import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.standardInit
 import kotlinx.android.synthetic.main.activity_area.*
-import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
 
 class AreaActivity : AppCompatActivity() {
 

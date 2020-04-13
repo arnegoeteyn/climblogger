@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData
 import com.example.climblogger.data.*
 
 class RoutesViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: RouteWithAscentsRepository
+    private val repository: RouteRepository
 
     val allRoutes: LiveData<List<RouteWithAscents>>
 
     init {
-        val routeDao = RouteRoomDatabase.getDatabase(application).routeWithAscentsDao()
-        repository = RouteWithAscentsRepository(routeDao)
+        val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
+        repository = RouteRepository(routeDao)
 
         allRoutes = repository.routesWithAscents()
     }

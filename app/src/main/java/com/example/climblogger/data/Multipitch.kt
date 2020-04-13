@@ -19,15 +19,15 @@ data class Multipitch(
 
 
 data class MultipitchWithRoutes(
-    @Embedded val multipitch: Multipitch,
+    @Embedded val multipitch: Multipitch?,
     @Relation(
         parentColumn = "multipitch_uuid",
         entityColumn = "multipitch_uuid"
     )
-    val routes: List<Route>
+    val routes: List<Route>?
 ) {
     override fun toString(): String {
-        return "${multipitch.name} with ${routes.size} routes"
+        return "${multipitch?.name} with ${routes?.size} routes"
     }
 }
 
@@ -39,6 +39,7 @@ abstract class MultipitchDao : BaseDao<Multipitch>() {
     @Query("SELECT * FROM multipitches WHERE multipitch_uuid == :multipitch_uuid")
     abstract fun getMultipitch(multipitch_uuid: String): LiveData<Multipitch?>
 
+    @Transaction
     @Query("SELECT * FROM multipitches WHERE multipitch_uuid == :multipitch_uuid")
     abstract fun getMultipitchWithRoute(multipitch_uuid: String): LiveData<MultipitchWithRoutes?>
 }

@@ -1,10 +1,10 @@
 package com.example.climblogger.util
 
 import android.view.View
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.climblogger.data.Route
 
 interface RecyclerViewOnItemClickListener {
     fun onItemClicked(position: Int, view: View)

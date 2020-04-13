@@ -33,6 +33,20 @@ data class Route(
     }
 }
 
+data class RouteWithAscents(
+    @Embedded
+    val route: Route,
+    @Relation(
+        parentColumn = "route_uuid",
+        entityColumn = "route_uuid"
+    )
+    val ascents: List<Ascent>
+) {
+    override fun toString(): String {
+        return "${route.name} with ${ascents.size} ascents"
+    }
+}
+
 @Dao
 abstract class RouteDao : BaseDao<Route>() {
 
@@ -45,6 +59,56 @@ abstract class RouteDao : BaseDao<Route>() {
     @Query(" SELECT * FROM routes WHERE sector_uuid == :sector_id ORDER BY grade DESC")
     abstract fun routesFromSector(sector_id: String): LiveData<List<Route>>
 
+
+    @Query(
+        """
+                SELECT * from routes
+                group by name
+                ORDER BY grade desc, name asc
+            """
+    )
+    abstract fun getRoutesWithAscents(): LiveData<List<RouteWithAscents>>
+
+    @Query(
+        """
+                SELECT * from routes
+                where sector_uuid == :sector_id
+                group by name
+                ORDER BY grade desc, name asc
+            """
+    )
+    abstract fun getRoutesWithAscents(sector_id: String): LiveData<List<RouteWithAscents>>
+
+    @Query(
+        """
+                SELECT *, count(ascents.ascent_uuid) as amount from routes inner join ascents using(route_uuid)
+                group by name
+                HAVING amount > 0
+                ORDER BY grade desc, name asc
+            """
+    )
+    abstract fun getRoutesWithAscentsWithoutUnAscented(): LiveData<List<RouteWithAscents>>
+
+    @Query(
+        """
+                SELECT *, count(ascents.ascent_uuid) as amount from routes inner join ascents using(route_uuid)
+                where sector_uuid == :sector_id 
+                group by name
+                HAVING amount > 0
+                ORDER BY grade desc, name asc
+            """
+    )
+    abstract fun getRoutesWithAscentsWithoutUnAscented(sector_id: String): LiveData<List<RouteWithAscents>>
+
+    @Query(
+        """
+                SELECT * from routes
+                where multipitch_uuid == :multipitchId 
+                group by name
+                ORDER BY pitch asc
+            """
+    )
+    abstract fun routesFromMultipitch(multipitchId: String): LiveData<List<RouteWithAscents>>
 }
 
 
@@ -75,5 +139,25 @@ class RouteRepository(private val routeDao: RouteDao) {
         return routeDao.routesFromSector(sector_id)
     }
 
+    fun routesWithAscents(
+        sector_id: String? = null,
+        showNotAscented: Boolean = false
+    ): LiveData<List<RouteWithAscents>> {
+        sector_id?.let { id ->
+            return if (showNotAscented)
+                routeDao.getRoutesWithAscents(id)
+            else
+                routeDao.getRoutesWithAscentsWithoutUnAscented(id)
+        } ?: run {
+            return if (showNotAscented)
+                routeDao.getRoutesWithAscents()
+            else
+                routeDao.getRoutesWithAscentsWithoutUnAscented()
+        }
+    }
+
+    fun routesFromMultipitch(multipitchId: String): LiveData<List<RouteWithAscents>> {
+        return routeDao.routesFromMultipitch(multipitchId)
+    }
 
 }

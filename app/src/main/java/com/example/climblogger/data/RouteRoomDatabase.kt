@@ -20,7 +20,6 @@ abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun areaDao(): AreaDao
     abstract fun ascentWithRouteDao(): AscentWithRouteDao
     abstract fun routeAmountDao(): RouteAmountDoa
-    abstract fun routeWithAscentsDao(): RouteWithAscentsDoa
     abstract fun routeWithSectorDao(): RouteWithSectorDao
     abstract fun multipitchDao(): MultipitchDao
 

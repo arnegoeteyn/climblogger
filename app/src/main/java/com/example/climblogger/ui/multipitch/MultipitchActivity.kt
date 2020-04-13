@@ -3,23 +3,21 @@ package com.example.climblogger.ui.multipitch
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.adapters.RouteWithAscentsAdapter
+import com.example.climblogger.adapters.RoutesAdapter
 import com.example.climblogger.data.Multipitch
 import com.example.climblogger.ui.route.RouteActivity
-import com.example.climblogger.util.RecyclerViewOnItemClickListener
-import com.example.climblogger.util.addOnItemClickListener
 import com.example.climblogger.util.standardInit
 import kotlinx.android.synthetic.main.activity_multipitch.*
 
 class MultipitchActivity : AppCompatActivity() {
 
     private lateinit var multipitchViewModel: MultipitchViewModel
-    private lateinit var routesAdapter: RouteWithAscentsAdapter
+    private lateinit var routesAdapter: RoutesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +33,13 @@ class MultipitchActivity : AppCompatActivity() {
 
         multipitchViewModel.multipitch.observe(this, Observer { multipitch ->
             multipitch?.let {
-                updateMultipitchUi(it.multipitch)
-                Log.d("DEBUG", "HALLO ${it.routes.size}")
+                it.multipitch?.let { it1 -> updateMultipitchUi(it1) }
+                Log.d("DEBUG", "HALLO ${it.routes?.size}")
                 Log.d("DEBUG", "HALLO ${it}")
 //                delete_button.setOnPositiveClickListener { }
-            }
-        })
 
-        multipitchViewModel.multipitchRoutes.observe(this, Observer {
-            routesAdapter.setData(it)
+                it.routes?.let { routesAdapter.setData(it) }
+            }
         })
 
 //        // make the buttons do what they need to do
@@ -56,15 +52,15 @@ class MultipitchActivity : AppCompatActivity() {
     }
 
     private fun initRoutesRecyclerView() {
-        routesAdapter = RouteWithAscentsAdapter()
+        routesAdapter = RoutesAdapter()
         routesRecyclerView.standardInit(routesAdapter)
 
-        routesRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
-            override fun onItemClicked(position: Int, view: View) {
-                multipitchViewModel.multipitchRoutes.value?.get(position)
-                    ?.let { onRouteClicked(it.route_id) }
-            }
-        })
+//        routesRecyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
+//            override fun onItemClicked(position: Int, view: View) {
+//                multipitchViewModel.multipitchRoutes.value?.get(position)
+//                    ?.let { onRouteClicked(it.route_id) }
+//            }
+//        })
     }
 
     private fun onRouteClicked(route_id: String) {
