@@ -2,6 +2,7 @@ package com.example.climblogger.ui.multipitch
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -34,7 +35,9 @@ class MultipitchActivity : AppCompatActivity() {
 
         multipitchViewModel.multipitch.observe(this, Observer { multipitch ->
             multipitch?.let {
-                updateMultipitchUi(it)
+                updateMultipitchUi(it.multipitch)
+                Log.d("DEBUG", "HALLO ${it.routes.size}")
+                Log.d("DEBUG", "HALLO ${it}")
 //                delete_button.setOnPositiveClickListener { }
             }
         })

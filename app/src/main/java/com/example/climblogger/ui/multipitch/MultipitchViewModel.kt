@@ -14,7 +14,7 @@ class MultipitchViewModel(application: Application, multipitchId: String) :
     private val multipitchRepository: MultipitchRepository
     private val routeRepository: RouteWithAscentsRepository
 
-    val multipitch: LiveData<Multipitch?>
+    val multipitch: LiveData<MultipitchWithRoutes?>
     val multipitchRoutes: LiveData<List<RouteWithAscents>>
 
     init {
@@ -23,7 +23,7 @@ class MultipitchViewModel(application: Application, multipitchId: String) :
         multipitchRepository = MultipitchRepository(multipitchDao)
         routeRepository = RouteWithAscentsRepository(routeDao)
 
-        multipitch = multipitchRepository.getMultipitch(multipitchId)
+        multipitch = multipitchRepository.getMultipitchWithRoute(multipitchId)
         multipitchRoutes = routeRepository.routesFromMultipitch(multipitchId)
     }
 }
