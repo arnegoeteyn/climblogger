@@ -18,7 +18,7 @@ data class Route(
     @ColumnInfo(name = "sector_uuid") val sector_id: String,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "grade") val grade: String,
-    @ColumnInfo(name = "kind") val kind: String,
+    @ColumnInfo(name = "route_kind") val kind: String,
     @ColumnInfo(name = "comment") val comment: String?,
     @ColumnInfo(name = "link") val link: String?,
     @ColumnInfo(name = "pitch") val pitch: Int?,

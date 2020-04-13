@@ -19,13 +19,13 @@ interface RouteAmountDoa {
         """
             select * from (
                 select grade, count(distinct route_uuid) as 'amount' from ascents inner join routes USING(route_uuid)
-                where routes.kind like :kind
+                where routes.route_kind like :kind
                 group by grade
             )
             UNION ALL
             select * from (
                 select 'total' as grade, count(distinct route_uuid) as 'amount' from ascents inner join routes using(route_uuid)
-                where routes.kind like :kind
+                where routes.route_kind like :kind
             )
             order by grade desc
             """

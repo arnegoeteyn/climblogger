@@ -1,14 +1,9 @@
 package com.example.climblogger.data
 
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import com.example.climblogger.util.getStringDate
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.memberProperties
 
 @Entity(
     tableName = "ascents",
@@ -22,7 +17,7 @@ import kotlin.reflect.full.memberProperties
 data class Ascent(
     @ColumnInfo(name = "route_uuid") val route_id: String,
     @ColumnInfo(name = "date") val date: String,
-    @ColumnInfo(name = "kind") val kind: String,
+    @ColumnInfo(name = "ascent_kind") val kind: String,
     @ColumnInfo(name = "comment") val comment: String?,
     @PrimaryKey
     @ColumnInfo(name = "ascent_uuid")
@@ -42,7 +37,7 @@ data class AscentWithRoute(
         parentColumn = "route_uuid",
         entityColumn = "route_uuid"
     )
-    val route: Route
+    val route: Route?
 )
 
 
