@@ -33,8 +33,7 @@ class ModifyAscentViewModel(
 
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
         val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
-        val ascentWithRouteDao = RouteRoomDatabase.getDatabase(application).ascentWithRouteDao()
-        ascentRepository = AscentRepository(ascentDao, ascentWithRouteDao)
+        ascentRepository = AscentRepository(ascentDao)
         routeRepository = RouteRepository(routeDao)
 
         allRoutes = routeRepository.allRoutes

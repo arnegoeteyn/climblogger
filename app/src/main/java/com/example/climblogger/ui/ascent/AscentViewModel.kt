@@ -15,12 +15,11 @@ class AscentViewModel(application: Application, ascent_id: String) : AndroidView
 
     private val ascentRepository: AscentRepository
 
-    val ascentWithRoute: LiveData<AscentWithRoute>
+    val ascentWithRoute: LiveData<AscentWithRoute?>
 
     init {
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
-        val ascentWithRouteDao = RouteRoomDatabase.getDatabase(application).ascentWithRouteDao()
-        ascentRepository = AscentRepository(ascentDao, ascentWithRouteDao)
+        ascentRepository = AscentRepository(ascentDao)
         ascentWithRoute = ascentRepository.getAscentsWithRoute(ascent_id)
     }
 

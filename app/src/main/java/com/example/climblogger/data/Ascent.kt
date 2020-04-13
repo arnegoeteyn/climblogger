@@ -34,6 +34,18 @@ data class Ascent(
 }
 
 
+data class AscentWithRoute(
+    @Embedded
+    val ascent: Ascent?,
+
+    @Relation(
+        parentColumn = "route_uuid",
+        entityColumn = "route_uuid"
+    )
+    val route: Route
+)
+
+
 @Dao
 abstract class AscentDao : BaseDao<Ascent>() {
 
@@ -45,17 +57,23 @@ abstract class AscentDao : BaseDao<Ascent>() {
 
     @Query("SELECT * FROM ascents WHERE ascent_uuid == :ascent_id")
     abstract fun getAscent(ascent_id: String): LiveData<Ascent?>
+
+    @Query(
+        "SELECT * from ascents where ascent_uuid == :ascent_id"
+    )
+    abstract fun getAscentWithRoute(ascent_id: String): LiveData<AscentWithRoute?>
+
+    @Query(
+        "SELECT * from ascents"
+    )
+    abstract fun getAllAscentsWithRoute(): LiveData<List<AscentWithRoute>?>
 }
 
 
 class AscentRepository(
-    private val ascentDao: AscentDao,
-    private val ascentWithRouteDao: AscentWithRouteDao
+    private val ascentDao: AscentDao
 ) {
-
-    val allAscents: LiveData<List<Ascent>> = ascentDao.getAllAscents()
-    val allAscentsWithRoute: LiveData<List<AscentWithRoute>> =
-        ascentWithRouteDao.getAllAscentsWithRoute()
+    val allAscentsWithRoute: LiveData<List<AscentWithRoute>?> = ascentDao.getAllAscentsWithRoute()
 
     fun loadAscentsFromRoute(route_id: String): LiveData<List<Ascent>> {
         return ascentDao.ascentsFromRoute(route_id)
@@ -80,7 +98,7 @@ class AscentRepository(
         return ascentDao.delete(ascent)
     }
 
-    fun getAscentsWithRoute(ascent_id: String): LiveData<AscentWithRoute> {
-        return ascentWithRouteDao.getAscentWithRoute(ascent_id)
+    fun getAscentsWithRoute(ascent_id: String): LiveData<AscentWithRoute?> {
+        return ascentDao.getAscentWithRoute(ascent_id)
     }
 }

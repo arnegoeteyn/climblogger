@@ -19,7 +19,7 @@ class AscentsFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var ascentsAdapter: LiveDataAdapter<AscentWithRoute>
+    private lateinit var ascentsAdapter: AscentWithRoutesAdapter
     private lateinit var ascentViewModel: AscentsViewModel
 
     override fun onCreateView(
@@ -35,8 +35,8 @@ class AscentsFragment : Fragment() {
         initRecyclerView()
         ascentViewModel = ViewModelProviders.of(this).get(AscentsViewModel::class.java)
 
-        ascentViewModel.allAscentsWithRoute.observe(this, Observer {
-            ascentsAdapter.setData(it)
+        ascentViewModel.allAscents.observe(this, Observer {
+            it?.let { it1 -> ascentsAdapter.setData(it1) }
         })
     }
 
@@ -48,8 +48,8 @@ class AscentsFragment : Fragment() {
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // some null safety checking
-                ascentViewModel.allAscentsWithRoute.value?.get(position)
-                    ?.let { listener?.onAscentClicked(it.ascent.ascent_id) }
+                ascentViewModel.allAscents.value?.get(position)
+                    ?.let { it.ascent?.ascent_id?.let { it1 -> listener?.onAscentClicked(it1) } }
             }
         })
 

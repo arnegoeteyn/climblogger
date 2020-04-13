@@ -21,9 +21,8 @@ class RouteViewModel(application: Application, route_id: String) : AndroidViewMo
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
         val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
         val routeWithSectorDoa = RouteRoomDatabase.getDatabase(application).routeWithSectorDao()
-        val ascentWithRouteDao = RouteRoomDatabase.getDatabase(application).ascentWithRouteDao()
 
-        ascentRepository = AscentRepository(ascentDao, ascentWithRouteDao)
+        ascentRepository = AscentRepository(ascentDao)
         routeRepository = RouteRepository(routeDao)
         routeWithSectorRepository = RouteWithSectorRepository(routeWithSectorDoa)
 

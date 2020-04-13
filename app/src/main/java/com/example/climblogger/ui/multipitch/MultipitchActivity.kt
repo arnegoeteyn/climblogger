@@ -34,8 +34,6 @@ class MultipitchActivity : AppCompatActivity() {
         multipitchViewModel.multipitch.observe(this, Observer { multipitch ->
             multipitch?.let {
                 it.multipitch?.let { it1 -> updateMultipitchUi(it1) }
-                Log.d("DEBUG", "HALLO ${it.routes?.size}")
-                Log.d("DEBUG", "HALLO ${it}")
 //                delete_button.setOnPositiveClickListener { }
 
                 it.routes?.let { routes -> routesAdapter.setData(routes) }

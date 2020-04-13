@@ -23,7 +23,7 @@ class AscentWithRoutesAdapter : LiveDataAdapter<AscentWithRoute>() {
     class AscentWithRoutesHolder(itemView: View) : LiveDataViewHolder<AscentWithRoute>(itemView) {
 
         override fun bind(item: AscentWithRoute) {
-            itemView.findViewById<TextView>(R.id.date).text = item.ascent.date
+            itemView.findViewById<TextView>(R.id.date).text = item.ascent?.date
             itemView.findViewById<TextView>(R.id.route).text = item.route.toString()
         }
     }

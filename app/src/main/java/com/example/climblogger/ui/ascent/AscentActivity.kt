@@ -30,10 +30,10 @@ class AscentActivity : AppCompatActivity() {
         ascentViewModel.ascentWithRoute.observe(this, Observer { ascentWithRoute ->
             ascentWithRoute?.let {
                 updateAscentUi(it)
-                delete_button.setOnPositiveClickListener { deleteAscent(it.ascent) }
+                delete_button.setOnPositiveClickListener { it.ascent?.let { it1 -> deleteAscent(it1) } }
 
                 routeContainer.setOnClickListener { _ ->
-                    goToRoute(it.ascent.route_id)
+                    it.ascent?.route_id?.let { it1 -> goToRoute(it1) }
                 }
             }
         })
@@ -43,10 +43,10 @@ class AscentActivity : AppCompatActivity() {
 
     private fun updateAscentUi(ascentWithRoute: AscentWithRoute?) {
         ascentWithRoute?.let {
-            ascentDate.text = it.ascent.date
-            routeName.text = it.route.name
-            kind.text = it.ascent.kind
-            comment.text = it.ascent.comment
+            ascentDate.text = it.ascent?.date
+            routeName.text = it.route?.name
+            kind.text = it.ascent?.kind
+            comment.text = it.ascent?.comment
         }
     }
 
