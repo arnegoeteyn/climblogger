@@ -17,11 +17,9 @@ abstract class RouteRoomDatabase : RoomDatabase() {
     abstract fun routeDao(): RouteDao
     abstract fun ascentDao(): AscentDao
     abstract fun sectorDao(): SectorDao
-    abstract fun sectorWithAreaDao(): SectorWithAreaDao
     abstract fun areaDao(): AreaDao
-    abstract fun routeAmountDao(): RouteAmountDoa
-    abstract fun routeWithSectorDao(): RouteWithSectorDao
     abstract fun multipitchDao(): MultipitchDao
+    abstract fun routeAmountDao(): RouteAmountDoa
 
     companion object {
 

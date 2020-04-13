@@ -67,7 +67,7 @@ class SectorActivity : AppCompatActivity() {
     private fun updateSectorUI(sector: SectorWithArea) {
         nameText.text = sector.sector.name
         commentText.text = sector.sector.comment
-        areaText.text = sector.area_name
+        areaText.text = sector.area.name
     }
 
     private fun initRecyclerView() {

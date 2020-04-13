@@ -47,6 +47,16 @@ data class RouteWithAscents(
     }
 }
 
+data class RouteWithSector(
+    @Embedded
+    val route: Route,
+    @Relation(
+        parentColumn = "sector_uuid",
+        entityColumn = "sector_uuid"
+    )
+    val sector: Sector
+)
+
 @Dao
 abstract class RouteDao : BaseDao<Route>() {
 
@@ -55,6 +65,9 @@ abstract class RouteDao : BaseDao<Route>() {
 
     @Query("SELECT * FROM routes WHERE route_uuid == :route_id")
     abstract fun getRoute(route_id: String): LiveData<Route?>
+
+    @Query("SELECT * FROM routes WHERE route_uuid == :route_id")
+    abstract fun getRouteWithSector(route_id: String): LiveData<RouteWithSector?>
 
     @Query(" SELECT * FROM routes WHERE sector_uuid == :sector_id ORDER BY grade DESC")
     abstract fun routesFromSector(sector_id: String): LiveData<List<Route>>
@@ -116,6 +129,10 @@ class RouteRepository(private val routeDao: RouteDao) {
 
     fun getRoute(route_id: String): LiveData<Route?> {
         return routeDao.getRoute(route_id)
+    }
+
+    fun getRouteWithSector(route_id: String): LiveData<RouteWithSector?> {
+        return routeDao.getRouteWithSector(route_id)
     }
 
     @WorkerThread

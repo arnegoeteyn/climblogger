@@ -12,22 +12,19 @@ class RouteViewModel(application: Application, route_id: String) : AndroidViewMo
 
     private val ascentRepository: AscentRepository
     private val routeRepository: RouteRepository
-    private val routeWithSectorRepository: RouteWithSectorRepository
 
-    val route: LiveData<RouteWithSector>
+    val route: LiveData<RouteWithSector?>
     val routeAscents: LiveData<List<Ascent>>
 
     init {
         val ascentDao = RouteRoomDatabase.getDatabase(application).ascentDao()
         val routeDao = RouteRoomDatabase.getDatabase(application).routeDao()
-        val routeWithSectorDoa = RouteRoomDatabase.getDatabase(application).routeWithSectorDao()
 
         ascentRepository = AscentRepository(ascentDao)
         routeRepository = RouteRepository(routeDao)
-        routeWithSectorRepository = RouteWithSectorRepository(routeWithSectorDoa)
 
         routeAscents = ascentRepository.loadAscentsFromRoute(route_id)
-        route = routeWithSectorRepository.getRoute(route_id)
+        route = routeRepository.getRouteWithSector(route_id)
     }
 
 

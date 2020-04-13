@@ -27,6 +27,16 @@ data class Sector(
     }
 }
 
+data class SectorWithArea(
+    @Embedded
+    val sector: Sector,
+    @Relation(
+        parentColumn = "area_uuid",
+        entityColumn = "area_uuid"
+    )
+    val area: Area
+)
+
 @Dao
 abstract class SectorDao : BaseDao<Sector>() {
 
@@ -38,6 +48,11 @@ abstract class SectorDao : BaseDao<Sector>() {
 
     @Query(" SELECT * FROM sectors WHERE area_uuid == :area_id ORDER BY name")
     abstract fun sectorsFromArea(area_id: String): LiveData<List<Sector>>
+
+
+    @Transaction
+    @Query("SELECT * FROM sectors WHERE sector_uuid == :sector_uuid")
+    abstract fun getSectorWithArea(sector_uuid: String): LiveData<SectorWithArea?>
 }
 
 class SectorRepository(private val sectorDao: SectorDao) {
@@ -49,6 +64,10 @@ class SectorRepository(private val sectorDao: SectorDao) {
 
     fun getSector(sector_id: String): LiveData<Sector?> {
         return sectorDao.getSector(sector_id)
+    }
+
+    fun getSectorWithArea(sectorId: String): LiveData<SectorWithArea?> {
+        return sectorDao.getSectorWithArea(sectorId)
     }
 
     @WorkerThread

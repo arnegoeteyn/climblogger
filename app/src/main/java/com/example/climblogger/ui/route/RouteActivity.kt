@@ -89,7 +89,7 @@ class RouteActivity : AppCompatActivity() {
         grade.text = route.route.grade
         comment.text = route.route.comment
         kind.text = route.route.kind
-        sector.text = route.sector_name
+        sector.text = route.sector.name
     }
 
     private fun initAscentsRecyclerView() {
