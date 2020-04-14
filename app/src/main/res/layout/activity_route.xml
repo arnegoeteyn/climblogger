@@ -9,94 +9,89 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingVertical="8dp">
 
 
         <LinearLayout
-                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             <LinearLayout
+                    style="@style/IdentifierLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <TextView
                         style="@style/IdentifierText"
-                        android:layout_height="wrap_content"
                         android:text="@string/name_identifier" />
 
                 <TextView
                         android:id="@+id/name"
                         style="@style/IdentifierValue"
-                        android:layout_height="wrap_content"
                         android:text="" />
             </LinearLayout>
 
             <LinearLayout
+                    style="@style/IdentifierLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <TextView
                         style="@style/IdentifierText"
-                        android:layout_height="wrap_content"
                         android:text="@string/grade_identifier" />
 
                 <TextView
                         android:id="@+id/grade"
                         style="@style/IdentifierValue"
-                        android:layout_height="wrap_content"
                         android:text="" />
             </LinearLayout>
 
 
             <LinearLayout
+                    style="@style/IdentifierLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <TextView
                         style="@style/IdentifierText"
-                        android:layout_height="wrap_content"
                         android:text="@string/kind_identifier" />
 
                 <TextView
                         android:id="@+id/kind"
                         style="@style/IdentifierValue"
-                        android:layout_height="wrap_content"
                         android:text="" />
             </LinearLayout>
 
             <LinearLayout
+                    style="@style/IdentifierLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <TextView
                         style="@style/IdentifierText"
-                        android:layout_height="wrap_content"
                         android:text="@string/comment_identifier" />
 
                 <TextView
                         android:id="@+id/comment"
                         style="@style/IdentifierValue"
-                        android:layout_height="wrap_content"
                         android:text="" />
             </LinearLayout>
 
             <LinearLayout
                     android:id="@+id/sectorContainer"
+                    style="@style/IdentifierLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <TextView
                         style="@style/IdentifierText"
-                        android:layout_height="wrap_content"
                         android:text="@string/sector_identifier" />
 
                 <TextView
                         android:id="@+id/sector"
                         style="@style/IdentifierValue"
-                        android:layout_height="wrap_content"
                         android:text="" />
             </LinearLayout>
 

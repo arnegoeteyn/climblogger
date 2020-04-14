@@ -6,10 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-        <style name="AppTheme.NoActionBar">
-            <item name="windowActionBar">false</item>
-            <item name="windowNoTitle">true</item>
-        </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <!--    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
@@ -22,17 +22,22 @@
     </style>
 
     <!-- Styles for an identifiers, for example [Name] name_of_route, where [Name] is the identifier -->
-    <style name="IdentifierText" parent="DefaultTextAppearance">
-        <item name="android:textStyle">bold</item>
+    <style name="IdentifierText" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
     </style>
 
-    <style name="IdentifierValue" parent="TextAppearance.AppCompat">
+    <style name="IdentifierValue" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_weight">3</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">0dp</item>
     </style>
 
-    <style name="IdentifierLinearLayout" />
+    <style name="IdentifierLinearLayout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingHorizontal">8dp</item>
+    </style>
 
 </resources>

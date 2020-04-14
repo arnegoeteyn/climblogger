@@ -34,4 +34,10 @@
             android:icon="@drawable/baseline_android_24"
             android:title="@string/text_menu_multipitches"
             app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/action_stats"
+            android:enabled="true"
+            android:icon="@drawable/baseline_android_24"
+            android:title="@string/text_menu_stats"
+            app:showAsAction="ifRoom" />
 </menu>

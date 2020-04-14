@@ -59,7 +59,7 @@ abstract class AscentDao : BaseDao<Ascent>() {
     abstract fun getAscentWithRoute(ascent_id: String): LiveData<AscentWithRoute?>
 
     @Query(
-        "SELECT * from ascents"
+        "SELECT * from ascents ORDER BY date DESC"
     )
     abstract fun getAllAscentsWithRoute(): LiveData<List<AscentWithRoute>?>
 }

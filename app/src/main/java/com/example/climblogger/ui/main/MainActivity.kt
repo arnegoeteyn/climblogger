@@ -15,7 +15,6 @@ import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
 import com.example.climblogger.ui.multipitch.MultipitchActivity
-import com.example.climblogger.ui.multipitch.MultipitchesActivity
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
@@ -49,26 +48,7 @@ class MainActivity : AppCompatActivity(),
         initBottomNavigation()
         switchTo(mainViewModel.tabFragment)
 
-//        floatingActionButton.setOnClickListener { floatingButtonClicked() }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_stats -> {
-                startActivity(Intent(this, StatsActivity::class.java))
-                return true
-            }
-            R.id.action_multipitches -> {
-                startActivity(Intent(this, MultipitchesActivity::class.java))
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
+        fab.setOnClickListener { floatingButtonClicked() }
     }
 
     private fun floatingButtonClicked() {
@@ -97,6 +77,11 @@ class MainActivity : AppCompatActivity(),
 
     private fun newSectorActivity() {
         val intent = Intent(this, AddSectorActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openStatsActivity() {
+        val intent = Intent(this, StatsActivity::class.java)
         startActivity(intent)
     }
 
@@ -156,6 +141,7 @@ class MainActivity : AppCompatActivity(),
             R.id.action_ascents -> switchTo(AscentsFragment)
             R.id.action_sectors -> switchTo(SectorsFragment)
             R.id.action_multipitches -> switchTo(MultipitchesFragment)
+            R.id.action_stats -> openStatsActivity()
         }
         bottomSheetMenu.dismiss()
 

@@ -12,20 +12,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
-                style="@style/IdentifierLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <LinearLayout style="@style/IdentifierLinearLayout">
 
             <TextView
                     style="@style/IdentifierText"
-                    android:layout_height="wrap_content"
                     android:text="@string/name_identifier" />
 
             <TextView
                     android:id="@+id/nameText"
                     style="@style/IdentifierValue"
-                    android:layout_height="wrap_content"
                     android:text="" />
         </LinearLayout>
 
