@@ -6,16 +6,17 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.example.climblogger.MenuListDialogFragment
 import com.example.climblogger.R
+import com.example.climblogger.fragments.AreasFragment
+import com.example.climblogger.fragments.AscentsFragment
+import com.example.climblogger.fragments.RoutesFragment
+import com.example.climblogger.fragments.SectorsFragment
 import com.example.climblogger.ui.area.AddAreaActivity
 import com.example.climblogger.ui.area.AreaActivity
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
-import com.example.climblogger.fragments.AreasFragment
-import com.example.climblogger.fragments.AscentsFragment
-import com.example.climblogger.fragments.RoutesFragment
-import com.example.climblogger.fragments.SectorsFragment
 import com.example.climblogger.ui.multipitch.MultipitchesActivity
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
@@ -31,9 +32,12 @@ class MainActivity : AppCompatActivity(),
     RoutesFragment.OnFragmentInteractionListener,
     AscentsFragment.OnFragmentInteractionListener,
     SectorsFragment.OnFragmentInteractionListener,
-    AreasFragment.OnFragmentInteractionListener {
+    AreasFragment.OnFragmentInteractionListener,
+    MenuListDialogFragment.OnFragmentInteractionListener {
 
     private lateinit var mainViewModel: MainViewModel
+
+    private var bottomSheetMenu: MenuListDialogFragment = MenuListDialogFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +45,16 @@ class MainActivity : AppCompatActivity(),
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(bar)
 
         initBottomNavigation()
         switchTo(mainViewModel.tabFragment)
 
-        floatingActionButton.setOnClickListener { floatingButtonClicked() }
+//        floatingActionButton.setOnClickListener { floatingButtonClicked() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
+//        menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -122,14 +126,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun initBottomNavigation() {
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.action_routes -> switchToRoutes()
-                R.id.action_ascents -> switchToAscents()
-                R.id.action_sectors -> switchToSectors()
-                R.id.action_areas -> switchToAreas()
-            }
-            true
+        bar.setNavigationOnClickListener {
+            bottomSheetMenu.show(supportFragmentManager, MenuListDialogFragment.TAG)
         }
     }
 
@@ -138,7 +136,7 @@ class MainActivity : AppCompatActivity(),
         detachSwitch(R.id.fragmentPlace, mainViewModel.tabFragment.TAG, tabFragment)
         mainViewModel.tabFragment = tabFragment
 
-        if (tabFragment.TAG == AreasFragment.TAG) floatingActionButton.show() else floatingActionButton.hide()
+        if (tabFragment.TAG == AreasFragment.TAG) fab.show() else fab.hide()
     }
 
     private fun switchToRoutes() {
@@ -159,5 +157,17 @@ class MainActivity : AppCompatActivity(),
 
     companion object {
         public val TAG = MainActivity::class.qualifiedName
+    }
+
+    override fun onMenuItemClicked(menu_id: Int): Boolean {
+        when (menu_id) {
+            R.id.action_routes -> switchToRoutes()
+            R.id.action_areas -> switchToAreas()
+            R.id.action_ascents -> switchToAscents()
+            R.id.action_sectors -> switchToSectors()
+        }
+        bottomSheetMenu.dismiss()
+
+        return true
     }
 }
