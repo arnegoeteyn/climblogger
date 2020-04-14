@@ -79,6 +79,7 @@ class AreasFragment : Fragment() {
 
     companion object : MainActivityTabFragment {
         override val TAG: String = AreasFragment::class.qualifiedName!!
+        override val title_id: Int = R.string.text_menu_areas
 
         @JvmStatic
         override fun newInstance() = AreasFragment()

@@ -13,18 +13,17 @@
             android:orientation="vertical">
 
         <LinearLayout
-                style="@style/IdentifierLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <TextView
-                    style="@style/IdentifierText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/name_identifier" />
 
             <TextView
-                    style="@style/IdentifierValue"
                     android:id="@+id/nameText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
         </LinearLayout>
@@ -34,13 +33,13 @@
                 android:layout_height="wrap_content">
 
             <TextView
-                    style="@style/IdentifierText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/country_identifier" />
 
             <TextView
-                    style="@style/IdentifierValue"
                     android:id="@+id/countryText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
         </LinearLayout>

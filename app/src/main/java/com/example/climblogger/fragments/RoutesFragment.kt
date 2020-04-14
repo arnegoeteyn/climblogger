@@ -81,5 +81,6 @@ class RoutesFragment : Fragment() {
         override fun newInstance() = RoutesFragment()
 
         override val TAG = RoutesFragment::class.qualifiedName!!
+        override val title_id: Int = R.string.text_menu_routes
     }
 }

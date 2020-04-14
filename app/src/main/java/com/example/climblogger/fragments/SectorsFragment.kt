@@ -80,6 +80,7 @@ class SectorsFragment : Fragment() {
 
     companion object : MainActivityTabFragment {
         override val TAG: String = SectorsFragment::class.qualifiedName!!
+        override val title_id: Int = R.string.text_menu_sectors
 
         @JvmStatic
         override fun newInstance() = SectorsFragment()

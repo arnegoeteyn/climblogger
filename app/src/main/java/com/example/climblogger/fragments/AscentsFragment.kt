@@ -78,6 +78,7 @@ class AscentsFragment : Fragment() {
 
         @JvmStatic
         override fun newInstance() = AscentsFragment()
+        override val title_id: Int = R.string.text_menu_ascents
 
         override val TAG = AscentsFragment::class.qualifiedName!!
     }

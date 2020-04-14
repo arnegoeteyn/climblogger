@@ -78,6 +78,7 @@ class MultipitchesFragment : Fragment() {
     companion object : MainActivityTabFragment {
         override val TAG: String = MultipitchesFragment::class.qualifiedName!!
 
+        override val title_id: Int = R.string.text_menu_multipitches
         @JvmStatic
         override fun newInstance() = MultipitchesFragment()
     }

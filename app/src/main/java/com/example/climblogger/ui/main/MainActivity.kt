@@ -8,15 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.MenuListDialogFragment
 import com.example.climblogger.R
-import com.example.climblogger.fragments.AreasFragment
-import com.example.climblogger.fragments.AscentsFragment
-import com.example.climblogger.fragments.RoutesFragment
-import com.example.climblogger.fragments.SectorsFragment
+import com.example.climblogger.fragments.*
 import com.example.climblogger.ui.area.AddAreaActivity
 import com.example.climblogger.ui.area.AreaActivity
 import com.example.climblogger.ui.ascent.AddAscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity
 import com.example.climblogger.ui.ascent.AscentActivity.Companion.EXTRA_ASCENT
+import com.example.climblogger.ui.multipitch.MultipitchActivity
 import com.example.climblogger.ui.multipitch.MultipitchesActivity
 import com.example.climblogger.ui.route.AddRouteActivity
 import com.example.climblogger.ui.route.RouteActivity
@@ -32,6 +30,7 @@ class MainActivity : AppCompatActivity(),
     RoutesFragment.OnFragmentInteractionListener,
     AscentsFragment.OnFragmentInteractionListener,
     SectorsFragment.OnFragmentInteractionListener,
+    MultipitchesFragment.OnFragmentInteractionListener,
     AreasFragment.OnFragmentInteractionListener,
     MenuListDialogFragment.OnFragmentInteractionListener {
 
@@ -125,6 +124,12 @@ class MainActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
+    override fun onMultipitchClicked(multipitchId: String) {
+        val intent = Intent(this, MultipitchActivity::class.java)
+        intent.putExtra(MultipitchActivity.EXTRA_MULTIPITCH, multipitchId)
+        startActivity(intent)
+    }
+
     private fun initBottomNavigation() {
         bar.setNavigationOnClickListener {
             bottomSheetMenu.show(supportFragmentManager, MenuListDialogFragment.TAG)
@@ -137,34 +142,20 @@ class MainActivity : AppCompatActivity(),
         mainViewModel.tabFragment = tabFragment
 
         if (tabFragment.TAG == AreasFragment.TAG) fab.show() else fab.hide()
-    }
-
-    private fun switchToRoutes() {
-        switchTo(RoutesFragment.Companion)
-    }
-
-    private fun switchToAscents() {
-        switchTo(AscentsFragment.Companion)
-    }
-
-    private fun switchToSectors() {
-        switchTo(SectorsFragment.Companion)
-    }
-
-    private fun switchToAreas() {
-        switchTo(AreasFragment.Companion)
+        title_text_view.text = getString(tabFragment.title_id)
     }
 
     companion object {
-        public val TAG = MainActivity::class.qualifiedName
+        val TAG = MainActivity::class.qualifiedName
     }
 
     override fun onMenuItemClicked(menu_id: Int): Boolean {
         when (menu_id) {
-            R.id.action_routes -> switchToRoutes()
-            R.id.action_areas -> switchToAreas()
-            R.id.action_ascents -> switchToAscents()
-            R.id.action_sectors -> switchToSectors()
+            R.id.action_routes -> switchTo(RoutesFragment)
+            R.id.action_areas -> switchTo(AreasFragment)
+            R.id.action_ascents -> switchTo(AscentsFragment)
+            R.id.action_sectors -> switchTo(SectorsFragment)
+            R.id.action_multipitches -> switchTo(MultipitchesFragment)
         }
         bottomSheetMenu.dismiss()
 
