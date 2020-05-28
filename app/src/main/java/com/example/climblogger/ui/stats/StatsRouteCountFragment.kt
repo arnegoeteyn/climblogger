@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -15,8 +16,10 @@ import com.example.climblogger.R
 import com.example.climblogger.data.RouteAmount
 import com.example.climblogger.util.LiveDataAdapter
 import com.example.climblogger.util.RouteKind
+import com.example.climblogger.util.castToRange
 import kotlinx.android.synthetic.main.fragment_stats_route_count.*
 import kotlinx.android.synthetic.main.list_item_route_amount.view.*
+
 
 private const val ARG_KIND = "kind"
 
@@ -69,13 +72,30 @@ class StatsRouteCountFragment : Fragment() {
         )
 
         var toObserve: LiveData<List<RouteAmount>> = stasRouteCountViewModel.sportAmounts
+        var maxObserve: LiveData<Float> = stasRouteCountViewModel.sportMax
+        var totalObserve: LiveData<Int> = stasRouteCountViewModel.sportTotal
         when (kind) {
-            RouteKind.BOULDER -> toObserve = stasRouteCountViewModel.boulderAmounts
-            RouteKind.SPORT -> toObserve = stasRouteCountViewModel.sportAmounts
+            RouteKind.BOULDER -> {
+                toObserve = stasRouteCountViewModel.boulderAmounts
+                maxObserve = stasRouteCountViewModel.boulderMax
+                totalObserve = stasRouteCountViewModel.boulderTotal
+            }
+            RouteKind.SPORT -> {
+                toObserve = stasRouteCountViewModel.sportAmounts
+                maxObserve = stasRouteCountViewModel.sportMax
+                totalObserve = stasRouteCountViewModel.sportTotal
+            }
         }
+
+        totalObserve.observe(viewLifecycleOwner, Observer { total ->
+            totalTextView.text = resources.getString(R.string.totalCount, total)
+        })
         // listen for changes in the data
-        toObserve.observe(this, Observer {
-            ada.setData(it)
+        toObserve.observe(viewLifecycleOwner, Observer { routeAmounts ->
+            maxObserve.observe(viewLifecycleOwner, Observer { routeMax ->
+                ada.biggestValue = routeMax
+                ada.setData(routeAmounts)
+            })
         })
 
     }
@@ -97,7 +117,8 @@ class StatsRouteCountFragment : Fragment() {
     interface OnFragmentInteractionListener {
     }
 
-    class RouteCountAdapter : LiveDataAdapter<RouteAmount>() {
+    class RouteCountAdapter() : LiveDataAdapter<RouteAmount>() {
+        var biggestValue = 0.0f;
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteAmountHolder {
             val inflater = LayoutInflater.from(parent.context)
             return RouteAmountHolder(
@@ -109,11 +130,19 @@ class StatsRouteCountFragment : Fragment() {
             )
         }
 
-        class RouteAmountHolder(itemView: View) : LiveDataViewHolder<RouteAmount>(itemView) {
+        inner class RouteAmountHolder(itemView: View) :
+            LiveDataViewHolder<RouteAmount>(itemView) {
 
             override fun bind(item: RouteAmount) {
                 itemView.gradeText.text = item.grade
                 itemView.amountText.text = item.amount.toString()
+
+                val paramColor = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    castToRange(item.percentage, biggestValue)
+                )
+                itemView.gradeText.layoutParams = paramColor
             }
         }
     }

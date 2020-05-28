@@ -29,10 +29,10 @@ class StatsActivity : AppCompatActivity(),
 
 
         override fun getItem(position: Int): Fragment {
-            if (position == 0) {
-                return StatsRouteCountFragment.newInstance(RouteKind.SPORT)
+            return if (position == 0) {
+                StatsRouteCountFragment.newInstance(RouteKind.SPORT)
             } else {
-                return StatsRouteCountFragment.newInstance(RouteKind.BOULDER)
+                StatsRouteCountFragment.newInstance(RouteKind.BOULDER)
             }
         }
     }
