@@ -1,5 +1,6 @@
 package com.example.climblogger.ui.ascent
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
@@ -74,7 +75,7 @@ class AscentFormFragment : Fragment() {
     }
 
     private fun loadAscent() {
-        modifyAscentViewModel.getAscent()?.observe(this, Observer { ascent ->
+        modifyAscentViewModel.getAscent()?.observe(viewLifecycleOwner, Observer { ascent ->
             ascent?.let {
                 modifyAscentViewModel.updateFromAscent(ascent)
             }
@@ -126,7 +127,7 @@ class AscentFormFragment : Fragment() {
 
 
         val dpd = DatePickerDialog(
-            context!!,
+            activity!!, android.R.style.Theme_DeviceDefault_Dialog_Alert,
             DatePickerDialog.OnDateSetListener { view, myear, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 date.text = getStringDate(dayOfMonth, monthOfYear, myear)
