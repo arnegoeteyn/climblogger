@@ -29,6 +29,21 @@
 
         <TextView
                 style="@style/IdentifierText"
+                android:text="@string/kind_identifier" />
+
+        <TextView
+                android:id="@+id/ascentKind"
+                style="@style/IdentifierValue"
+                android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+            style="@style/IdentifierLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                style="@style/IdentifierText"
                 android:text="@string/comment_identifier" />
 
         <TextView
@@ -37,24 +52,12 @@
                 android:text="" />
     </LinearLayout>
 
-    <LinearLayout
-            style="@style/IdentifierLinearLayout"
-            android:orientation="vertical">
-
-        <TextView
-                style="@style/IdentifierText"
-                android:text="@string/kind_identifier" />
-
-        <TextView
-                android:id="@+id/kind"
-                style="@style/IdentifierValue"
-                android:text="" />
-    </LinearLayout>
 
     <LinearLayout
             android:id="@+id/routeContainer"
             style="@style/IdentifierLinearLayout"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <TextView
                 style="@style/IdentifierText"
@@ -62,7 +65,8 @@
 
         <TextView
                 android:id="@+id/routeName"
-                style="@style/IdentifierValue" />
+                style="@style/IdentifierValue"
+                android:text="" />
 
     </LinearLayout>
 

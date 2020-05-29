@@ -10,8 +10,9 @@ import com.example.climblogger.data.Ascent
 import com.example.climblogger.data.AscentWithRoute
 import com.example.climblogger.ui.route.RouteActivity
 import com.example.climblogger.ui.route.RouteActivity.Companion.EXTRA_ROUTE
-import com.example.climblogger.util.debugFragments
 import kotlinx.android.synthetic.main.activity_ascent.*
+import kotlinx.android.synthetic.main.activity_ascent.comment
+import kotlinx.android.synthetic.main.activity_ascent.delete_button
 
 class AscentActivity : AppCompatActivity() {
 
@@ -45,7 +46,7 @@ class AscentActivity : AppCompatActivity() {
         ascentWithRoute?.let {
             ascentDate.text = it.ascent?.date
             routeName.text = it.route?.name
-            kind.text = it.ascent?.kind
+            ascentKind.text = it.ascent?.kind
             comment.text = it.ascent?.comment
         }
     }
