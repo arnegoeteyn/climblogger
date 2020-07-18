@@ -23,6 +23,7 @@ abstract class RouteRoomDatabase : RoomDatabase() {
 
     companion object {
 
+        const val DBNAME: String = "climb.db"
         val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Since we didn't alter the table, there's nothing else to do here.

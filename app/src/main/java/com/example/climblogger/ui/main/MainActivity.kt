@@ -2,12 +2,16 @@ package com.example.climblogger.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.MenuListDialogFragment
 import com.example.climblogger.R
+import com.example.climblogger.SettingsDialogFragment
+import com.example.climblogger.data.RouteRoomDatabase
 import com.example.climblogger.fragments.*
 import com.example.climblogger.ui.area.AddAreaActivity
 import com.example.climblogger.ui.area.AreaActivity
@@ -22,8 +26,10 @@ import com.example.climblogger.ui.sector.AddSectorActivity
 import com.example.climblogger.ui.sector.SectorActivity
 import com.example.climblogger.ui.sector.SectorActivity.Companion.EXTRA_SECTOR
 import com.example.climblogger.ui.stats.StatsActivity
+import com.example.climblogger.util.backupDB
 import com.example.climblogger.util.detachSwitch
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.*
 
 class MainActivity : AppCompatActivity(),
     RoutesFragment.OnFragmentInteractionListener,
@@ -31,11 +37,13 @@ class MainActivity : AppCompatActivity(),
     SectorsFragment.OnFragmentInteractionListener,
     MultipitchesFragment.OnFragmentInteractionListener,
     AreasFragment.OnFragmentInteractionListener,
-    MenuListDialogFragment.OnFragmentInteractionListener {
+    MenuListDialogFragment.OnFragmentInteractionListener,
+    SettingsDialogFragment.OnFragmentInteractionListener {
 
     private lateinit var mainViewModel: MainViewModel
 
     private var bottomSheetMenu: MenuListDialogFragment = MenuListDialogFragment.newInstance()
+    private var bottomSheetSettings: SettingsDialogFragment = SettingsDialogFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,32 +59,22 @@ class MainActivity : AppCompatActivity(),
         fab.setOnClickListener { floatingButtonClicked() }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bottom_bar_menu, menu)
+        return true
+    }
+
     private fun floatingButtonClicked() {
         when (mainViewModel.tabFragment.TAG) {
-            RoutesFragment.TAG -> newRouteActivity()
-            AscentsFragment.TAG -> newAscentActivity()
-            SectorsFragment.TAG -> newSectorActivity()
-            AreasFragment.TAG -> newAreaActivity()
+            RoutesFragment.TAG -> navigateTo(AddRouteActivity::class.java)
+            AscentsFragment.TAG -> navigateTo(AddAscentActivity::class.java)
+            SectorsFragment.TAG -> navigateTo(AddSectorActivity::class.java)
+            AreasFragment.TAG -> navigateTo(AddAreaActivity::class.java)
         }
     }
 
-    private fun newAreaActivity() {
-        val intent = Intent(this, AddAreaActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun newAscentActivity() {
-        val intent = Intent(this, AddAscentActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun newRouteActivity() {
-        val intent = Intent(this, AddRouteActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun newSectorActivity() {
-        val intent = Intent(this, AddSectorActivity::class.java)
+    private fun <T : Any?> navigateTo(javaClass: Class<T>) {
+        val intent = Intent(this, javaClass)
         startActivity(intent)
     }
 
@@ -121,6 +119,20 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_settings -> {
+                Log.d("NEE", "Nu juist")
+                bottomSheetSettings.show(
+                    supportFragmentManager,
+                    SettingsDialogFragment.TAG
+                )
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private fun switchTo(tabFragment: MainActivityTabFragment) {
         detachSwitch(R.id.fragmentPlace, mainViewModel.tabFragment.TAG, tabFragment)
@@ -145,6 +157,21 @@ class MainActivity : AppCompatActivity(),
         }
         bottomSheetMenu.dismiss()
 
+        return true
+    }
+
+    private fun export() {
+        backupDB(
+            RouteRoomDatabase.getDatabase(applicationContext),
+            getDatabasePath(RouteRoomDatabase.DBNAME)
+        )
+    }
+
+    override fun onSettingsItemClicked(menu_id: Int): Boolean {
+        when (menu_id) {
+            R.id.action_export -> export()
+        }
+        bottomSheetSettings.dismiss()
         return true
     }
 }

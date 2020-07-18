@@ -42,6 +42,7 @@
     <string name="text_menu_stats">Stats</string>
 
     <string name="totalCount">Total: %1$d</string>
+    <string name="export">Export</string>
 
 
     <string-array name="ascent_kind">

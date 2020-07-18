@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_menu.*
 
 
-class MenuListDialogFragment : BottomSheetDialogFragment() {
+class SettingsDialogFragment : BottomSheetDialogFragment() {
     private var listener: OnFragmentInteractionListener? = null
 
 
@@ -19,16 +19,16 @@ class MenuListDialogFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bottom_sheet_menu, container, false)
+        return inflater.inflate(R.layout.fragment_bottom_sheet_settings, container, false)
     }
 
     interface OnFragmentInteractionListener {
-        fun onMenuItemClicked(menu_id: Int): Boolean
+        fun onSettingsItemClicked(menu_id: Int): Boolean
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bottom_sheet_navigation.setNavigationItemSelectedListener { menuItem ->
-            listener?.onMenuItemClicked(menuItem.itemId) ?: run {
+            listener?.onSettingsItemClicked(menuItem.itemId) ?: run {
                 false
             }
         }
@@ -51,9 +51,9 @@ class MenuListDialogFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        val TAG: String = MenuListDialogFragment::class.qualifiedName!!
+        val TAG: String = SettingsDialogFragment::class.qualifiedName!!
 
-        fun newInstance(): MenuListDialogFragment = MenuListDialogFragment()
+        fun newInstance(): SettingsDialogFragment = SettingsDialogFragment()
 
     }
 }
