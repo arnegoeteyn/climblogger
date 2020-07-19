@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_button_sport"
+                android:text="Show Routes" />
+
+        <RadioButton
+                android:layout_width="match_parent"
+                android:id="@+id/radio_button_boulder"
+                android:layout_height="wrap_content"
+                android:text="Show Boulders" />
+
+        <RadioButton
+                android:id="@+id/radio_button_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show Both" />
+    </RadioGroup>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/confirmation_button"
+            android:text="OK" />
+</LinearLayout>

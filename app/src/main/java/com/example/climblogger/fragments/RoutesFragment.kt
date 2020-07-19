@@ -2,6 +2,7 @@ package com.example.climblogger.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
 import com.example.climblogger.adapters.RouteWithAscentsAdapter
+import com.example.climblogger.data.RouteWithAscents
+import com.example.climblogger.enums.RouteKind
 import com.example.climblogger.ui.main.MainActivityTabFragment
 import com.example.climblogger.util.*
 import kotlinx.android.synthetic.main.fragment_main_recyclerview.*
@@ -35,11 +38,21 @@ class RoutesFragment : Fragment() {
         routesViewModel = ViewModelProviders.of(this).get(RoutesViewModel::class.java)
 
 
-        // listen for changes in the data
-        routesViewModel.allRoutes.observe(this, Observer {
-            routesAdapter.setData(it)
-        })
+        observeRouteData(RouteKind.ALL)
+    }
 
+    public fun observeRouteData(routeKind: RouteKind) {
+        routesViewModel.allRoutes.removeObservers(viewLifecycleOwner)
+
+        var kindFilter: (List<RouteWithAscents>) -> List<RouteWithAscents> = { it }
+
+        if (routeKind != RouteKind.ALL)
+            kindFilter = { it.filter { it.route.kind == routeKind.kind } }
+
+        routesViewModel.allRoutes.observe(viewLifecycleOwner, Observer {
+            routesAdapter.setData(kindFilter(it))
+        })
+        Log.d(TAG, "Now observing $routeKind.kind")
     }
 
 
@@ -47,16 +60,13 @@ class RoutesFragment : Fragment() {
         routesAdapter = RouteWithAscentsAdapter()
         recyclerView.standardInit(routesAdapter)
 
-        // add an onclicklistener for the recyclerview
         recyclerView.addOnItemClickListener(object : RecyclerViewOnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
-                // some null safety checking
                 routesViewModel.allRoutes.value?.get(position)
                     ?.let { listener?.onRouteClicked(it.route.route_id) }
             }
         })
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

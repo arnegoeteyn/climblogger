@@ -1,8 +1,9 @@
 package com.example.climblogger.ui.main
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,8 @@ import com.example.climblogger.MenuListDialogFragment
 import com.example.climblogger.R
 import com.example.climblogger.SettingsDialogFragment
 import com.example.climblogger.data.RouteRoomDatabase
+import com.example.climblogger.dialogs.RadioButtonDialog
+import com.example.climblogger.enums.RouteKind
 import com.example.climblogger.fragments.*
 import com.example.climblogger.ui.area.AddAreaActivity
 import com.example.climblogger.ui.area.AreaActivity
@@ -29,7 +32,8 @@ import com.example.climblogger.ui.stats.StatsActivity
 import com.example.climblogger.util.backupDB
 import com.example.climblogger.util.detachSwitch
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.*
+import kotlinx.android.synthetic.main.dialog_picker.*
+
 
 class MainActivity : AppCompatActivity(),
     RoutesFragment.OnFragmentInteractionListener,
@@ -38,10 +42,12 @@ class MainActivity : AppCompatActivity(),
     MultipitchesFragment.OnFragmentInteractionListener,
     AreasFragment.OnFragmentInteractionListener,
     MenuListDialogFragment.OnFragmentInteractionListener,
-    SettingsDialogFragment.OnFragmentInteractionListener {
+    SettingsDialogFragment.OnFragmentInteractionListener,
+    RadioButtonDialog.OnRadioButtonSelectedListener {
 
     private lateinit var mainViewModel: MainViewModel
 
+    private var showRadioPicker: RadioButtonDialog? = null
     private var bottomSheetMenu: MenuListDialogFragment = MenuListDialogFragment.newInstance()
     private var bottomSheetSettings: SettingsDialogFragment = SettingsDialogFragment.newInstance()
 
@@ -122,7 +128,6 @@ class MainActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.action_settings -> {
-                Log.d("NEE", "Nu juist")
                 bottomSheetSettings.show(
                     supportFragmentManager,
                     SettingsDialogFragment.TAG
@@ -167,11 +172,30 @@ class MainActivity : AppCompatActivity(),
         )
     }
 
+    private fun showRouteShowDialog() {
+        if (showRadioPicker == null) {
+            Log.d(TAG, "Made the dialog")
+            this@MainActivity.showRadioPicker = RadioButtonDialog(this@MainActivity)
+        }
+        showRadioPicker?.listener = this
+        showRadioPicker?.show()
+    }
+
     override fun onSettingsItemClicked(menu_id: Int): Boolean {
         when (menu_id) {
             R.id.action_export -> export()
+            R.id.action_show -> showRouteShowDialog()
         }
         bottomSheetSettings.dismiss()
         return true
+    }
+
+    override fun onRadioButtonSelected(kind: RouteKind) {
+        showRadioPicker?.dismiss()
+        if (mainViewModel.tabFragment.TAG == RoutesFragment.TAG) {
+            val r: RoutesFragment =
+                supportFragmentManager.findFragmentById(R.id.fragmentPlace) as RoutesFragment
+            r.observeRouteData(kind)
+        }
     }
 }

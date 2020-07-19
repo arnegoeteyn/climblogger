@@ -43,6 +43,7 @@
 
     <string name="totalCount">Total: %1$d</string>
     <string name="export">Export</string>
+    <string name="show">Show</string>
 
 
     <string-array name="ascent_kind">

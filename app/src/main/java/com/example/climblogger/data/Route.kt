@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import com.example.climblogger.enums.RouteKind
 
 @Entity(
     tableName = "routes",
@@ -62,6 +63,9 @@ abstract class RouteDao : BaseDao<Route>() {
 
     @Query("SELECT * from routes ORDER BY grade DESC, name ASC")
     abstract fun getAllRoutes(): LiveData<List<Route>>
+
+    @Query("""SELECT * from routes WHERE routes.route_kind == :kind ORDER BY grade DESC, name ASC""")
+    abstract fun getRoutesWithKind(kind: String): LiveData<List<Route>>
 
     @Query("SELECT * FROM routes WHERE route_uuid == :route_id")
     abstract fun getRoute(route_id: String): LiveData<Route?>

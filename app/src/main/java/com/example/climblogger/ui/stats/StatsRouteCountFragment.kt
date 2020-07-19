@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.climblogger.R
 import com.example.climblogger.data.RouteAmount
+import com.example.climblogger.enums.RouteKind
 import com.example.climblogger.util.LiveDataAdapter
-import com.example.climblogger.util.RouteKind
 import com.example.climblogger.util.castToRange
 import kotlinx.android.synthetic.main.fragment_stats_route_count.*
 import kotlinx.android.synthetic.main.list_item_route_amount.view.*

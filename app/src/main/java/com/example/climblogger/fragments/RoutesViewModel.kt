@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.climblogger.data.*
+import com.example.climblogger.enums.RouteKind
 
 class RoutesViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: RouteRepository

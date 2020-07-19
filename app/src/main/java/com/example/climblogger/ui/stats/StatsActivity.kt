@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.climblogger.R
-import com.example.climblogger.util.RouteKind
+import com.example.climblogger.enums.RouteKind
 import kotlinx.android.synthetic.main.activity_stats.*
 
 class StatsActivity : AppCompatActivity(),

@@ -2,12 +2,11 @@ package com.example.climblogger.util
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 
 
 class ConfirmationButton(context: Context, attrs: AttributeSet) :
-    Button(context, attrs) {
+    androidx.appcompat.widget.AppCompatButton(context, attrs) {
 
     private var onPositiveClick: (() -> Unit)? = null
 
