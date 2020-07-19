@@ -1,7 +1,5 @@
 package com.example.climblogger.ui.main
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -32,7 +30,6 @@ import com.example.climblogger.ui.stats.StatsActivity
 import com.example.climblogger.util.backupDB
 import com.example.climblogger.util.detachSwitch
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_picker.*
 
 
 class MainActivity : AppCompatActivity(),
@@ -43,11 +40,11 @@ class MainActivity : AppCompatActivity(),
     AreasFragment.OnFragmentInteractionListener,
     MenuListDialogFragment.OnFragmentInteractionListener,
     SettingsDialogFragment.OnFragmentInteractionListener,
-    RadioButtonDialog.OnRadioButtonSelectedListener {
+    RadioButtonDialog.OnRouteKindFilterSelectedListener {
 
     private lateinit var mainViewModel: MainViewModel
 
-    private var showRadioPicker: RadioButtonDialog? = null
+    private var routeKindFilter: RadioButtonDialog? = null
     private var bottomSheetMenu: MenuListDialogFragment = MenuListDialogFragment.newInstance()
     private var bottomSheetSettings: SettingsDialogFragment = SettingsDialogFragment.newInstance()
 
@@ -145,6 +142,8 @@ class MainActivity : AppCompatActivity(),
 
         if (tabFragment.TAG == AreasFragment.TAG) fab.show() else fab.hide()
         title_text_view.text = getString(tabFragment.title_id)
+
+        bottomSheetSettings.fragmentTag = tabFragment.TAG
     }
 
     companion object {
@@ -173,25 +172,24 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun showRouteShowDialog() {
-        if (showRadioPicker == null) {
-            Log.d(TAG, "Made the dialog")
-            this@MainActivity.showRadioPicker = RadioButtonDialog(this@MainActivity)
+        if (routeKindFilter == null) {
+            this@MainActivity.routeKindFilter = RadioButtonDialog(this@MainActivity)
         }
-        showRadioPicker?.listener = this
-        showRadioPicker?.show()
+        routeKindFilter?.listener = this
+        routeKindFilter?.show()
     }
 
     override fun onSettingsItemClicked(menu_id: Int): Boolean {
         when (menu_id) {
             R.id.action_export -> export()
-            R.id.action_show -> showRouteShowDialog()
+            R.id.action_route_kind -> showRouteShowDialog()
         }
         bottomSheetSettings.dismiss()
         return true
     }
 
-    override fun onRadioButtonSelected(kind: RouteKind) {
-        showRadioPicker?.dismiss()
+    override fun onRouteKindFilterSelected(kind: RouteKind) {
+        routeKindFilter?.dismiss()
         if (mainViewModel.tabFragment.TAG == RoutesFragment.TAG) {
             val r: RoutesFragment =
                 supportFragmentManager.findFragmentById(R.id.fragmentPlace) as RoutesFragment

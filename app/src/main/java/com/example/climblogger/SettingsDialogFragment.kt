@@ -3,23 +3,43 @@ package com.example.climblogger
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import com.example.climblogger.data.Ascent
+import com.example.climblogger.fragments.AscentsFragment
 import com.example.climblogger.fragments.RoutesFragment
+import com.example.climblogger.ui.main.MainActivityTabFragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_menu.*
 
 
 class SettingsDialogFragment : BottomSheetDialogFragment() {
     private var listener: OnFragmentInteractionListener? = null
+    var fragmentTag: String? = null
+
+    var menu: Menu? = null
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bottom_sheet_settings, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_bottom_sheet_settings, container, false)
+        menu = view.findViewById<NavigationView>(R.id.bottom_sheet_navigation).menu
+        fragmentTag?.let { setGroupVisibilty(it) }
+        return view
+    }
+
+    fun setGroupVisibilty(fragmentTag: String) {
+        when (fragmentTag) {
+            RoutesFragment.TAG -> enableMenuGroup(R.id.routes_options)
+            AscentsFragment.TAG -> enableMenuGroup(R.id.ascents_options)
+        }
+    }
+
+    private fun enableMenuGroup(groupId: Int) {
+        this.menu?.setGroupVisible(groupId, true)
     }
 
     interface OnFragmentInteractionListener {

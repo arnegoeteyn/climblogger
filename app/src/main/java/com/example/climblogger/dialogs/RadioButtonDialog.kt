@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.dialog_picker.*
 
 class RadioButtonDialog(context: Context) : Dialog(context) {
 
-    var listener: OnRadioButtonSelectedListener? = null
+    var listener: OnRouteKindFilterSelectedListener? = null
 
     init {
         this.setContentView(R.layout.dialog_picker)
@@ -22,12 +22,12 @@ class RadioButtonDialog(context: Context) : Dialog(context) {
     }
 
     private fun callListener(kind: RouteKind) {
-        listener?.onRadioButtonSelected(kind)
+        listener?.onRouteKindFilterSelected(kind)
     }
 
 
-    interface OnRadioButtonSelectedListener {
-        fun onRadioButtonSelected(kind: RouteKind)
+    interface OnRouteKindFilterSelectedListener {
+        fun onRouteKindFilterSelected(kind: RouteKind)
     }
 
 

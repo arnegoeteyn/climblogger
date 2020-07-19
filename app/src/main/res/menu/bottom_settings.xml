@@ -2,18 +2,34 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-            android:id="@+id/action_show"
-            android:enabled="true"
-            android:icon="@drawable/baseline_android_24"
-            android:title="@string/show"
-            app:showAsAction="ifRoom" />
+    <group
+            android:id="@+id/ascents_options"
+            android:visible="false">
+        <item
+                android:id="@+id/random"
+                android:enabled="true"
+                android:icon="@drawable/baseline_android_24"
+                android:title="RANDOM"
+                app:showAsAction="ifRoom" />
+    </group>
 
-    <item
-            android:id="@+id/action_export"
-            android:enabled="true"
-            android:icon="@drawable/baseline_android_24"
-            android:title="@string/export"
-            app:showAsAction="ifRoom" />
+    <group
+            android:id="@+id/routes_options"
+            android:visible="false">
+        <item
+                android:id="@+id/action_route_kind"
+                android:enabled="true"
+                android:icon="@drawable/baseline_android_24"
+                android:title="@string/show"
+                app:showAsAction="ifRoom" />
+    </group>
+    <group android:id="@+id/default_options">
+        <item
+                android:id="@+id/action_export"
+                android:enabled="true"
+                android:icon="@drawable/baseline_android_24"
+                android:title="@string/export"
+                app:showAsAction="ifRoom" />
+    </group>
 
 </menu>
