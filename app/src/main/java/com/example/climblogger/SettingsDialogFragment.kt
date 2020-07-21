@@ -31,7 +31,7 @@ class SettingsDialogFragment : BottomSheetDialogFragment() {
         return view
     }
 
-    fun setGroupVisibilty(fragmentTag: String) {
+    private fun setGroupVisibilty(fragmentTag: String) {
         when (fragmentTag) {
             RoutesFragment.TAG -> enableMenuGroup(R.id.routes_options)
             AscentsFragment.TAG -> enableMenuGroup(R.id.ascents_options)

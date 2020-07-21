@@ -8,9 +8,8 @@
         <item
                 android:id="@+id/random"
                 android:enabled="true"
-                android:icon="@drawable/baseline_android_24"
                 android:title="RANDOM"
-                app:showAsAction="ifRoom" />
+                />
     </group>
 
     <group
@@ -19,17 +18,17 @@
         <item
                 android:id="@+id/action_route_kind"
                 android:enabled="true"
-                android:icon="@drawable/baseline_android_24"
-                android:title="@string/show"
-                app:showAsAction="ifRoom" />
+                android:title="@string/route_kind"
+                />
     </group>
-    <group android:id="@+id/default_options">
+    <group
+            android:id="@+id/default_options"
+            android:visible="true">
         <item
                 android:id="@+id/action_export"
                 android:enabled="true"
-                android:icon="@drawable/baseline_android_24"
                 android:title="@string/export"
-                app:showAsAction="ifRoom" />
+                />
     </group>
 
 </menu>
